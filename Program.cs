@@ -11,9 +11,8 @@ namespace MyGame
 
     class Program
     {
-                    
-        static IntPtr image = Engine.LoadImage("assets/fondo.png");
-   
+
+        private static Escenas escenas = new Escenas();
 
         static void Main(string[] args)
         {
@@ -21,15 +20,34 @@ namespace MyGame
      
             while (true)
             {
-                Update();
 
-                Engine.Clear();
+                if (escenas.numPantalla == 0)
+                {
+                    Update();
 
-                Engine.Draw(image, 0, 0);
-          
+                    Engine.Clear();
+
+                    escenas.Render();
+
+
                 Engine.Show();
 
-                Sdl.SDL_Delay(20);
+                    Sdl.SDL_Delay(20);
+                }
+
+                if (escenas.numPantalla == 1)
+                {
+                    Update();
+
+                    Engine.Clear();
+
+                    escenas.Render();
+
+
+                    Engine.Show();
+
+                    Sdl.SDL_Delay(20);
+                }
             }
         }
 
@@ -39,7 +57,9 @@ namespace MyGame
 
             if (Engine.KeyPress(Engine.KEY_RIGHT)) {  }
 
-            if (Engine.KeyPress(Engine.KEY_UP)) { }
+            if (Engine.KeyPress(Engine.KEY_UP)) {
+                escenas.numPantalla =+ 1;
+            }
 
             if (Engine.KeyPress(Engine.KEY_DOWN)) {  }
 

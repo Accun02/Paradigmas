@@ -55,3 +55,14 @@ C:\Users\Consultoria\Dropbox\Facultad\UADE OBJETOS\BASE\Base\bin\Debug\assets\Sh
 C:\Users\Consultoria\Dropbox\Facultad\UADE OBJETOS\BASE\Base\bin\Debug\assets\Ship\Idle\1.png
 C:\Users\Consultoria\Dropbox\Facultad\UADE OBJETOS\BASE\Base\bin\Debug\assets\Ship\Idle\2.png
 C:\Users\Consultoria\Dropbox\Facultad\UADE OBJETOS\BASE\Base\bin\Debug\assets\Ship\Idle\3.png
+C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\obj\Debug\MyGame.exe
+C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\obj\Debug\MyGame.pdb
+C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\obj\Debug\MyGame.csproj.AssemblyReference.cache
+C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\obj\Debug\MyGame.csproj.CoreCompileInputs.cache
+C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\bin\Debug\assets\player.png
+C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\bin\Debug\assets\fondo.png
+C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\bin\Debug\MyGame.exe.config
+C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\bin\Debug\MyGame.exe
+C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\bin\Debug\MyGame.pdb
+C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\obj\Debug\MyGame.csproj.CopyComplete
+C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\bin\Debug\assets\wea_fome.png
