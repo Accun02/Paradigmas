@@ -10,7 +10,13 @@ public class Escenas
    public int numPantalla = 0;
     // cambia la escena al cambiar el numero 0 = inicio 1 = pantalla de juego 2 = pantalla de victoria y 3 = a pantalla de derrota
 
-
+	private void dontcrash ()
+	{
+		if (numPantalla < 0)
+		{
+			numPantalla = 0;
+		}
+	}
 		public  void Render()
 		{
 		if (numPantalla == 0) //renderiza el menu

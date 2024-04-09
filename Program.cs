@@ -58,10 +58,12 @@ namespace MyGame
             if (Engine.KeyPress(Engine.KEY_RIGHT)) {  }
 
             if (Engine.KeyPress(Engine.KEY_UP)) {
-                escenas.numPantalla =+ 1;
+                escenas.numPantalla = 1;
             }
 
-            if (Engine.KeyPress(Engine.KEY_DOWN)) {  }
+            if (Engine.KeyPress(Engine.KEY_DOWN)) {
+                escenas.numPantalla = 0;
+            }
 
             if (Engine.KeyPress(Engine.KEY_ESC)) { }
 
