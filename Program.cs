@@ -13,6 +13,7 @@ namespace MyGame
     {
 
         private static Escenas escenas = new Escenas();
+      //  private static Enemy enemy  = new Enemy (200,200);
 
         static void Main(string[] args)
         {
@@ -41,7 +42,7 @@ namespace MyGame
 
                     Engine.Clear();
 
-                    escenas.Render();
+                   Renders();
 
 
                     Engine.Show();
@@ -58,11 +59,11 @@ namespace MyGame
             if (Engine.KeyPress(Engine.KEY_RIGHT)) {  }
 
             if (Engine.KeyPress(Engine.KEY_UP)) {
-                escenas.numPantalla = 1;
+        
             }
 
             if (Engine.KeyPress(Engine.KEY_DOWN)) {
-                escenas.numPantalla = 0;
+               
             }
 
             if (Engine.KeyPress(Engine.KEY_ESC)) { }
@@ -70,6 +71,11 @@ namespace MyGame
 
 
 
+        }
+        private static void Renders()
+        {
+            escenas.Render();
+            // enemy.Render();
         }
 
     }

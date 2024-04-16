@@ -66,3 +66,4 @@ C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\bin\Debug\MyGame.exe
 C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\bin\Debug\MyGame.pdb
 C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\obj\Debug\MyGame.csproj.CopyComplete
 C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\bin\Debug\assets\wea_fome.png
+C:\Users\facuh\Downloads\ProyectoBaseParadigmas\Paradigmas\bin\Debug\assets\untitled.png
