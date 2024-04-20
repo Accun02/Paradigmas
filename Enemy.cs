@@ -11,6 +11,9 @@ namespace MyGame
     {
         private Transform transform;
         private EnemyMovement enemyMovement;
+        private Enemyattackselect enemyattackselect;
+        private teleport teleport;
+        private Enemybullet enemybullet;
         private int healt;
         public int Healt => healt;
         private IntPtr image = Engine.LoadImage("assets/untitled.png");

@@ -11,6 +11,8 @@ namespace MyGame
         int speed = 5;
         Transform transform;
 
+        public Transform Transform1 => transform;
+
         public CharacterController(Transform transform)
         {
             this.transform = transform;
