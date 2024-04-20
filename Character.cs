@@ -16,6 +16,7 @@ namespace MyGame
         private Animation idleRight;
         private Animation currentAnimation;
         private Transform transform;
+        public Transform transform1 => transform;
         private CharacterController controller;
         private IntPtr image;
 
@@ -60,7 +61,7 @@ namespace MyGame
 
         public void Render()
         {
-            transform.Position = new Vector2(32, 32);
+        transform.Position = new Vector2(32, 32);
             Engine.Draw(currentAnimation.CurrentFrame, transform.Position.x, transform.Position.y);
         }
 

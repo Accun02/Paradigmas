@@ -81,10 +81,7 @@ namespace MyGame
         {
             player.Update();
 
-            foreach (Enemy enemy in EnemyList)
-            {
-                enemy.Update();
-            }
+        
 
             foreach (Bullet bullet in BulletList)
             {
@@ -94,7 +91,7 @@ namespace MyGame
 
         private static void CreateEnemies()
         {
-            EnemyList.Add(new Enemy(new Vector2(0, 0), new Vector2()));
+       
         }
 
         private static void AdjustDelayFrame(int frameCount)

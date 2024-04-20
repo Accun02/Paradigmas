@@ -8,7 +8,7 @@ namespace MyGame
 {
     internal class Enemybullet
     {
-        // Character character 
+        Character character; 
         Transform transform;
         private int posx;
         private int posy;
@@ -16,14 +16,14 @@ namespace MyGame
 
         IntPtr enmeybullet = Engine.LoadImage("assets/bullet.png");
 
-        public Enemybullet()
+        public Enemybullet(Transform position)
         {
-          
+          this.transform = position;
         }
 
 public void Movement()
         {
-        // transform.Translate (Vector2 ( character.Transform.position.x, character.Transform.position.y ),6)
+        transform.Translate ( new Vector2 (character.transform1.Position.x, transform.Position.y),bulletvel);
         }
     }
 }
