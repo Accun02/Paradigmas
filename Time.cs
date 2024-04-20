@@ -12,9 +12,13 @@ namespace MyGame
         private static float _lastTimeFrame;
         public static float DeltaTime;
 
-        public void Initialize() => _startTime = DateTime.Now;
+        public static void Initialize()
+        {
+            _startTime = DateTime.Now;
+            _lastTimeFrame = 0f;
+        }
 
-        public void Update()
+        public static void Update()
         {
             float currentTime = (float)(DateTime.Now - _startTime).TotalSeconds;
             DeltaTime = currentTime - _lastTimeFrame;

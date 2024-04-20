@@ -8,29 +8,29 @@ namespace MyGame
 {
     internal class Bullet
     {
-        private int posX = 0;
-        private int posY = 0;
-        IntPtr image = Engine.LoadImage("assets/bullet.png");
+        private Transform transform;
+        private IntPtr image = Engine.LoadImage("assets/bullet.png");
 
         public Bullet(int x, int y)
         {
-            posX = x;
-            posY = y;
+            transform = new Transform(new Vector2(x, y));
         }
 
-        public Bullet()
+        public Bullet(Vector2 position)
         {
-
+            transform = new Transform(position);
         }
 
         public void Render()
         {
-            Engine.Draw(image, posX, posY);
+            Engine.Draw(image, (int)transform.Position.x, (int)transform.Position.y);
         }
 
         public void Update()
         {
-            posY -= 10;
+            transform.Translate(new Vector2(0, -10));
         }
     }
 }
+
+//Hola mundo.

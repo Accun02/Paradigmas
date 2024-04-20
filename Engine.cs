@@ -30,10 +30,11 @@ class Engine
         SdlTtf.TTF_Init();
     }
 
-    public static void Initialize(int an, int al, int colores)
+    public static void Initialize(int an, int al)
     {
         ancho = an;
         alto = al;
+        int colores = 24;
 
         int flags = (Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT);
         Sdl.SDL_Init(Sdl.SDL_INIT_EVERYTHING);
@@ -42,6 +43,8 @@ class Engine
             alto,
             colores,
             flags);
+
+        Sdl.SDL_WM_SetCaption("juego epic", null);
 
         Sdl.SDL_Rect rect2 =
             new Sdl.SDL_Rect(0, 0, (short)ancho, (short)alto);
@@ -77,14 +80,7 @@ class Engine
         Sdl.SDL_BlitSurface(image, ref origin, screen, ref dest);
     }
 
-    public static void Draw(string tempimage, float x, float y, float width, float height)
-    {
-        IntPtr image = LoadImage(tempimage);
 
-        Sdl.SDL_Rect origin = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
-        Sdl.SDL_Rect dest = new Sdl.SDL_Rect((short)x, (short)y, (short)width, (short)height);
-        Sdl.SDL_BlitSurface(image, ref origin, screen, ref dest);
-    }
 
     public static void Draw(IntPtr image, float x, float y, float width, float height)
     {
@@ -158,14 +154,11 @@ class Engine
         return press;
     }
 
-
-
     public static void ErrorFatal(string texto)
     {
         System.Console.WriteLine(texto);
         Environment.Exit(1);
     }
-
 
     // Definiciones de teclas
     public static int KEY_ESC = Sdl.SDLK_ESCAPE;

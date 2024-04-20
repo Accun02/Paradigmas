@@ -18,10 +18,16 @@ namespace MyGame
             this.position = position;
         }
 
-        public void Translate(Vector2 direccion, int speed)
+        public void Translate(Vector2 direction, float speed)
         {
-            position.x += direccion.x * speed;
-            position.y += direccion.y * speed;
+            position.x += direction.x * speed;
+            position.y += direction.y * speed;
+        }
+
+        public void Translate(Vector2 direction)
+        {
+            position.x += direction.x;
+            position.y += direction.y;
         }
     }
 }
