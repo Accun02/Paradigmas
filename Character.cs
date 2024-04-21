@@ -15,8 +15,11 @@ namespace MyGame
         private Animation idleLeft;
         private Animation idleRight;
         private Animation currentAnimation;
-        private Transform transform;
-        public Transform transform1 => transform;
+        private Transform transform
+        {
+            get; 
+            set;
+        }
         private CharacterController controller;
         private IntPtr image;
 

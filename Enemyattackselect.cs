@@ -6,64 +6,85 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-   public class Enemyattackselect
+    public class Enemyattackselect
     {
-
+        Transform transform;
         private int enemyAttack;
-        public int EnemyAttack => enemyAttack;
         Random rnd;
-        private float attackTime;
+        private float attackTime = 0;
         private bool canAttack = true;
         private float pause = 0;
-        teleport  teleport = new teleport();
-        Enemybullet enemybullet;
-        
-        private void Attacklist()
+        EnemyMovement enemyMovement;
+
+        public Enemyattackselect (Vector2 position)
         {
-            
-            while (canAttack) {
+
+            transform = new Transform( position);
+          
+        }
+
+
+      public void Update()
+      {
+           timers();
+            selecttion();
+
+        }
+        private void timers()
+        {
+            if (canAttack)
+            {
                 attackTime = Time.DeltaTime;
-                if (attackTime > 5)
-                {
-                   
 
-                    rnd = new Random();
+            }
 
-             
+            if (canAttack == false ) 
+            
+            {
+                pause = Time.DeltaTime;
+            }
+              
+            
 
-                    switch (rnd.Next(1, 2)) // elegir ataque
-                    {
-                        case 1:
-                            //teleport
-                            teleport.randompos();
-                            canAttack = false;
-                            attackTime = 0;
-                            break;
-                        case 2:
-                            //ivoke bullet
-                            canAttack = false;
-                           // Invoke(enemybullet);
-                            enemybullet.Movement();
-                            attackTime = 0;
-                            break;
-                    }
-                    if (canAttack == false) // tiempo entre ataque para que no se vuelva loco el juego.
-                    {
-                        pause = Time.DeltaTime;
+        }
 
-                        if (pause > 5) 
-                        {
-                            canAttack = true;
-                            pause = 0;
-                        }
-                    }
-                }
-             
-                }
-                
+
+        private void selecttion()
+        {
+          
+            if (attackTime >= 5 && canAttack)
+            {
+                enemyAttack = rnd.Next(1, 2);
+
+            }
+
+            switch (enemyAttack)
+            {
+                case 1:
+                    Program.enemyBullets.Add(new EnemyBullet((int)transform.Position.x, (int)transform.Position.y));
+                    canAttack = false;
+                    attackTime = 0;
+                    break;
+
+                case 2:
+                    enemyMovement.teleport();
+                    canAttack = false;
+                    attackTime = 0;
+                    break;
+            }
+
+            if (pause > 5)
+            {
+                canAttack = true;
+                pause = 0;
             }
         }
+
     }
+}
+
+  
+
 
 
 

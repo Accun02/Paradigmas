@@ -12,27 +12,28 @@ namespace MyGame
         private Transform transform;
         private EnemyMovement enemyMovement;
         private Enemyattackselect enemyattackselect;
-        private teleport teleport;
         private int healt;
         public int Healt => healt;
         private IntPtr image = Engine.LoadImage("assets/untitled.png");
 
-        Enemybullet enemybullet = new Enemybullet (transform.Position.x + 6, transform.Position.y);
+  
 
         public Enemy (Vector2 position)
         {
             transform = new Transform(position);
-            enemyMovement = new EnemyMovement(transform); 
-            
+            enemyMovement = new EnemyMovement(transform);
+            enemyattackselect = new Enemyattackselect(transform.Position);
         }
         public void Render()
         {
             Engine.Draw(image, transform.Position.x, transform.Position.y);
         }
 
-        private void launchbullet()
+   public void Attack()
         {
-           
+
+            enemyattackselect.Update();
+            return;
         }
     }
 }

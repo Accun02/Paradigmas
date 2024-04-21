@@ -57,14 +57,12 @@
     <Compile Include="Enemybullet.cs" />
     <Compile Include="EnemyController.cs" />
     <Compile Include="EnemyMovement.cs" />
-    <Compile Include="Escenas.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sound.cs" />
-    <Compile Include="teleport.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Transform.cs" />
     <Compile Include="Vector2.cs" />
@@ -74,6 +72,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="assets\bala.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\bullet.png" />
     <Content Include="assets\enemy.png" />
     <Content Include="assets\idleleft\idleleft\0.png" />
@@ -96,9 +97,6 @@
     <Content Include="assets\walk\walk\1.png" />
     <Content Include="assets\walk\walk\2.png" />
     <Content Include="assets\walk\walk\3.png" />
-    <Content Include="assets\wea_fome.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

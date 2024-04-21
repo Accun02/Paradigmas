@@ -6,24 +6,30 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    internal class Enemybullet
+    internal class EnemyBullet
     {
-        Character character; 
         Transform transform;
-        private int posx;
-        private int posy;
-        private int bulletvel = 6;
-
-        IntPtr enmeybullet = Engine.LoadImage("assets/bullet.png");
-
-        public Enemybullet(Transform position)
+        Character character;
+        IntPtr enemybullet = Engine.LoadImage("assets/bala.png");
+        private float bulletVel = 6;
+        public EnemyBullet(int x, int y)
         {
-          this.transform = position;
+            transform = new Transform(new Vector2(x, y));
         }
 
-public void Movement()
+        public EnemyBullet(Vector2 position)
         {
-        transform.Translate ( new Vector2 (character.transform1.Position.x, transform.Position.y),bulletvel);
+            transform = new Transform(position);
+        }
+
+        public void BulletRender()
+        {
+            Engine.Draw(enemybullet, transform.Position.x, transform.Position.y);
+        }
+
+        public void position()
+        {
+            transform.Translate(new Vector2(transform.Position.x * Time.DeltaTime,transform.Position.y * Time.DeltaTime));
         }
     }
 }

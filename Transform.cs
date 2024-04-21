@@ -6,12 +6,22 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    public struct Transform
+    public class Transform
     {
         private Vector2 position;
-        public Vector2 Position => position;
-       
-        
+        public Vector2 Position
+        {
+            set
+            {
+
+            }
+
+            get
+            {
+                return position;
+            }
+        }
+
 
         public Transform(Vector2 position)
         {

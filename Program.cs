@@ -13,15 +13,14 @@ namespace MyGame
         static IntPtr image = Engine.LoadImage("assets/fondo.png");
 
         static public Character player = new Character(new Vector2(608, 688));
-        static public List<Enemy> EnemyList = new List<Enemy>();
+        static public Enemy enemy = new Enemy(new Vector2(100, 100));
         static public List<Bullet> BulletList = new List<Bullet>();
-
+        static public List <EnemyBullet> enemyBullets = new List<EnemyBullet>();
         static Stopwatch stopwatch = new Stopwatch();
 
         static void Main(string[] args)
         {
             Engine.Initialize(1280, 720);
-            CreateEnemies();
             Time.Initialize();
             stopwatch.Start();
 
@@ -64,35 +63,37 @@ namespace MyGame
             Engine.Clear();
             Engine.Draw(image, 0, 0);
             player.Render();
-            foreach (Enemy enemy in EnemyList)
-            {
-                enemy.Render();
-            }
+            enemy.Render();
 
             foreach (Bullet bullet in BulletList)
             {
                 bullet.Render();
             }
-
+            foreach (EnemyBullet enemyBullet in enemyBullets)
+            {
+                enemyBullet.BulletRender();
+            }
             Engine.Show();
         }
 
         public static void Update()
         {
             player.Update();
-
+            enemy.Attack();
         
 
             foreach (Bullet bullet in BulletList)
             {
                 bullet.Update();
             }
+            foreach (EnemyBullet enemyBullet in enemyBullets)
+            {
+                enemyBullet.position();
+            }
+
         }
 
-        private static void CreateEnemies()
-        {
-       
-        }
+      
 
         private static void AdjustDelayFrame(int frameCount)
         {
