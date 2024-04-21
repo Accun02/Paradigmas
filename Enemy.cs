@@ -17,9 +17,14 @@ namespace MyGame
         private int healt;
         public int Healt => healt;
         private IntPtr image = Engine.LoadImage("assets/untitled.png");
+<<<<<<< Updated upstream
      
        
    public Enemy (Vector2 position)
+=======
+        
+        public Enemy (Vector2 position)
+>>>>>>> Stashed changes
         {
             transform = new Transform(position);
             enemyMovement = new EnemyMovement(transform); 
@@ -29,5 +34,13 @@ namespace MyGame
         {
             Engine.Draw(image, transform.Position.x, transform.Position.y);
         }
+<<<<<<< Updated upstream
+=======
+
+        private void launchbullet()
+        {
+            Enemybullet enemybullet = new Enemybullet(transform.Position.x +6,transform.Position.y);
+        }
+>>>>>>> Stashed changes
     }
 }

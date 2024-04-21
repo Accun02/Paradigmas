@@ -21,7 +21,11 @@ namespace MyGame
           
         }
 
-public void Movement()
+        public Enemybullet(float v, float y)
+        {
+        }
+
+        public void Movement()
         {
         // transform.Translate (Vector2 ( character.Transform.position.x, character.Transform.position.y ),6)
         }
