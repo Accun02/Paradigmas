@@ -48,27 +48,55 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Escenas.cs" />
+    <Compile Include="Animation.cs" />
+    <Compile Include="Bullet.cs" />
+    <Compile Include="Character.cs" />
+    <Compile Include="CharacterController.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="Enemyattackselect.cs" />
+    <Compile Include="Enemybullet.cs" />
+    <Compile Include="EnemyController.cs" />
+    <Compile Include="EnemyMovement.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="Engine.cs" />
+    <Compile Include="GameManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sound.cs" />
+    <Compile Include="Time.cs" />
+    <Compile Include="Transform.cs" />
+    <Compile Include="Vector2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="assets\bala.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\bullet.png" />
+    <Content Include="assets\enemy.png" />
+    <Content Include="assets\idleleft\idleleft\0.png" />
+    <Content Include="assets\idleright\idleright\0.png" />
+    <Content Include="assets\MainMenu.png" />
     <Content Include="assets\player.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\fondo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="assets\wea_fome.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="assets\untitled.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="assets\walkright\walkright\0.png" />
+    <Content Include="assets\walkright\walkright\1.png" />
+    <Content Include="assets\walkright\walkright\2.png" />
+    <Content Include="assets\walkright\walkright\3.png" />
+    <Content Include="assets\walk\walk\0.png" />
+    <Content Include="assets\walk\walk\1.png" />
+    <Content Include="assets\walk\walk\2.png" />
+    <Content Include="assets\walk\walk\3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
