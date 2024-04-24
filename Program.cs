@@ -12,10 +12,15 @@ namespace MyGame
 
         static IntPtr image = Engine.LoadImage("assets/fondo.png");
 
-        static public Character player = new Character(new Vector2(608, 688));
-        static public Enemy enemy = new Enemy(new Vector2(100, 100));
+        static public int GroundHeight = 584; // De arriba a abajo
+        static public int ScreenWidth = 1280; // De izquierda a derecha
+
+        static public Character player = new Character(new Vector2(ScreenWidth / 2 - Character.PlayerWidth / 2, 584 - Character.PlayerHeight));
+        static public Enemy enemy = new Enemy(new Vector2(ScreenWidth / 2 - Enemy.EnemyWidth / 2, 100));
+
         static public List<Bullet> BulletList = new List<Bullet>();
         static public List <EnemyBullet> enemyBullets = new List<EnemyBullet>();
+
         static Stopwatch stopwatch = new Stopwatch();
 
         static void Main(string[] args)
@@ -79,16 +84,18 @@ namespace MyGame
         public static void Update()
         {
             player.Update();
-            enemy.Attack();
-        
+            enemy.Update(Time.DeltaTime);
 
-            foreach (Bullet bullet in BulletList)
+
+            for (int i = 0; i < BulletList.Count; i++)
             {
-                bullet.Update();
+                BulletList[i].Update();
             }
-            foreach (EnemyBullet enemyBullet in enemyBullets)
+
+            for (int i = 0; i < enemyBullets.Count; i++)
             {
-                enemyBullet.position();
+                enemyBullets[i].Update();
+                enemyBullets[i].CheckCollisions();
             }
 
         }

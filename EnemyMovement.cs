@@ -4,26 +4,24 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace MyGame
 {
     public class EnemyMovement
     {
-        private Vector2 position;
         private Transform transform;
-        private Random rndx = new Random();
-        private Random rndy = new Random();
-        private float enemySpeed = 10;
-
+        private Random rnd = new Random();
         public EnemyMovement(Transform transform)
         {
             this.transform = transform;
         }
-
-        public void teleport()
+        public void Teleport()
         {
-            transform.Position = new Vector2(rndx.Next(200, 400), rndy.Next(200, 600));
+            Console.WriteLine(transform.Position.x + " / " + transform.Position.y);
+
+            float newX = rnd.Next(200, 1000);
+            float newY = rnd.Next(100, 300);
+
+            transform.Position = new Vector2(newX, newY);
         }
     }
-
 }

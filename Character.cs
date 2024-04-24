@@ -8,18 +8,23 @@ namespace MyGame
 {
     public class Character
     {
+        public const float PlayerWidth = 64;
+        public const float PlayerHeight = 64;
+
         private bool walkingLeft = false;
         private bool walkingRight = false;
+
         private Animation walk;
         private Animation walkRight;
         private Animation idleLeft;
         private Animation idleRight;
         private Animation currentAnimation;
-        private Transform transform
+        public Transform transform
         {
             get; 
             set;
         }
+
         private CharacterController controller;
         private IntPtr image;
 
@@ -37,14 +42,14 @@ namespace MyGame
         {
             controller.Update();
 
-            if (Engine.KeyPress(Engine.KEY_A) || (Engine.KeyPress(Engine.KEY_LEFT)))
+            if (Engine.KeyPress(Engine.KEY_LEFT))
             {
                 currentAnimation = walk;
                 currentAnimation.Update();
                 walkingLeft = true;
                 walkingRight = false;
             }
-            else if (Engine.KeyPress(Engine.KEY_D) || (Engine.KeyPress(Engine.KEY_RIGHT)))
+            else if (Engine.KeyPress(Engine.KEY_RIGHT))
             {
                 currentAnimation = walkRight;
                 currentAnimation.Update();
@@ -64,7 +69,6 @@ namespace MyGame
 
         public void Render()
         {
-        transform.Position = new Vector2(32, 32);
             Engine.Draw(currentAnimation.CurrentFrame, transform.Position.x, transform.Position.y);
         }
 
@@ -74,7 +78,7 @@ namespace MyGame
             List<IntPtr> walkTextures = new List<IntPtr>();
             for (int i = 0; i < 4; i++)
             {
-                IntPtr frame = Engine.LoadImage($"assets/walk/{i}.png");
+                IntPtr frame = Engine.LoadImage($"assets/player/walk/{i}.png");
                 walkTextures.Add(frame);
             }
             walk = new Animation("Walk", walkTextures, 0.1f, true);
@@ -82,15 +86,15 @@ namespace MyGame
             List<IntPtr> walkRightTextures = new List<IntPtr>();
             for (int i = 0; i < 4; i++)
             {
-                IntPtr frame = Engine.LoadImage($"assets/walkright/{i}.png");
+                IntPtr frame = Engine.LoadImage($"assets/player/walkright/{i}.png");
                 walkRightTextures.Add(frame);
             }
             walkRight = new Animation("WalkRight", walkRightTextures, 0.1f, true);
 
-            IntPtr idleLeftTexture = Engine.LoadImage("assets/idleleft/0.png");
+            IntPtr idleLeftTexture = Engine.LoadImage("assets/player/idleleft/0.png");
             idleLeft = new Animation("IdleLeft", new List<IntPtr> { idleLeftTexture }, 1.0f, false);
 
-            IntPtr idleRightTexture = Engine.LoadImage("assets/idleright/0.png");
+            IntPtr idleRightTexture = Engine.LoadImage("assets/player/idleright/0.png");
             idleRight = new Animation("IdleRight", new List<IntPtr> { idleRightTexture }, 1.0f, false);
         }
     }

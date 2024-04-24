@@ -33,7 +33,7 @@ namespace MyGame
             switch (gameStatus)
             {
                 case GameStatus.menu:
-                    if (Engine.KeyPress(Engine.KEY_ESP))
+                    if (Engine.KeyPress(Engine.KEY_Z))
                     {
                         gameStatus = GameStatus.game;
                         Program.targetFrame = false;

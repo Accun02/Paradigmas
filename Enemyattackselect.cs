@@ -3,32 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace MyGame
 {
     public class Enemyattackselect
     {
-        Transform transform;
+        private Transform transform;
         private int enemyAttack;
-        Random rnd;
+        public int  EnemyAttack
+        {
+            get { return enemyAttack; }
+        }
+        private Random rnd;
+        private EnemyMovement enemyMovement;
+
         private float attackTimer = 0;
         private float pauseTimer = 0;
-        private bool canAttack = true;
-        EnemyMovement enemyMovement;
+        private float timeBetweenAttacks = 0.25f;
 
-        public Enemyattackselect(Vector2 position, EnemyMovement movement)
+        private bool canAttack = true;
+        private bool isAttacking = false;
+
+        private float EnemyWidth = Enemy.EnemyWidth;
+        private float EnemyHeight = Enemy.EnemyHeight;
+        private float BulletWidth = EnemyBullet.BulletWidth;
+        private float BulletHeight = EnemyBullet.BulletHeight;
+
+        public Enemyattackselect(Vector2 position, EnemyMovement enemyMovement)
         {
             transform = new Transform(position);
-            enemyMovement = movement;
+            this.enemyMovement = enemyMovement;
             rnd = new Random();
         }
-
-        public void Update()
+        public void Update( Vector2 Position)
         {
             timers();
-            selection();
+            selection(Position);
         }
-
         private void timers()
         {
             if (canAttack)
@@ -40,32 +50,33 @@ namespace MyGame
                 pauseTimer += Time.DeltaTime;
             }
         }
-
-        private void selection()
+        private void selection(Vector2 position)
         {
-            if (attackTimer >= 5 && canAttack)
+            if (attackTimer >= 1 && canAttack)
             {
                 enemyAttack = rnd.Next(1, 3);
+                isAttacking = true;
             }
-
-            switch (enemyAttack)
+            if (isAttacking)
             {
-                case 1:
-                    Console.WriteLine("Balas");
-                    Program.enemyBullets.Add(new EnemyBullet((int)transform.Position.x, (int)transform.Position.y));
-                    canAttack = false;
-                    attackTimer = 0;
-                    break;
+                switch (enemyAttack)
+                {
+                    case 1:
+                        Program.enemyBullets.Add(new EnemyBullet(position, Program.player.transform.Position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
+                        Program.enemyBullets.Add(new EnemyBullet(position, Program.player.transform.Position, new Vector2(EnemyWidth + EnemyBullet.BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
 
-                case 2:
-                    Console.WriteLine("Teleport");
-                    enemyMovement.teleport();
-                    canAttack = false;
-                    attackTimer = 0;
-                    break;
+                        canAttack = false;
+                        attackTimer = 0;
+                        break;
+                    case 2:
+                        enemyMovement.Teleport();
+                        canAttack = false;
+                        attackTimer = 0;
+                        break;
+                }
+                isAttacking = false;
             }
-
-            if (pauseTimer >= 5)
+            if (pauseTimer >= timeBetweenAttacks)
             {
                 canAttack = true;
                 pauseTimer = 0;

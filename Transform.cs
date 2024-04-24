@@ -13,7 +13,7 @@ namespace MyGame
         {
             set
             {
-
+                position = value;
             }
 
             get
