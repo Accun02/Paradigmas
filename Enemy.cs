@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 public class Enemy
 {
-    public const float EnemyWidth = 32;
-    public const float EnemyHeight = 39;
+    public const float EnemyWidth = 64;
+    public const float EnemyHeight = 64;
 
     private int health = 100;
+    private float levitationAmplitude = 90;
+    private float levitationSpeed = 2;
 
     private Transform transform;
-    public Transform Transform
-
-    {  get { return transform; } }
-
+    public Transform Transform { get { return transform; } }
+    public int Health { set { health = value; } get { return health; } }
 
     private EnemyMovement enemyMovement;
     private Enemyattackselect enemyattackselect;
@@ -23,8 +23,7 @@ public class Enemy
     private Animation Idle;
     private Animation enemyattack;
     private Animation currentAnimation;
-
-    public int Health => health;
+    private Animation teleport;
 
     public Enemy(Vector2 position)
     {
@@ -45,12 +44,29 @@ public class Enemy
             currentAnimation = enemyattack;
             currentAnimation.Update();
         }
+        else if (enemyattackselect.EnemyAttack == 2)
+        {
+            if (enemyattackselect.IsTeleportOnCooldown)
+            {
+                currentAnimation = teleport;
+            }
+            else
+            {
+                currentAnimation = Idle;
+            }
+            currentAnimation.Update();
+        }
         else
         {
             currentAnimation = Idle;
             currentAnimation.Update();
         }
 
+        if (!enemyattackselect.IsTeleportOnCooldown)
+        {
+        float levitationOffset = (float)Math.Sin(levitationSpeed * DateTime.Now.Millisecond / 1000f * Math.PI) * levitationAmplitude;
+        SetPositionY(transform.Position.y + levitationOffset * deltaTime);
+        }
     }
 
     public void Render()
@@ -66,15 +82,63 @@ public class Enemy
             IntPtr frame = Engine.LoadImage($"assets/Misery/Idle/{i}.png");
             idle.Add(frame);
         }
-        Idle = new Animation("Idle", idle, 0.4f, true);
+        Idle = new Animation("Idle", idle, 0.5f, true);
 
 
         List<IntPtr> Attack = new List<IntPtr>();
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 1; i++)
         {
             IntPtr frame = Engine.LoadImage($"assets/Misery/Bullet/{i}.png");
             Attack.Add(frame);
         }
         enemyattack = new Animation("enemyattack", Attack, 0.025f, false);
+
+        List<IntPtr> Teleport = new List<IntPtr>();
+        for (int i = 0; i < 1; i++)
+        {
+            IntPtr frame = Engine.LoadImage($"assets/Misery/Teleport/2.png");
+            Teleport.Add(frame);
+        }
+        teleport = new Animation("teleport", Teleport, 0.1f, false);
     }
+
+    private void SetPositionY(float y)
+    {
+        transform.Position = new Vector2(transform.Position.x, y);
+    }
+
+    public void CheckCollision(Character player)
+    {
+        float enemyLeft = transform.Position.x;
+        float enemyRight = transform.Position.x + EnemyWidth;
+        float enemyTop = transform.Position.y;
+        float enemyBottom = transform.Position.y + EnemyHeight;
+
+        float playerLeft = player.transform.Position.x;
+        float playerRight = player.transform.Position.x + Character.PlayerWidth;
+        float playerTop = player.transform.Position.y;
+        float playerBottom = player.transform.Position.y + Character.PlayerHeight;
+
+        if (!enemyattackselect.IsTeleportOnCooldown && enemyRight >= playerLeft && enemyLeft <= playerRight && enemyBottom >= playerTop && enemyTop <= playerBottom)
+        {
+            player.Health = 0;
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        if (!enemyattackselect.IsTeleportOnCooldown)
+        {
+        health -= amount;
+        Console.WriteLine(health);
+        }
+    }
+
+
+    public void ResetTransform(Vector2 newPosition)
+    {
+        transform.Position = newPosition;
+    }
+
+
 }

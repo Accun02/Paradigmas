@@ -14,13 +14,13 @@ namespace MyGame
 
         public static void Initialize()
         {
-            _startTime = DateTime.Now;
+            _startTime = DateTime.UtcNow;
             _lastTimeFrame = 0f;
         }
 
         public static void Update()
         {
-            float currentTime = (float)(DateTime.Now - _startTime).TotalSeconds;
+            float currentTime = (float)(DateTime.UtcNow - _startTime).TotalSeconds;
             DeltaTime = currentTime - _lastTimeFrame;
             _lastTimeFrame = currentTime;
         }

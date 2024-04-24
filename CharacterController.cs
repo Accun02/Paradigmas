@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+
 namespace MyGame
 {
     public class CharacterController
@@ -20,32 +21,45 @@ namespace MyGame
         private float velocityY = 0;
         private float MaxSpeed = 450;
 
-        private const float JumpSpeed = 600;
-        private const float Gravity = 1300f;
+        private const float JumpSpeed = 700;
+        private const float Gravity = 1600f;
 
         private bool canMoveLeft = true;
         private bool canMoveRight = true;
 
+        private bool isLookingLeft = false;
+        private bool isLookingRight = true;
+
         // Salto doble
+        private bool isJumping = false;
+
+        public bool IsJumping
+        {
+            get { return isJumping; }
+            set { isJumping = value; }
+        }
+
         private int jumpCounter = 0;
         private float actualCoolDown = 0f;
         private float dobleJumpCoolDown = 0.25f;
-        private bool spaceReleased = true;
+        private bool zKeyReleased = false;
 
         //Cooldown disparo
-        private float shootCooldown = 0.1f;
+        private float shootCooldown = 0.15f;
         private float shootTime;
-        private int shootCount = 0;
 
         private Transform transform;
+        private GameManager gameManager;
 
         public CharacterController(Transform transform)
         {
             this.transform = transform;
         }
 
-        public void Update()
+        public void Update(Character player)
         {
+            zKeyReleased = GameManager.Instance.ZKeyReleased;
+
             GetInputs();
             HorizontalMovement();
             ConstraintArea();
@@ -66,18 +80,30 @@ namespace MyGame
             }
 
             // Debug
-            //Console.WriteLine(transform.Position.x);
+            //Console.WriteLine(zKeyReleased);
+
+            if (player.Health < 0)
+            {
+               isLookingRight = true;
+            }
         }
 
         private void GetInputs()
         {
-            if (Engine.KeyPress(Engine.KEY_LEFT) && canMoveLeft)  // Izquierda
+            bool pressingLeft = Engine.KeyPress(Engine.KEY_LEFT) && canMoveLeft;
+            bool pressingRight = Engine.KeyPress(Engine.KEY_RIGHT) && canMoveRight;
+
+            if (pressingLeft && !pressingRight)
             {
                 velocityX = Math.Max(velocityX - Acceleration * Time.DeltaTime, -MaxSpeed);
+                isLookingLeft = true;
+                isLookingRight = false;
             }
-            else if (Engine.KeyPress(Engine.KEY_RIGHT) && canMoveRight)  // Derecha
+            else if (pressingRight && !pressingLeft)
             {
                 velocityX = Math.Min(velocityX + Acceleration * Time.DeltaTime, MaxSpeed);
+                isLookingLeft = false;
+                isLookingRight = true;
             }
             else
             {
@@ -93,15 +119,15 @@ namespace MyGame
 
             if (!Engine.KeyPress(Engine.KEY_Z))  // Registra "KeyUp"
             {
-                spaceReleased = true;
+                zKeyReleased = true;
             }
 
-            if (Engine.KeyPress(Engine.KEY_Z) && actualCoolDown <= 0 && jumpCounter < 2 && spaceReleased) // Salto
+            if (Engine.KeyPress(Engine.KEY_Z) && actualCoolDown <= 0 && jumpCounter < 2 && zKeyReleased) // Salto
             {
                 Jump();
                 jumpCounter++;
                 actualCoolDown = dobleJumpCoolDown;
-                spaceReleased = false;
+                zKeyReleased = false;
             }
 
             if (Engine.KeyPress(Engine.KEY_X) && Engine.KeyPress(Engine.KEY_UP) && shootTime <= 0)
@@ -110,33 +136,12 @@ namespace MyGame
                 shootTime = shootCooldown;
             }
 
-            if (Engine.KeyPress(Engine.KEY_X) && Engine.KeyPress(Engine.KEY_RIGHT) && shootTime <= 0)
+            if (Engine.KeyPress(Engine.KEY_X) && !Engine.KeyPress(Engine.KEY_UP) && shootTime <= 0)
             {
                 ShootRight();
                 shootTime = shootCooldown;
             }
-
-            if (Engine.KeyPress(Engine.KEY_X) && Engine.KeyPress(Engine.KEY_LEFT) && shootTime <= 0)
-            {
-                ShootLeft();
-                shootTime = shootCooldown;
-            }
-
-            if (Engine.KeyPress(Engine.KEY_ESC)) // Escape
-            {
-                Environment.Exit(0);
-            }
-
-            if (Engine.KeyPress(Engine.KEY_Q)) // Run
-            {
-                MaxSpeed = 950f;
-            }
-            else
-            {
-                MaxSpeed = 450f;
-            }
         }
-
 
         private void HorizontalMovement()
         {
@@ -146,6 +151,7 @@ namespace MyGame
         private void Jump()
         {
             velocityY = -JumpSpeed;
+            isJumping = true;
         }
 
         private void ConstraintArea()
@@ -156,6 +162,7 @@ namespace MyGame
             if (playerY > (GroundHeight - PlayerHeight))
             {
                 transform.Translate(new Vector2(0, (GroundHeight - PlayerHeight) - transform.Position.y));
+                isJumping = false;
                 jumpCounter = 0;
                 velocityY = 0;
                 actualCoolDown = 0;
@@ -205,20 +212,18 @@ namespace MyGame
             }
         }
 
-
         public void ShootUp()
         {
-            Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y, new Vector2(0, -1)));
+            Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y, new Vector2(0, -1), "assets/bala.png"));
         }
 
         public void ShootRight()
         {
-            Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y, new Vector2(1, 0)));
-        }
+            if (isLookingRight)
+                Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y + (int)Character.PlayerHeight / 2, new Vector2(1, 0), "assets/balaH.png"));
 
-        public void ShootLeft()
-        {
-            Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y, new Vector2(-1, 0)));
+            if (isLookingLeft)
+                Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y + (int)Character.PlayerHeight / 2, new Vector2(-1, 0), "assets/balaH.png"));
         }
     }
 }

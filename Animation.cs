@@ -46,5 +46,11 @@ namespace MyGame
                 }
             }
         }
+
+        public void Restart()
+        {
+            currentFrameIndex = 0;
+            currentAnimationTime = 0f;
+        }
     }
 }

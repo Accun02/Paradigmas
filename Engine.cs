@@ -79,9 +79,6 @@ class Engine
         Sdl.SDL_Rect dest = new Sdl.SDL_Rect((short)x, (short)y, (short)ancho, (short)alto);
         Sdl.SDL_BlitSurface(image, ref origin, screen, ref dest);
     }
-
-
-
     public static void Draw(IntPtr image, float x, float y, float width, float height)
     {
         Sdl.SDL_Rect origin = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);

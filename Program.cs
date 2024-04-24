@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Tao.Sdl;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MyGame
 {
     class Program
     {
-        static float delayFrame = 60f;
-        static public bool targetFrame = false;
-
-        static IntPtr image = Engine.LoadImage("assets/fondo.png");
-
         static public int GroundHeight = 584; // De arriba a abajo
         static public int ScreenWidth = 1280; // De izquierda a derecha
+
+        static float delayFrame = 60f;
+        static public bool targetFrame = false;
 
         static public Character player = new Character(new Vector2(ScreenWidth / 2 - Character.PlayerWidth / 2, 584 - Character.PlayerHeight));
         static public Enemy enemy = new Enemy(new Vector2(ScreenWidth / 2 - Enemy.EnemyWidth / 2, 100));
 
         static public List<Bullet> BulletList = new List<Bullet>();
+        static public List<Teleport> TeleportList = new List<Teleport>();
         static public List <EnemyBullet> enemyBullets = new List<EnemyBullet>();
 
         static Stopwatch stopwatch = new Stopwatch();
@@ -37,7 +38,7 @@ namespace MyGame
                 float startTime = (float)stopwatch.Elapsed.TotalSeconds;
                 float targetFrameTime = 1f / delayFrame;
 
-                GameManager.Instance.Update();
+                GameManager.Instance.Update(enemy, player);
                 GameManager.Instance.Render();
 
                 frameCount++;
@@ -45,7 +46,6 @@ namespace MyGame
 
                 if (elapsedTime >= 1.0f)
                 {
-                    //Console.WriteLine("FPS: " + frameCount + " / SPEED: " + delayFrame);
                     AdjustDelayFrame(frameCount);
                     frameCount = 0;
                     elapsedTime = 0f;
@@ -66,41 +66,62 @@ namespace MyGame
         public static void Render()
         {
             Engine.Clear();
-            Engine.Draw(image, 0, 0);
-            player.Render();
-            enemy.Render();
 
-            foreach (Bullet bullet in BulletList)
+            if (player.Health > 0)
+                Background.Render();
+
+            player.Render(player);
+
+            if (player.Health > 0)
             {
+                enemy.Render();
+
+                foreach (Bullet bullet in BulletList)
+                {
                 bullet.Render();
-            }
-            foreach (EnemyBullet enemyBullet in enemyBullets)
-            {
+                }
+                foreach (EnemyBullet enemyBullet in enemyBullets)
+                {
                 enemyBullet.BulletRender();
+                }
+                foreach (Teleport teleport in TeleportList)
+                {
+                    teleport.Render();
+                }
+                FontManager.Render(enemy);
+
+                //Background.Fade(); //Reduce demasiado el performance... No se como arreglarlo
             }
             Engine.Show();
         }
 
         public static void Update()
         {
-            player.Update();
-            enemy.Update(Time.DeltaTime);
+            player.Update(player);
 
-
-            for (int i = 0; i < BulletList.Count; i++)
+            if (player.Health > 0)
             {
-                BulletList[i].Update();
-            }
+                enemy.Update(Time.DeltaTime);
+                enemy.CheckCollision(player);
 
-            for (int i = 0; i < enemyBullets.Count; i++)
-            {
-                enemyBullets[i].Update();
-                enemyBullets[i].CheckCollisions();
-            }
+                foreach (Bullet bullet in BulletList.ToList())
+                {
+                    bullet.Update();
+                    bullet.CheckCollisions(enemy);
+                }
 
+                foreach (EnemyBullet enemyBullet in enemyBullets.ToList())
+                {
+                    enemyBullet.Update();
+                    enemyBullet.CheckCollisions(player);
+                }
+
+                foreach (Teleport teleport in TeleportList.ToList())
+                {
+                    teleport.Update();
+                }
+            }
         }
-
-      
 
         private static void AdjustDelayFrame(int frameCount)
         {
@@ -111,5 +132,24 @@ namespace MyGame
                 delayFrame += factor;
             }
         }
+
+        public static void ResetGame(Character player, Enemy enemy)
+        {
+            player.transform.Position = new Vector2(ScreenWidth / 2 - Character.PlayerWidth / 2, 584 - Character.PlayerHeight);
+
+            enemy.ResetTransform(new Vector2(ScreenWidth / 2 - Enemy.EnemyWidth / 2, 100));
+
+            TeleportList.Clear();
+            BulletList.Clear();
+            enemyBullets.Clear();
+
+            enemy.Health = 100;
+            player.IsDead = false;
+            player.WalkingRight = true;
+            player.Health = 1;
+            GameManager.Instance.ZKeyReleased = false;
+        }
+
+
     }
 }

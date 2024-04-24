@@ -44,9 +44,26 @@ namespace MyGame
             transform.Translate(direction, bulletVel * Time.DeltaTime);
         }
 
-        public void CheckCollisions()
+        public void CheckCollisions(Character player)
         {
-            if (transform.Position.y >= GroundHeight)
+            float bulletLeft = transform.Position.x;
+            float bulletRight = transform.Position.x + BulletWidth;
+            float bulletTop = transform.Position.y;
+            float bulletBottom = transform.Position.y + BulletHeight;
+
+            float playerLeft = player.transform.Position.x;
+            float playerRight = player.transform.Position.x + Character.PlayerWidth;
+            float playerTop = player.transform.Position.y;
+            float playerBottom = player.transform.Position.y + Character.PlayerHeight;
+
+            if (bulletRight >= playerLeft && bulletLeft <= playerRight && bulletBottom >= playerTop && bulletTop <= playerBottom)
+            {
+                Program.enemyBullets.Remove(this);
+                Console.WriteLine(player.Health );
+                player.Health = 0;
+            }
+
+            if (transform.Position.y >= GroundHeight - BulletHeight / 2 || transform.Position.x >= Program.ScreenWidth || transform.Position.x <= 0 - BulletWidth)
             {
                 Program.enemyBullets.Remove(this);
             }
