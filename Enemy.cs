@@ -76,6 +76,7 @@ public class Enemy
 
     private void CreateAnimations()
     {
+        //idle
         List<IntPtr> idle = new List<IntPtr>();
         for (int i = 0; i < 2; i++)
         {
@@ -84,7 +85,7 @@ public class Enemy
         }
         Idle = new Animation("Idle", idle, 0.5f, true);
 
-
+        // invocar balas
         List<IntPtr> Attack = new List<IntPtr>();
         for (int i = 0; i < 1; i++)
         {

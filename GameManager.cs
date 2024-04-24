@@ -50,7 +50,7 @@ namespace MyGame
                 zKeyReleased = true;
             }
 
-            switch (gameStatus)
+            switch (gameStatus) // Cambiar pantallas
             {
                 case GameStatus.menu:
                     if (Engine.KeyPress(Engine.KEY_Z) && zKeyReleased)

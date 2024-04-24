@@ -46,7 +46,7 @@ public class Enemyattackselect
         timers(Position);
         selection(Position);
     }
-    private void timers(Vector2 Position)
+    private void timers(Vector2 Position) // tiempo de ataque y de pausa entre ataques
     {
         if (canAttack)
         {
@@ -76,7 +76,7 @@ public class Enemyattackselect
             }
         }
     }
-    private void selection(Vector2 position)
+    private void selection(Vector2 position) // selecciona que ataque puede hacer el enemigo
     {
         if (attackTimer >= 1 && canAttack)
         {
