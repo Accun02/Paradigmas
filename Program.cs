@@ -82,7 +82,7 @@ namespace MyGame
                 }
                 foreach (EnemyBullet enemyBullet in enemyBullets)
                 {
-                enemyBullet.BulletRender();
+                enemyBullet.Render();
                 }
                 foreach (Teleport teleport in TeleportList)
                 {
@@ -90,7 +90,7 @@ namespace MyGame
                 }
                 FontManager.Render(enemy);
 
-                //Background.Fade(); //Reduce demasiado el performance... No se como arreglarlo
+                Background.Fade(); //Reduce demasiado el performance.
             }
             Engine.Show();
         }
@@ -135,18 +135,27 @@ namespace MyGame
 
         public static void ResetGame(Character player, Enemy enemy)
         {
-            player.transform.Position = new Vector2(ScreenWidth / 2 - Character.PlayerWidth / 2, 584 - Character.PlayerHeight);
-
-            enemy.ResetTransform(new Vector2(ScreenWidth / 2 - Enemy.EnemyWidth / 2, 100));
-
+            //Clear Scene
             TeleportList.Clear();
             BulletList.Clear();
             enemyBullets.Clear();
 
-            enemy.Health = 100;
+            //Reset Player
+            player.transform.Position = new Vector2(ScreenWidth / 2 - Character.PlayerWidth / 2, 584 - Character.PlayerHeight);
+            player.ResetMomentum();
+
+            player.Health = 1;
+
             player.IsDead = false;
             player.WalkingRight = true;
-            player.Health = 1;
+            player.WalkingLeft = false;
+
+            //Reset Enemy
+            enemy.ResetTransform(new Vector2(ScreenWidth / 2 - Enemy.EnemyWidth / 2, 100));
+            enemy.ResetAttacks();
+            enemy.Health = 100;
+
+            //Reset Menu
             GameManager.Instance.ZKeyReleased = false;
         }
 

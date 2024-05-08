@@ -7,6 +7,9 @@ public class Enemy
     public const float EnemyWidth = 64;
     public const float EnemyHeight = 64;
 
+    private bool vulnerable = true;
+    public bool Vulnerable { set { vulnerable = value; } get { return vulnerable; } }
+
     private int health = 100;
     private float levitationAmplitude = 90;
     private float levitationSpeed = 2;
@@ -35,8 +38,18 @@ public class Enemy
         currentAnimation = Idle;
     }
 
+    public void ResetAttacks()
+    {
+        enemyattackselect.IsAttacking = false;
+        enemyattackselect.AttackTimer = -1;
+        enemyattackselect.EnemyAttack = 0;
+        enemyattackselect.ResetCurrent();
+    }
+
     public void Update(float deltaTime)
     {
+        vulnerable = !enemyattackselect.IsTeleportOnCooldown;
+
         enemyattackselect.Update(transform.Position);
 
         if (enemyattackselect.EnemyAttack == 1)
@@ -76,7 +89,6 @@ public class Enemy
 
     private void CreateAnimations()
     {
-        //idle
         List<IntPtr> idle = new List<IntPtr>();
         for (int i = 0; i < 2; i++)
         {
@@ -85,7 +97,7 @@ public class Enemy
         }
         Idle = new Animation("Idle", idle, 0.5f, true);
 
-        // invocar balas
+
         List<IntPtr> Attack = new List<IntPtr>();
         for (int i = 0; i < 1; i++)
         {
@@ -120,7 +132,7 @@ public class Enemy
         float playerTop = player.transform.Position.y;
         float playerBottom = player.transform.Position.y + Character.PlayerHeight;
 
-        if (!enemyattackselect.IsTeleportOnCooldown && enemyRight >= playerLeft && enemyLeft <= playerRight && enemyBottom >= playerTop && enemyTop <= playerBottom)
+        if (vulnerable && enemyRight >= playerLeft && enemyLeft <= playerRight && enemyBottom >= playerTop && enemyTop <= playerBottom)
         {
             player.Health = 0;
         }
@@ -128,10 +140,9 @@ public class Enemy
 
     public void TakeDamage(int amount)
     {
-        if (!enemyattackselect.IsTeleportOnCooldown)
+        if (vulnerable)
         {
-        health -= amount;
-        Console.WriteLine(health);
+            health -= amount;
         }
     }
 

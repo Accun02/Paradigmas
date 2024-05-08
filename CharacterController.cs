@@ -19,6 +19,10 @@ namespace MyGame
 
         private float velocityX = 0;
         private float velocityY = 0;
+
+        public float VelocityX { set { velocityX = value; } get { return velocityX; } }
+        public float VelocityY { set { velocityY = value; } get { return velocityY; } }
+
         private float MaxSpeed = 450;
 
         private const float JumpSpeed = 700;
@@ -29,6 +33,9 @@ namespace MyGame
 
         private bool isLookingLeft = false;
         private bool isLookingRight = true;
+
+        public bool IsLookingLeft { set { isLookingLeft = value; } get { return isLookingLeft; } }
+        public bool IsLookingRight { set { isLookingRight = value; } get { return isLookingRight; } }
 
         // Salto doble
         private bool isJumping = false;
@@ -58,8 +65,6 @@ namespace MyGame
 
         public void Update(Character player)
         {
-            zKeyReleased = GameManager.Instance.ZKeyReleased;
-
             GetInputs();
             HorizontalMovement();
             ConstraintArea();

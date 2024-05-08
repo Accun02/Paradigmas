@@ -14,6 +14,7 @@ namespace MyGame
         private bool walkingLeft = false;
         private bool walkingRight = true;
         public bool WalkingRight { set { walkingRight = value; } get { return walkingRight; } }
+        public bool WalkingLeft { set { walkingLeft = value; } get { return walkingLeft; } }
 
         private bool isJumping = false;
         private bool isDead = false;
@@ -63,6 +64,14 @@ namespace MyGame
             currentAnimation = idleRight;
         }
 
+        public void ResetMomentum()
+        {
+            controller.VelocityX = 0;
+            controller.VelocityY = 0;
+            controller.IsLookingLeft = false;
+            controller.IsLookingRight = true;
+        }
+
         public void Update(Character player)
         {
             if (player.Health > 0)
@@ -91,7 +100,7 @@ namespace MyGame
                 {
                     currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? jumpUpLeft : jumpLeft;
                 }
-                else if (walkingRight)
+                if (walkingRight)
                 {
                     currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? jumpUpRight : jumpRight;
                 }
@@ -162,7 +171,6 @@ namespace MyGame
             {
                 Engine.Draw(currentAnimation.CurrentFrame, transform.Position.x - 30, transform.Position.y - 50);
             }
-
         }
 
 

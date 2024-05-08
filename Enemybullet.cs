@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    internal class EnemyBullet
+    internal class EnemyBullet : GameObject
     {
-        Transform transform;
         Vector2 direction;
-        IntPtr enemybullet = Engine.LoadImage("assets/evilBullet.png");
 
         private int GroundHeight = Program.GroundHeight;
         private int ScreenWidth = Program.ScreenWidth;
@@ -21,7 +19,7 @@ namespace MyGame
         private float bulletVel = 10;
         private float acceleration = 2000;
 
-        public EnemyBullet(Vector2 position, Vector2 playerPosition, Vector2 offset)
+        public EnemyBullet(Vector2 position, Vector2 playerPosition, Vector2 offset, string imagePath)
         {
             Vector2 adjustedPosition = new Vector2(position.x + offset.x, position.y + offset.y);
             transform = new Transform(adjustedPosition);
@@ -29,15 +27,13 @@ namespace MyGame
             float length = (float)Math.Sqrt(direction.x * direction.x + direction.y * direction.y);
             direction.x /= length;
             direction.y /= length;
+            image = Engine.LoadImage(imagePath);
         }
 
 
-        public void BulletRender()
-        {
-            Engine.Draw(enemybullet, transform.Position.x, transform.Position.y);
-        }
 
-        public void Update()
+
+        public override void Update()
         {
             bulletVel += acceleration * Time.DeltaTime;
 

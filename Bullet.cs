@@ -2,18 +2,13 @@
 
 namespace MyGame
 {
-    internal class Bullet
+    internal class Bullet : GameObject
     {
         public const int BulletHeight = 20;
         public const int BulletWidth = 20;
 
         private float bulletVel = 1500;
         private float acceleration = 100;
-
-        private Transform transform;
-        private Enemyattackselect enemyattackselect;
-
-        private IntPtr image;
 
         private Vector2 direction;
 
@@ -31,12 +26,7 @@ namespace MyGame
             image = Engine.LoadImage(imagePath);
         }
 
-        public void Render()
-        {
-            Engine.Draw(image, (int)transform.Position.x, (int)transform.Position.y);
-        }
-
-        public void Update()
+        public override void Update()
         {
             bulletVel += acceleration * Time.DeltaTime;
             transform.Translate(new Vector2(direction.x * bulletVel * Time.DeltaTime, direction.y * bulletVel * Time.DeltaTime));
@@ -54,10 +44,9 @@ namespace MyGame
             float enemyTop = enemy.Transform.Position.y;
             float enemyBottom = enemy.Transform.Position.y + Enemy.EnemyHeight;
 
-            if (bulletRight >= enemyLeft && bulletLeft <= enemyRight && bulletBottom >= enemyTop && bulletTop <= enemyBottom)
+            if (enemy.Vulnerable && bulletRight >= enemyLeft && bulletLeft <= enemyRight && bulletBottom >= enemyTop && bulletTop <= enemyBottom)
             {
                 enemy.TakeDamage(1);
-
                 Program.BulletList.Remove(this);
             }
 

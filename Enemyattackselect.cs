@@ -4,25 +4,22 @@ using System.Diagnostics;
 
 public class Enemyattackselect
 {
-    private Transform transform; // Agrega la referencia a la clase Transform
+    private Transform transform;
     private int enemyAttack;
-    public int EnemyAttack
-    {
-        get { return enemyAttack; }
-    }
+    public int EnemyAttack { set { enemyAttack = value; } get { return enemyAttack; } }
     private Random rnd;
     private EnemyMovement enemyMovement;
+
+    private const string imagePath = "assets/evilBullet.png";
 
     private float attackTimer = 0;
     private float pauseTimer = 0;
     private float timeBetweenAttacks = 0.25f;
-    private float appearTimer = 1f;
 
     private bool canAttack = true;
     private bool isAttacking = false;
 
     private bool effectPlayedDuringCooldown = false;
-    private float teleportTimer = 0;
     private bool canTeleport = true;
 
     private float EnemyWidth = Enemy.EnemyWidth;
@@ -33,7 +30,10 @@ public class Enemyattackselect
     private float teleportCooldownTimer = 0;
     private float teleportCooldownDuration = 2.15f;
     private bool isTeleportOnCooldown = false;
+
     public bool IsTeleportOnCooldown { set { isTeleportOnCooldown = value; } get { return isTeleportOnCooldown; } }
+    public bool IsAttacking { set { isAttacking = value; } get { return isAttacking; } }
+    public float AttackTimer { set { attackTimer = value; } get { return attackTimer; } }
 
     public Enemyattackselect(Vector2 position, EnemyMovement enemyMovement)
     {
@@ -46,7 +46,7 @@ public class Enemyattackselect
         timers(Position);
         selection(Position);
     }
-    private void timers(Vector2 Position) // tiempo de ataque y de pausa entre ataques
+    private void timers(Vector2 Position)
     {
         if (canAttack)
         {
@@ -76,7 +76,15 @@ public class Enemyattackselect
             }
         }
     }
-    private void selection(Vector2 position) // selecciona que ataque puede hacer el enemigo
+
+    public void ResetCurrent()
+    {
+        teleportCooldownTimer = 0;
+        teleportCooldownDuration = 2.15f;
+        isTeleportOnCooldown = false;
+    }
+
+    private void selection(Vector2 position)
     {
         if (attackTimer >= 1 && canAttack)
         {
@@ -88,8 +96,8 @@ public class Enemyattackselect
             switch (enemyAttack)
             {
                 case 1:
-                    Program.enemyBullets.Add(new EnemyBullet(position, Program.player.transform.Position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
-                    Program.enemyBullets.Add(new EnemyBullet(position, Program.player.transform.Position, new Vector2(EnemyWidth + EnemyBullet.BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
+                    Program.enemyBullets.Add(new EnemyBullet(position, Program.player.transform.Position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2), imagePath));
+                    Program.enemyBullets.Add(new EnemyBullet(position, Program.player.transform.Position, new Vector2(EnemyWidth + EnemyBullet.BulletWidth, EnemyHeight / 2 - BulletHeight / 2), imagePath));
                     timeBetweenAttacks = 0.45f;
                     canAttack = false;
                     attackTimer = 0;
