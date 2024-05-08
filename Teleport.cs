@@ -62,14 +62,5 @@ namespace MyGame
             Program.TeleportList.Remove(this);
             isDestroyed = true;
         }
-
-        public void Reset()
-        {
-            imageVel = -10;
-            acceleration = 1000;
-            destructionTimer = 0.35f;
-            coolDown = 0.3f;
-            isDestroyed = false;
-        }
     }
 }

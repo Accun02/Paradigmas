@@ -3,3 +3,6 @@
 /bin/Debug
 /obj/Debug
 /.vs
+/bin/Debug
+bin/Debug/MyGame.pdb
+bin/Debug/MyGame.exe

@@ -88,10 +88,12 @@ namespace MyGame
                 {
                     teleport.Render();
                 }
+
                 FontManager.Render(enemy);
 
                 Background.Fade(); //Reduce demasiado el performance.
             }
+
             Engine.Show();
         }
 
@@ -145,10 +147,7 @@ namespace MyGame
             player.ResetMomentum();
 
             player.Health = 1;
-
             player.IsDead = false;
-            player.WalkingRight = true;
-            player.WalkingLeft = false;
 
             //Reset Enemy
             enemy.ResetTransform(new Vector2(ScreenWidth / 2 - Enemy.EnemyWidth / 2, 100));
@@ -158,7 +157,5 @@ namespace MyGame
             //Reset Menu
             GameManager.Instance.ZKeyReleased = false;
         }
-
-
     }
 }

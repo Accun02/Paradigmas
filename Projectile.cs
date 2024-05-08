@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    public abstract class GameObject
+    public abstract class Projectile
     {
         protected Transform transform;
         protected Animation currentAnimation;
         protected IntPtr image;
 
-        public GameObject()
+        public Projectile()
         {
             transform = new Transform(new Vector2());
         }

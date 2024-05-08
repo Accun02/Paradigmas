@@ -2,7 +2,7 @@
 
 namespace MyGame
 {
-    internal class Bullet : GameObject
+    internal class Bullet : Projectile
     {
         public const int BulletHeight = 20;
         public const int BulletWidth = 20;

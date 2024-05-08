@@ -11,11 +11,6 @@ namespace MyGame
         public const float PlayerWidth = 64;
         public const float PlayerHeight = 64;
 
-        private bool walkingLeft = false;
-        private bool walkingRight = true;
-        public bool WalkingRight { set { walkingRight = value; } get { return walkingRight; } }
-        public bool WalkingLeft { set { walkingLeft = value; } get { return walkingLeft; } }
-
         private bool isJumping = false;
         private bool isDead = false;
 
@@ -82,25 +77,13 @@ namespace MyGame
                 isDead = false;
                 died.Restart();
 
-                if (Engine.KeyPress(Engine.KEY_LEFT) && !Engine.KeyPress(Engine.KEY_RIGHT))
-                {
-                walkingLeft = true;
-                walkingRight = false;
-                }
-
-            if (Engine.KeyPress(Engine.KEY_RIGHT) && Engine.KeyPress(Engine.KEY_LEFT))
-            {
-                walkingLeft = false;
-                walkingRight = true;
-            }
-
             if (isJumping)
             {
-                if (walkingLeft)
+                if (controller.IsLookingLeft)
                 {
                     currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? jumpUpLeft : jumpLeft;
                 }
-                if (walkingRight)
+                if (controller.IsLookingRight)
                 {
                     currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? jumpUpRight : jumpRight;
                 }
@@ -118,8 +101,6 @@ namespace MyGame
                         currentAnimation = walk;
                     }
                     currentAnimation.Update();
-                    walkingLeft = true;
-                    walkingRight = false;
                 }
                 else if (Engine.KeyPress(Engine.KEY_RIGHT) && !Engine.KeyPress(Engine.KEY_LEFT))
                 {
@@ -132,16 +113,14 @@ namespace MyGame
                         currentAnimation = walkRight;
                     }
                     currentAnimation.Update();
-                    walkingLeft = false;
-                    walkingRight = true;
                 }
                 else
                 {
-                    if (walkingLeft)
+                    if (controller.IsLookingLeft)
                     {
                         currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? idleUpLeft : idleLeft;
                     }
-                    else if (walkingRight)
+                    else if (controller.IsLookingRight)
                     {
                         currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? idleUpRight : idleRight;
                     }

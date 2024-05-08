@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    internal class EnemyBullet : GameObject
+    internal class EnemyBullet : Projectile
     {
         Vector2 direction;
 
