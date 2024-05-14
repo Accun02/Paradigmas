@@ -10,7 +10,6 @@ namespace MyGame
     {
         private Transform transform;
         private Random rnd = new Random();
-        private float coolDown = 0.65f;
         private bool teleported = false;
         public bool Teleported { set { teleported = value; } get { return teleported; } }
         public EnemyMovement(Transform transform)

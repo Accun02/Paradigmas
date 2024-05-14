@@ -14,13 +14,14 @@ namespace MyGame
         private bool isJumping = false;
         private bool isDead = false;
 
-
         private int health = 1;
-        private float deathTimer = 0f;
-        private const float deathDelay = 1f;
+        private int maxHealth = 1;
+        private const float deathWait = 0.75f;
+        private float cuurentDeath;
 
         public bool IsDead { set { isDead = value; } get { return isDead; } }
         public int Health { set { health = value; } get { return health; } }
+        public int MaxHealth { set { maxHealth = value; } get { return maxHealth; } }
 
         private Animation walk;
         private Animation walkUp;
@@ -34,12 +35,10 @@ namespace MyGame
         private Animation jumpRight;
         private Animation jumpUpLeft;
         private Animation jumpUpRight;
-
         private Animation died;
 
         private Animation currentAnimation;
 
-        private Character player;
         public Transform transform
         {
             get; 
@@ -73,7 +72,7 @@ namespace MyGame
             {
                 controller.Update(player);
                 isJumping = controller.IsJumping;
-                deathTimer = 0f;
+                cuurentDeath = 0f;
                 isDead = false;
                 died.Restart();
 
@@ -129,8 +128,9 @@ namespace MyGame
             }
             else
             {
-                deathTimer += Time.DeltaTime;
-                    if (deathTimer >= deathDelay)
+                cuurentDeath += Time.DeltaTime;
+
+                    if (cuurentDeath >= deathWait)
                     {
                         isDead = true;
                         currentAnimation = died;
@@ -138,7 +138,6 @@ namespace MyGame
                     }
             }
         }
-
 
         public void Render(Character player)
         {
@@ -157,7 +156,6 @@ namespace MyGame
         {
 
             // Movimiento
-
             List<IntPtr> walkTextures = new List<IntPtr>();
             for (int i = 0; i < 4; i++)
             {
@@ -236,7 +234,7 @@ namespace MyGame
             jumpUpRightTextures.Add(jumpUpRightTexture);
             jumpUpRight = new Animation("JumpUpRight", jumpUpRightTextures, 1.0f, false);
 
-            // Salto
+            // Explosión
 
             List<IntPtr> boomTextures = new List<IntPtr>();
             for (int i = 0; i < 18; i++)
@@ -244,7 +242,7 @@ namespace MyGame
                 IntPtr frame = Engine.LoadImage($"assets/explosion/{i}.png");
                 boomTextures.Add(frame);
             }
-            died = new Animation("Boom", boomTextures, 0.05f, false);
+            died = new Animation("Boom", boomTextures, 0.035f, false);
 
         }
     }

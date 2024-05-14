@@ -5,34 +5,26 @@ namespace MyGame
 {
     public class GameManager
     {
-        public enum GameStatus
-        {
-            menu, game, win, lose
-        }
-
         private static GameManager instance;
         private GameStatus gameStatus = GameStatus.menu;
         private IntPtr mainMenuScreen = Engine.LoadImage("assets/MainMenu.png");
         private IntPtr WinScreen = Engine.LoadImage("assets/Win.png");
         private IntPtr LoseScreen = Engine.LoadImage("assets/Dead.png");
-        private Enemy enemy;
-        private Character player;
+
         private bool gameOverDelayStarted = false;
         private bool zKeyReleased = false;
+        private float waitForDeath = 2.25f;
+        private float currentDeath;
+
         public bool ZKeyReleased { set { zKeyReleased = value; } get { return zKeyReleased; } }
         public bool GameOverDelayStarted { set { gameOverDelayStarted = value; } get { return gameOverDelayStarted; } }
-        private float gameOverDelayTime = 3f;
-        private float currentGameOverDelayTime = 0f;
+        public enum GameStatus { menu, game, win, lose }
 
         public static GameManager Instance
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new GameManager();
-                }
-                return instance;
+                if (instance == null) {instance = new GameManager();} return instance;
             }
         }
 
@@ -52,80 +44,97 @@ namespace MyGame
 
             switch (gameStatus)
             {
-                case GameStatus.menu:
-                    if (Engine.KeyPress(Engine.KEY_Z) && zKeyReleased)
+                case GameStatus.menu:   //Menu
+
+                    if (Engine.KeyPress(Engine.KEY_Z) && zKeyReleased) // Entra a Game
                     {
-                        zKeyReleased = false;
+                        Program.Restart();
                         gameStatus = GameStatus.game;
                         Program.targetFrame = false;
                     }
-                    break;
-                case GameStatus.game:
+
+                break;
+
+                case GameStatus.game:   //Game
+
                     Program.Update();
 
-                    if (enemy.Health < 0)
+                    if (enemy.Health <= 0) // Entra a Win
                     {
                         gameStatus = GameStatus.win;
                     }
-                    else if (player.Health <= 0)
+                    else if (player.Health <= 0) // Espera animación
                     {
                         if (!gameOverDelayStarted)
                         {
                             gameOverDelayStarted = true;
-                            currentGameOverDelayTime = 0f;
+                            currentDeath = 0f;
                         }
                         else
                         {
-                            currentGameOverDelayTime += Time.DeltaTime;
-                            if (currentGameOverDelayTime >= gameOverDelayTime)
+                            currentDeath += Time.DeltaTime;
+
+                            if (currentDeath >= waitForDeath) // Entra a Defeat
                             {
                                 gameStatus = GameStatus.lose;
                             }
                         }
                     }
-                    break;
-                case GameStatus.win:
 
-                    break;
-                case GameStatus.lose:
+                break;
+
+                case GameStatus.win:    //Won
+
+                break;
+
+                case GameStatus.lose:   //Defeat
+
                     if (Engine.KeyPress(Engine.KEY_Z) && zKeyReleased)
                     {
                         zKeyReleased = false;
                         gameOverDelayStarted = false;
                         gameStatus = GameStatus.menu;
-                        Program.Restart(player, enemy);
                         Program.targetFrame = false;
                     }
-                    break;
-            }
 
+                break;
+            }
         }
 
         public void Render()
         {
             switch (gameStatus)
             {
-                case GameStatus.menu:
+                case GameStatus.menu:   //Main Menu
+
                     Engine.Clear();
                     Engine.Draw(mainMenuScreen, 0, 0);
                     Engine.Show();
-                    break;
-                case GameStatus.game:
+
+                break;
+
+                case GameStatus.game:   //Game
+
                     Program.Render();
-                    break;
-                case GameStatus.win:
+
+                break;
+
+                case GameStatus.win:    //Won
+
                     Engine.Clear();
                     Engine.Draw(WinScreen, 0, 0);
                     Engine.Show();
-                    break;
-                case GameStatus.lose:
+
+                break;
+
+                case GameStatus.lose:   //Defeat
+
                     Engine.Clear();
                     Engine.Draw(LoseScreen, 0, 0);
                     Engine.Show();
-                    break;
+
+                break;
             }
-
         }
-
     }
 }

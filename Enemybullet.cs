@@ -30,9 +30,6 @@ namespace MyGame
             image = Engine.LoadImage(imagePath);
         }
 
-
-
-
         public override void Update()
         {
             bulletVel += acceleration * Time.DeltaTime;
@@ -55,8 +52,8 @@ namespace MyGame
             if (bulletRight >= playerLeft && bulletLeft <= playerRight && bulletBottom >= playerTop && bulletTop <= playerBottom)
             {
                 Program.enemyBullets.Remove(this);
-                Console.WriteLine(player.Health );
-                player.Health = 0;
+                Console.WriteLine(player.Health);
+                player.Health -= 1;
             }
 
             if (transform.Position.y >= GroundHeight - BulletHeight / 2 || transform.Position.x >= Program.ScreenWidth || transform.Position.x <= 0 - BulletWidth)

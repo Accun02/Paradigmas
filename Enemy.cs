@@ -11,12 +11,14 @@ public class Enemy
     public bool Vulnerable { set { vulnerable = value; } get { return vulnerable; } }
 
     private int health = 100;
+    private int maxHealth = 100;
     private float levitationAmplitude = 90;
     private float levitationSpeed = 2;
 
     private Transform transform;
     public Transform Transform { get { return transform; } }
     public int Health { set { health = value; } get { return health; } }
+    public int MaxHealth { set { maxHealth = value; } get { return maxHealth; } }
 
     private EnemyMovement enemyMovement;
     private EnemyAttack enemyattackselect;
@@ -134,7 +136,8 @@ public class Enemy
 
         if (vulnerable && enemyRight >= playerLeft && enemyLeft <= playerRight && enemyBottom >= playerTop && enemyTop <= playerBottom)
         {
-            player.Health = 0;
+            Console.WriteLine(player.Health);
+            player.Health -= 1;
         }
     }
 
@@ -145,7 +148,6 @@ public class Enemy
             health -= amount;
         }
     }
-
 
     public void ResetTransform(Vector2 newPosition)
     {

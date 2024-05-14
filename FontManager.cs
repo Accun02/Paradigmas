@@ -8,8 +8,6 @@ namespace MyGame
 {
     internal class FontManager
     {
-        private Enemy enemy;
-
         static IntPtr font1 = Engine.LoadFont("assets/Cave-Story.ttf", 35);
 
         public static void Render(Enemy enemy)

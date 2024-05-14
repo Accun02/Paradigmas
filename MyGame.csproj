@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="BackgroundManager.cs" />
+    <Compile Include="LevelController.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Teleport.cs" />
     <Compile Include="Bullet.cs" />

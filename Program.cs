@@ -9,10 +9,9 @@ namespace MyGame
 {
     class Program
     {
-        static public int GroundHeight = 584; // De arriba a abajo
-        static public int ScreenWidth = 1280; // De izquierda a derecha
-
-        static float delayFrame = 60f;
+        static public int GroundHeight = 584;        // De arriba a abajo
+        static public int ScreenWidth = 1280;       // De izquierda a derecha
+        static float delayFrame = 60f;             // FPS
         static public bool targetFrame = false;
 
         static public Character player = new Character(new Vector2(ScreenWidth / 2 - Character.PlayerWidth / 2, 584 - Character.PlayerHeight));
@@ -101,7 +100,7 @@ namespace MyGame
 
                 FontManager.Render(enemy);
 
-                //Background.Fade(); //Reduce demasiado el performance.
+                //BackgroundManager.Fade(); //Reduce demasiado el performance.
             }
             Engine.Show();
         }
@@ -134,7 +133,7 @@ namespace MyGame
             }
         }
 
-        public static void Restart(Character player, Enemy enemy)
+        public static void Restart()
         {
             //Clear Scene
             TeleportList.Clear();
@@ -145,15 +144,15 @@ namespace MyGame
             player.transform.Position = new Vector2(ScreenWidth / 2 - Character.PlayerWidth / 2, 584 - Character.PlayerHeight);
             player.ResetMomentum();
 
-            player.Health = 1;
+            player.Health = player.MaxHealth;
             player.IsDead = false;
 
             //Reset Enemy
             enemy.ResetTransform(new Vector2(ScreenWidth / 2 - Enemy.EnemyWidth / 2, 100));
             enemy.ResetAttacks();
-            enemy.Health = 100;
+            enemy.Health = enemy.MaxHealth;
 
-            //Reset Menu
+            //Reset Input
             GameManager.Instance.ZKeyReleased = false;
         }
     }

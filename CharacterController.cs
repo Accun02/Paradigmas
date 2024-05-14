@@ -20,9 +20,6 @@ namespace MyGame
         private float velocityX = 0;
         private float velocityY = 0;
 
-        public float VelocityX { set { velocityX = value; } get { return velocityX; } }
-        public float VelocityY { set { velocityY = value; } get { return velocityY; } }
-
         private float MaxSpeed = 450;
 
         private const float JumpSpeed = 700;
@@ -30,10 +27,11 @@ namespace MyGame
 
         private bool canMoveLeft = true;
         private bool canMoveRight = true;
-
         private bool isLookingLeft = false;
         private bool isLookingRight = true;
 
+        public float VelocityX { set { velocityX = value; } get { return velocityX; } }
+        public float VelocityY { set { velocityY = value; } get { return velocityY; } }
         public bool IsLookingLeft { set { isLookingLeft = value; } get { return isLookingLeft; } }
         public bool IsLookingRight { set { isLookingRight = value; } get { return isLookingRight; } }
 
@@ -49,14 +47,12 @@ namespace MyGame
         private int jumpCounter = 0;
         private float actualCoolDown = 0f;
         private float dobleJumpCoolDown = 0.25f;
-        private bool zKeyReleased = false;
 
         //Cooldown disparo
         private float shootCooldown = 0.15f;
         private float shootTime;
 
         private Transform transform;
-        private GameManager gameManager;
 
         public CharacterController(Transform transform)
         {
@@ -86,11 +82,6 @@ namespace MyGame
 
             // Debug
             //Console.WriteLine(zKeyReleased);
-
-            if (player.Health < 0)
-            {
-               isLookingRight = true;
-            }
         }
 
         private void GetInputs()
@@ -124,26 +115,26 @@ namespace MyGame
 
             if (!Engine.KeyPress(Engine.KEY_Z))  // Registra "KeyUp"
             {
-                zKeyReleased = true;
+                GameManager.Instance.ZKeyReleased = true;
             }
 
-            if (Engine.KeyPress(Engine.KEY_Z) && actualCoolDown <= 0 && jumpCounter < 2 && zKeyReleased) // Salto
+            if (Engine.KeyPress(Engine.KEY_Z) && actualCoolDown <= 0 && jumpCounter < 2 && GameManager.Instance.ZKeyReleased) // Salto
             {
                 Jump();
                 jumpCounter++;
                 actualCoolDown = dobleJumpCoolDown;
-                zKeyReleased = false;
+                GameManager.Instance.ZKeyReleased = false;
             }
 
             if (Engine.KeyPress(Engine.KEY_X) && Engine.KeyPress(Engine.KEY_UP) && shootTime <= 0)
             {
-                ShootUp();
+                ShootVertical();
                 shootTime = shootCooldown;
             }
 
             if (Engine.KeyPress(Engine.KEY_X) && !Engine.KeyPress(Engine.KEY_UP) && shootTime <= 0)
             {
-                ShootRight();
+                ShootHorizontal();
                 shootTime = shootCooldown;
             }
         }
@@ -217,18 +208,21 @@ namespace MyGame
             }
         }
 
-        public void ShootUp()
+        public void ShootVertical()
         {
             Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y, new Vector2(0, -1), "assets/bala.png"));
         }
 
-        public void ShootRight()
+        public void ShootHorizontal()
         {
             if (isLookingRight)
+            {
                 Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y + (int)Character.PlayerHeight / 2, new Vector2(1, 0), "assets/balaH.png"));
-
-            if (isLookingLeft)
+            }
+            else if (isLookingLeft)
+            {
                 Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y + (int)Character.PlayerHeight / 2, new Vector2(-1, 0), "assets/balaH.png"));
+            }
         }
     }
 }
