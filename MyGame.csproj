@@ -49,15 +49,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animation.cs" />
-    <Compile Include="Background.cs" />
+    <Compile Include="BackgroundManager.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Teleport.cs" />
     <Compile Include="Bullet.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="CharacterController.cs" />
     <Compile Include="Enemy.cs" />
-    <Compile Include="Enemyattackselect.cs" />
-    <Compile Include="Enemybullet.cs" />
+    <Compile Include="EnemyAttack.cs" />
+    <Compile Include="EnemyBullet.cs" />
     <Compile Include="EnemyController.cs" />
     <Compile Include="EnemyMovement.cs" />
     <Compile Include="Font.cs" />

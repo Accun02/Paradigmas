@@ -93,7 +93,7 @@ namespace MyGame
                         zKeyReleased = false;
                         gameOverDelayStarted = false;
                         gameStatus = GameStatus.menu;
-                        Program.ResetGame(player, enemy);
+                        Program.Restart(player, enemy);
                         Program.targetFrame = false;
                     }
                     break;

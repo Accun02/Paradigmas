@@ -63,12 +63,22 @@ namespace MyGame
             }
         }
 
+        private static void AdjustDelayFrame(int frameCount)
+        {
+            if (!targetFrame)
+            {
+                float diff = 60 - frameCount;
+                float factor = Math.Sign(diff) * Math.Min(10, Math.Abs(diff) / 10f);
+                delayFrame += factor;
+            }
+        }
+
         public static void Render()
         {
             Engine.Clear();
 
             if (player.Health > 0)
-                Background.Render();
+                BackgroundManager.Render();
 
             player.Render(player);
 
@@ -91,9 +101,8 @@ namespace MyGame
 
                 FontManager.Render(enemy);
 
-                Background.Fade(); //Reduce demasiado el performance.
+                //Background.Fade(); //Reduce demasiado el performance.
             }
-
             Engine.Show();
         }
 
@@ -125,17 +134,7 @@ namespace MyGame
             }
         }
 
-        private static void AdjustDelayFrame(int frameCount)
-        {
-            if (!targetFrame)
-            {
-                float diff = 60 - frameCount;
-                float factor = Math.Sign(diff) * Math.Min(10, Math.Abs(diff) / 10f);
-                delayFrame += factor;
-            }
-        }
-
-        public static void ResetGame(Character player, Enemy enemy)
+        public static void Restart(Character player, Enemy enemy)
         {
             //Clear Scene
             TeleportList.Clear();

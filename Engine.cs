@@ -44,7 +44,7 @@ class Engine
             colores,
             flags);
 
-        Sdl.SDL_WM_SetCaption("juego epic", null);
+        Sdl.SDL_WM_SetCaption("COLLOSEUM CONQUEST", null);
 
         Sdl.SDL_Rect rect2 =
             new Sdl.SDL_Rect(0, 0, (short)ancho, (short)alto);

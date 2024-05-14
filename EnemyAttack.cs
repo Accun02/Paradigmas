@@ -2,11 +2,11 @@
 using System;
 using System.Diagnostics;
 
-public class Enemyattackselect
+public class EnemyAttack
 {
     private Transform transform;
     private int enemyAttack;
-    public int EnemyAttack { set { enemyAttack = value; } get { return enemyAttack; } }
+    public int EnemyAttackSelect { set { enemyAttack = value; } get { return enemyAttack; } }
     private Random rnd;
     private EnemyMovement enemyMovement;
 
@@ -35,7 +35,7 @@ public class Enemyattackselect
     public bool IsAttacking { set { isAttacking = value; } get { return isAttacking; } }
     public float AttackTimer { set { attackTimer = value; } get { return attackTimer; } }
 
-    public Enemyattackselect(Vector2 position, EnemyMovement enemyMovement)
+    public EnemyAttack(Vector2 position, EnemyMovement enemyMovement)
     {
         transform = new Transform(position);
         this.enemyMovement = enemyMovement;

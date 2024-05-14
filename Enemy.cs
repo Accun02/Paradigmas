@@ -19,7 +19,7 @@ public class Enemy
     public int Health { set { health = value; } get { return health; } }
 
     private EnemyMovement enemyMovement;
-    private Enemyattackselect enemyattackselect;
+    private EnemyAttack enemyattackselect;
 
     private IntPtr image;
 
@@ -32,7 +32,7 @@ public class Enemy
     {
         transform = new Transform(position);
         enemyMovement = new EnemyMovement(Transform);
-        enemyattackselect = new Enemyattackselect(transform.Position, enemyMovement);
+        enemyattackselect = new EnemyAttack(transform.Position, enemyMovement);
         image = Engine.LoadImage("assets/Misery/Idle/0.png");
         CreateAnimations();
         currentAnimation = Idle;
@@ -42,7 +42,7 @@ public class Enemy
     {
         enemyattackselect.IsAttacking = false;
         enemyattackselect.AttackTimer = -1;
-        enemyattackselect.EnemyAttack = 0;
+        enemyattackselect.EnemyAttackSelect = 0;
         enemyattackselect.ResetCurrent();
     }
 
@@ -52,12 +52,12 @@ public class Enemy
 
         enemyattackselect.Update(transform.Position);
 
-        if (enemyattackselect.EnemyAttack == 1)
+        if (enemyattackselect.EnemyAttackSelect == 1)
         {
             currentAnimation = enemyattack;
             currentAnimation.Update();
         }
-        else if (enemyattackselect.EnemyAttack == 2)
+        else if (enemyattackselect.EnemyAttackSelect == 2)
         {
             if (enemyattackselect.IsTeleportOnCooldown)
             {

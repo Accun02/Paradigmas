@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    internal class Background
+    internal class BackgroundManager
     {
         static IntPtr image = Engine.LoadImage("assets/fondo.png");
         static IntPtr fade = Engine.LoadImage("assets/fade.png");
@@ -14,7 +14,6 @@ namespace MyGame
         public static void Render()
         {
             Engine.Draw(image, 0, 0);
-
         }
         public static void Fade()
         {
