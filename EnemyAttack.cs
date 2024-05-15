@@ -10,7 +10,7 @@ public class EnemyAttack
     private Random rnd;
     private EnemyMovement enemyMovement;
 
-    private const string imagePath = "assets/evilBullet.png";
+    private const string imagePath = "assets/enemyBullet/bullet.png";
 
     private float attackTimer = 0;
     private float pauseTimer = 0;
@@ -96,8 +96,8 @@ public class EnemyAttack
             switch (enemyAttack)
             {
                 case 1:
-                    Program.enemyBullets.Add(new EnemyBullet(position, Program.player.transform.Position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2), imagePath));
-                    Program.enemyBullets.Add(new EnemyBullet(position, Program.player.transform.Position, new Vector2(EnemyWidth + EnemyBullet.BulletWidth, EnemyHeight / 2 - BulletHeight / 2), imagePath));
+                    Program.enemyBullets.Add(new EnemyBullet(position, Program.player.transform.Position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
+                    Program.enemyBullets.Add(new EnemyBullet(position, Program.player.transform.Position, new Vector2(EnemyWidth + EnemyBullet.BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
                     timeBetweenAttacks = 0.45f;
                     canAttack = false;
                     attackTimer = 0;

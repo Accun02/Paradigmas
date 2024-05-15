@@ -19,12 +19,13 @@ namespace MyGame
 
         public void Render()
         {
-            Engine.Draw(image, transform.Position.x, transform.Position.y);
+            Engine.Draw(currentAnimation.CurrentFrame, transform.Position.x, transform.Position.y);
         }
 
         public virtual void Update()
         {
             currentAnimation.Update();
         }
+
     }
 }

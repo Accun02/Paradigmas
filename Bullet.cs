@@ -26,6 +26,11 @@ namespace MyGame
             image = Engine.LoadImage(imagePath);
         }
 
+        public void Render()
+        {
+        Engine.Draw(image, transform.Position.x, transform.Position.y);
+        }
+
         public override void Update()
         {
             bulletVel += acceleration * Time.DeltaTime;
@@ -57,7 +62,5 @@ namespace MyGame
                 Program.BulletList.Remove(this);
             }
         }
-
-
     }
 }

@@ -153,6 +153,4 @@ public class Enemy
     {
         transform.Position = newPosition;
     }
-
-
 }

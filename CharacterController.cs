@@ -210,18 +210,18 @@ namespace MyGame
 
         public void ShootVertical()
         {
-            Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y, new Vector2(0, -1), "assets/bala.png"));
+            Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y, new Vector2(0, -1), "assets/bullet/bulletY.png"));
         }
 
         public void ShootHorizontal()
         {
             if (isLookingRight)
             {
-                Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y + (int)Character.PlayerHeight / 2, new Vector2(1, 0), "assets/balaH.png"));
+                Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y + (int)Character.PlayerHeight / 2, new Vector2(1, 0), "assets/bullet/bulletX.png"));
             }
             else if (isLookingLeft)
             {
-                Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y + (int)Character.PlayerHeight / 2, new Vector2(-1, 0), "assets/balaH.png"));
+                Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y + (int)Character.PlayerHeight / 2, new Vector2(-1, 0), "assets/bullet/bulletX.png"));
             }
         }
     }

@@ -46,13 +46,11 @@ namespace MyGame
         }
 
         private CharacterController controller;
-        private IntPtr image;
 
         public Character(Vector2 position)
         {
             transform = new Transform(position);
             controller = new CharacterController(transform);
-            image = Engine.LoadImage("assets/player.png");
 
             CreateAnimations();
             currentAnimation = idleRight;
