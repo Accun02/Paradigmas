@@ -28,7 +28,7 @@ public class EnemyAttack
     private float BulletHeight = EnemyBullet.BulletHeight;
 
     private float teleportCooldownTimer = 0;
-    private float teleportCooldownDuration = 2.15f;
+    private float teleportCooldownDuration = 1.9f;
     private bool isTeleportOnCooldown = false;
 
     public bool IsTeleportOnCooldown { set { isTeleportOnCooldown = value; } get { return isTeleportOnCooldown; } }
@@ -61,7 +61,7 @@ public class EnemyAttack
         {
             teleportCooldownTimer += Time.DeltaTime;
 
-            if (teleportCooldownTimer >= 1.5)
+            if (teleportCooldownTimer >= 1.25)
             {
                 if (!effectPlayedDuringCooldown)
                 Effect(Position);
@@ -80,7 +80,6 @@ public class EnemyAttack
     public void ResetCurrent()
     {
         teleportCooldownTimer = 0;
-        teleportCooldownDuration = 2.15f;
         isTeleportOnCooldown = false;
     }
 

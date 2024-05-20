@@ -100,7 +100,7 @@ namespace MyGame
 
                 FontManager.Render(enemy);
 
-                BackgroundManager.Fade(); //Reduce demasiado el performance.
+                //BackgroundManager.Fade(); //Reduce demasiado el performance.
             }
             Engine.Show();
         }

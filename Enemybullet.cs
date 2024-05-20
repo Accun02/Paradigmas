@@ -16,6 +16,7 @@ namespace MyGame
         private string idlePath = "assets/enemyBullet/bullet.png";
         private string destroyPath;
         private bool destroyed = false;
+        private float coolDown = 0.3f;
 
         public const float BulletHeight = 24;
         public const float BulletWidth = 24;
@@ -69,14 +70,18 @@ namespace MyGame
                 acceleration = 0;
             }
 
-            if (transform.Position.y >= GroundHeight - BulletHeight / 2 || transform.Position.x >= Program.ScreenWidth || transform.Position.x <= 0 - BulletWidth)
+            if (transform.Position.y >= GroundHeight - BulletHeight || transform.Position.x >= Program.ScreenWidth || transform.Position.x <= 0 - BulletWidth)
             {
                 currentAnimation = destroy;
                 currentAnimation.Update();
                 destroyed = true;
                 bulletVel = 0;
                 acceleration = 0;
-    }
+
+                coolDown -= Time.DeltaTime;
+                if (coolDown <= 0)
+                    Program.enemyBullets.Remove(this);
+            }
             else
             {
                 currentAnimation = idle;
