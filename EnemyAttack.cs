@@ -87,7 +87,8 @@ public class EnemyAttack
     {
         if (attackTimer >= 1 && canAttack)
         {
-            enemyAttack = rnd.Next(1, 3);
+            //enemyAttack = rnd.Next(1, 3);
+            enemyAttack = 1;
             isAttacking = true;
         }
         if (isAttacking)

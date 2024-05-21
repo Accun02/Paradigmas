@@ -4,7 +4,7 @@ using Tao.Sdl;
 
 namespace MyGame
 {
-    internal class Bullet : Projectile
+    public class Bullet : Projectile
     {
         public const int BulletHeight = 20;
         public const int BulletWidth = 20;
@@ -77,7 +77,7 @@ namespace MyGame
             }
 
             if (transform.Position.y <= 0 - BulletHeight ||
-                transform.Position.x >= .ScreenWidth ||
+                transform.Position.x >= Program.ScreenWidth ||
                 transform.Position.x <= 0 - BulletWidth)
             {
                 Program.BulletList.Remove(this);

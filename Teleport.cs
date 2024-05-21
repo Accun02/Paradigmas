@@ -2,7 +2,7 @@
 
 namespace MyGame
 {
-    internal class Teleport
+    public class Teleport
     {
         public const int TeleportHeight = 20;
         public const int TeleportWidth = 20;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    internal class EnemyBullet : Projectile
+    public class EnemyBullet : Projectile
     {
         Vector2 direction;
 
@@ -94,12 +94,12 @@ namespace MyGame
             idle = new Animation("Idle", new List<IntPtr> { idleTexture }, 1.0f, false);
 
             List<IntPtr> destroyTextures = new List<IntPtr>();
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 7; i++)
             {
                 IntPtr frame = Engine.LoadImage($"assets/enemyBullet/destroy/{i}.png");
                 destroyTextures.Add(frame);
             }
-            destroy = new Animation("destroy", destroyTextures, 0.035f, false);
+            destroy = new Animation("destroy", destroyTextures, 0.030f, false);
         }
     }
 }
