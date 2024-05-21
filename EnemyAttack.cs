@@ -10,8 +10,6 @@ public class EnemyAttack
     private Random rnd;
     private EnemyMovement enemyMovement;
 
-    private const string imagePath = "assets/enemyBullet/bullet.png";
-
     private float attackTimer = 0;
     private float pauseTimer = 0;
     private float timeBetweenAttacks = 0.25f;
@@ -44,7 +42,7 @@ public class EnemyAttack
     public void Update(Vector2 Position)
     {
         timers(Position);
-        selection(Position);
+        Selection(Position);
     }
     private void timers(Vector2 Position)
     {
@@ -83,12 +81,11 @@ public class EnemyAttack
         isTeleportOnCooldown = false;
     }
 
-    private void selection(Vector2 position)
+    private void Selection(Vector2 position)
     {
         if (attackTimer >= 1 && canAttack)
         {
-            //enemyAttack = rnd.Next(1, 3);
-            enemyAttack = 1;
+            enemyAttack = rnd.Next(1, 3);
             isAttacking = true;
         }
         if (isAttacking)

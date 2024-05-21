@@ -14,7 +14,6 @@ namespace MyGame
         private int ScreenWidth = Program.ScreenWidth;
 
         private string idlePath = "assets/enemyBullet/bullet.png";
-        private string destroyPath;
         private bool destroyed = false;
         private float coolDown = 0.3f;
 

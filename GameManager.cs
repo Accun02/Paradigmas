@@ -6,6 +6,7 @@ namespace MyGame
     public class GameManager
     {
         private static GameManager instance;
+        private static LevelController levelController;
         private GameStatus gameStatus = GameStatus.menu;
         private IntPtr mainMenuScreen = Engine.LoadImage("assets/MainMenu.png");
         private IntPtr WinScreen = Engine.LoadImage("assets/Win.png");

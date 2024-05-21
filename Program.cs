@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Tao.Sdl;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace MyGame
 {

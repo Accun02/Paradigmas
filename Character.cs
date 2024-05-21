@@ -154,6 +154,7 @@ namespace MyGame
         {
 
             // Movimiento
+
             List<IntPtr> walkTextures = new List<IntPtr>();
             for (int i = 0; i < 4; i++)
             {
@@ -188,19 +189,19 @@ namespace MyGame
 
             // Idle
 
-            IntPtr idleLeftTexture = Engine.LoadImage("assets/player/idle/idleLeft/0.png");
+            IntPtr idleLeftTexture = Engine.LoadImage("assets/player/walk/walkLeft/0.png");
             idleLeft = new Animation("IdleLeft", new List<IntPtr> { idleLeftTexture }, 1.0f, false);
 
-            IntPtr idleRightTexture = Engine.LoadImage("assets/player/idle/idleRight/0.png");
+            IntPtr idleRightTexture = Engine.LoadImage("assets/player/walk/walkRight/0.png");
             idleRight = new Animation("IdleRight", new List<IntPtr> { idleRightTexture }, 1.0f, false);
 
             List<IntPtr> idleUpLeftTextures = new List<IntPtr>();
-            IntPtr idleUpLeftTexture = Engine.LoadImage("assets/player/idle/idleUpLeft/0.png");
+            IntPtr idleUpLeftTexture = Engine.LoadImage("assets/player/walk/walkUpLeft/0.png");
             idleUpLeftTextures.Add(idleUpLeftTexture);
             idleUpLeft = new Animation("IdleUpLeft", idleUpLeftTextures, 1.0f, false);
 
             List<IntPtr> idleUpRightTextures = new List<IntPtr>();
-            IntPtr idleUpRightTexture = Engine.LoadImage("assets/player/idle/idleUpRight/0.png");
+            IntPtr idleUpRightTexture = Engine.LoadImage("assets/player/walk/walkUpRight/0.png");
             idleUpRightTextures.Add(idleUpRightTexture);
             idleUpRight = new Animation("IdleUpRight", idleUpRightTextures, 1.0f, false);
 
