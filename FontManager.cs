@@ -12,7 +12,7 @@ namespace MyGame
 
         public static void Render(Enemy enemy)
         {
-            Engine.DrawText("Enemy: " + enemy.Health + "/100", Program.ScreenWidth / 2 - 85, 20, 255, 255, 255, font1);
+            Engine.DrawText("Enemy: " + enemy.Health + "/100", GameManager.Instance.LevelController.ScreenWidth / 2 - 85, 20, 255, 255, 255, font1);
         }
 
     }

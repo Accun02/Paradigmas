@@ -59,7 +59,7 @@ namespace MyGame
 
         private void Destroy()
         {
-            Program.TeleportList.Remove(this);
+            GameManager.Instance.LevelController.TeleportList.Remove(this);
             isDestroyed = true;
         }
     }

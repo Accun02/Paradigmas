@@ -5,3 +5,5 @@
 *.exe
 bin/Debug/MyGame.pdb
 bin/Debug/MyGame.exe
+bin/Debug/MyGame.exe
+bin/Debug/MyGame.pdb

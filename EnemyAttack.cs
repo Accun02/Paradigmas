@@ -9,6 +9,7 @@ public class EnemyAttack
     public int EnemyAttackSelect { set { enemyAttack = value; } get { return enemyAttack; } }
     private Random rnd;
     private EnemyMovement enemyMovement;
+    private Thunderattack thunderattack;
 
     private float attackTimer = 0;
     private float pauseTimer = 0;
@@ -85,7 +86,8 @@ public class EnemyAttack
     {
         if (attackTimer >= 1 && canAttack)
         {
-            enemyAttack = rnd.Next(1, 3);
+            //enemyAttack = rnd.Next(1, 3);
+            enemyAttack = 3;
             isAttacking = true;
         }
         if (isAttacking)
@@ -93,8 +95,8 @@ public class EnemyAttack
             switch (enemyAttack)
             {
                 case 1:
-                    Program.enemyBullets.Add(new EnemyBullet(position, Program.player.transform.Position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
-                    Program.enemyBullets.Add(new EnemyBullet(position, Program.player.transform.Position, new Vector2(EnemyWidth + EnemyBullet.BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
+                    GameManager.Instance.LevelController.enemyBullets.Add(new EnemyBullet(position, GameManager.Instance.LevelController.player.transform.Position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
+                    GameManager.Instance.LevelController.enemyBullets.Add(new EnemyBullet(position, GameManager.Instance.LevelController.player.transform.Position, new Vector2(EnemyWidth + EnemyBullet.BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
                     timeBetweenAttacks = 0.45f;
                     canAttack = false;
                     attackTimer = 0;
@@ -107,7 +109,11 @@ public class EnemyAttack
                         canAttack = false;
                         attackTimer = 0;
                         isTeleportOnCooldown = true;
+                       
                     }
+                    break;
+                case 3:
+                    GameManager.Instance.LevelController.thunderattacks.Add(new Thunderattack(position, GameManager.Instance.LevelController.player.transform.Position, new Vector2(0,0)));
                     break;
             }
             isAttacking = false;
@@ -122,7 +128,7 @@ public class EnemyAttack
 
     private void Effect(Vector2 position)
     {
-        Program.TeleportList.Add(new Teleport((int)position.x + (int)Enemy.EnemyWidth, (int)position.y, new Vector2(-1, 0), "assets/Misery/Teleport/0.png"));
-        Program.TeleportList.Add(new Teleport((int)position.x - (int)Enemy.EnemyWidth, (int)position.y, new Vector2(1, 0), "assets/Misery/Teleport/1.png"));
+        GameManager.Instance.LevelController.TeleportList.Add(new Teleport((int)position.x + (int)Enemy.EnemyWidth, (int)position.y, new Vector2(-1, 0), "assets/Misery/Teleport/0.png"));
+        GameManager.Instance.LevelController.TeleportList.Add(new Teleport((int)position.x - (int)Enemy.EnemyWidth, (int)position.y, new Vector2(1, 0), "assets/Misery/Teleport/1.png"));
     }
 }

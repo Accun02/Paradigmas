@@ -10,8 +10,8 @@ namespace MyGame
     {
         Vector2 direction;
 
-        private int GroundHeight = Program.GroundHeight;
-        private int ScreenWidth = Program.ScreenWidth;
+        private int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
+        private int ScreenWidth = GameManager.Instance.LevelController.ScreenWidth;
 
         private string idlePath = "assets/enemyBullet/bullet.png";
         private bool destroyed = false;
@@ -69,7 +69,7 @@ namespace MyGame
                 acceleration = 0;
             }
 
-            if (transform.Position.y >= GroundHeight - BulletHeight || transform.Position.x >= Program.ScreenWidth || transform.Position.x <= 0 - BulletWidth)
+            if (transform.Position.y >= GroundHeight - BulletHeight || transform.Position.x >= GameManager.Instance.LevelController.ScreenWidth || transform.Position.x <= 0 - BulletWidth)
             {
                 currentAnimation = destroy;
                 currentAnimation.Update();
@@ -79,7 +79,7 @@ namespace MyGame
 
                 coolDown -= Time.DeltaTime;
                 if (coolDown <= 0)
-                    Program.enemyBullets.Remove(this);
+                    GameManager.Instance.LevelController.enemyBullets.Remove(this);
             }
             else
             {

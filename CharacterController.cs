@@ -10,8 +10,8 @@ namespace MyGame
         private const float PlayerHeight = Character.PlayerHeight;
 
         // Escenario
-        private int GroundHeight = Program.GroundHeight;
-        private int ScreenWidth = Program.ScreenWidth;
+        private int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
+        private int ScreenWidth = GameManager.Instance.LevelController.ScreenWidth;
 
         // Movimiento
         private float Acceleration = 3000;
@@ -210,18 +210,18 @@ namespace MyGame
 
         public void ShootVertical()
         {
-            Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y, new Vector2(0, -1), "assets/bullet/bulletY.png"));
+            GameManager.Instance.LevelController.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y, new Vector2(0, -1), "assets/bullet/bulletY.png"));
         }
 
         public void ShootHorizontal()
         {
             if (isLookingRight)
             {
-                Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y + (int)Character.PlayerHeight / 2, new Vector2(1, 0), "assets/bullet/bulletX.png"));
+                GameManager.Instance.LevelController.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y + (int)Character.PlayerHeight / 2, new Vector2(1, 0), "assets/bullet/bulletX.png"));
             }
             else if (isLookingLeft)
             {
-                Program.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y + (int)Character.PlayerHeight / 2, new Vector2(-1, 0), "assets/bullet/bulletX.png"));
+                GameManager.Instance.LevelController.BulletList.Add(new Bullet((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - Bullet.BulletWidth / 2, (int)transform.Position.y + (int)Character.PlayerHeight / 2, new Vector2(-1, 0), "assets/bullet/bulletX.png"));
             }
         }
     }

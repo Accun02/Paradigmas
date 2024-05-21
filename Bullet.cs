@@ -73,14 +73,14 @@ namespace MyGame
 
                 coolDown -= Time.DeltaTime;
                 if (coolDown <= 0)
-                    Program.BulletList.Remove(this);
+                    GameManager.Instance.LevelController.BulletList.Remove(this);
             }
 
             if (transform.Position.y <= 0 - BulletHeight ||
-                transform.Position.x >= Program.ScreenWidth ||
+                transform.Position.x >= GameManager.Instance.LevelController.ScreenWidth ||
                 transform.Position.x <= 0 - BulletWidth)
             {
-                Program.BulletList.Remove(this);
+                GameManager.Instance.LevelController.BulletList.Remove(this);
             }
         }
 

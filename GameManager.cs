@@ -6,7 +6,8 @@ namespace MyGame
     public class GameManager
     {
         private static GameManager instance;
-        private static LevelController levelController;
+        private LevelController levelController;
+        public LevelController LevelController { get { return levelController; } set { levelController = value; } }
         private GameStatus gameStatus = GameStatus.menu;
         private IntPtr mainMenuScreen = Engine.LoadImage("assets/MainMenu.png");
         private IntPtr WinScreen = Engine.LoadImage("assets/Win.png");
@@ -25,11 +26,17 @@ namespace MyGame
         {
             get
             {
-                if (instance == null) {instance = new GameManager();} return instance;
+                if (instance == null) { instance = new GameManager(); } return instance;
             }
         }
 
-        public void Update(Enemy enemy, Character player)
+        public void Initialize() 
+        {
+            levelController = new LevelController();
+            levelController.Initialize();
+        }
+
+        public void Update()
         {
             Time.Update();
 
@@ -49,7 +56,7 @@ namespace MyGame
 
                     if (Engine.KeyPress(Engine.KEY_Z) && zKeyReleased) // Entra a Game
                     {
-                        Program.Restart();
+                        levelController.Restart();
                         gameStatus = GameStatus.game;
                         Program.targetFrame = false;
                     }
@@ -58,13 +65,13 @@ namespace MyGame
 
                 case GameStatus.game:   //Game
 
-                    Program.Update();
+                    levelController.Update();
 
-                    if (enemy.Health <= 0) // Entra a Win
+                    if (LevelController.enemy.Health <= 0) // Entra a Win
                     {
                         gameStatus = GameStatus.win;
                     }
-                    else if (player.Health <= 0) // Espera animación
+                    else if (LevelController.player.Health <= 0) // Espera animación
                     {
                         if (!gameOverDelayStarted)
                         {
@@ -116,7 +123,7 @@ namespace MyGame
 
                 case GameStatus.game:   //Game
 
-                    Program.Render();
+                    levelController.Render();
 
                 break;
 
