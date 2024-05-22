@@ -34,7 +34,7 @@ namespace MyGame
                 float startTime = (float)stopwatch.Elapsed.TotalSeconds;
                 float targetFrameTime = 1f / delayFrame;
 
-                GameManager.Instance.Update(); // A VECES HAY QUE MOVER LA COSAS
+                GameManager.Instance.Update();
                 GameManager.Instance.Render();
 
                 frameCount++;

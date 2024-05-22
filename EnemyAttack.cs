@@ -9,7 +9,7 @@ public class EnemyAttack
     public int EnemyAttackSelect { set { enemyAttack = value; } get { return enemyAttack; } }
     private Random rnd;
     private EnemyMovement enemyMovement;
-    private Thunderattack thunderattack;
+    private ThunderAttack thunderattack;
 
     private float attackTimer = 0;
     private float pauseTimer = 0;
@@ -87,7 +87,7 @@ public class EnemyAttack
         if (attackTimer >= 1 && canAttack)
         {
             //enemyAttack = rnd.Next(1, 3);
-            enemyAttack = 3;
+            //enemyAttack = 1;
             isAttacking = true;
         }
         if (isAttacking)
@@ -113,7 +113,7 @@ public class EnemyAttack
                     }
                     break;
                 case 3:
-                    GameManager.Instance.LevelController.thunderattacks.Add(new Thunderattack(position, GameManager.Instance.LevelController.player.transform.Position, new Vector2(0,0)));
+                    GameManager.Instance.LevelController.thunderattacks.Add(new ThunderAttack(position, GameManager.Instance.LevelController.player.transform.Position, new Vector2(0,0)));
                     break;
             }
             isAttacking = false;

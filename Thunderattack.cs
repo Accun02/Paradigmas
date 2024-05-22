@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    public class Thunderattack : Projectile 
+    public class ThunderAttack : Projectile 
     {
         Vector2 direction;
         Vector2 player;
@@ -24,7 +24,7 @@ namespace MyGame
 
         private Animation idle;
 
-        public Thunderattack (Vector2 position, Vector2 playerPosition, Vector2 offset)
+        public ThunderAttack (Vector2 position, Vector2 playerPosition, Vector2 offset)
         {
             Vector2 adjustedPosition = new Vector2(position.x + offset.x, position.y + offset.y);
             transform = new Transform(adjustedPosition);

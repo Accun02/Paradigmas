@@ -20,7 +20,7 @@ namespace MyGame
         public List<Bullet> BulletList;
         public List<Teleport> TeleportList;
         public List<EnemyBullet> enemyBullets;
-        public List<Thunderattack> thunderattacks;
+        public List<ThunderAttack> thunderattacks;
 
         public void Initialize() 
         {
@@ -29,7 +29,7 @@ namespace MyGame
             BulletList = new List<Bullet>();
             TeleportList = new List<Teleport>();
             enemyBullets = new List<EnemyBullet>();
-            thunderattacks = new List<Thunderattack>();
+            thunderattacks = new List<ThunderAttack>();
         }
 
         public void Render()
@@ -57,7 +57,7 @@ namespace MyGame
                 {
                     teleport.Render();
                 }
-                foreach (Thunderattack thunderattack in thunderattacks)
+                foreach (ThunderAttack thunderattack in thunderattacks)
                 {
                     thunderattack.Render();
                 }
@@ -95,7 +95,7 @@ namespace MyGame
                     teleport.Update();
                 }
 
-                foreach (Thunderattack thunderattack in thunderattacks)
+                foreach (ThunderAttack thunderattack in thunderattacks)
                 {
                     thunderattack.Update();
                     thunderattack.CheckPositions(player);

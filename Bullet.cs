@@ -1,51 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tao.Sdl;
 
 namespace MyGame
 {
     public class Bullet : Projectile
     {
-        public const int BulletHeight = 20;
-        public const int BulletWidth = 20;
-
-        private float bulletVel = 1500;
-        private float acceleration = 100;
+        private int BulletHeight;
+        private int BulletWidth;
+        public bool isVertical;
 
         private string idlePath;
 
-        private float coolDown = 0.3f;
-        private bool destroyed;
-
-        private Vector2 direction;
-
-        private Animation destroy;
-        private Animation idle;
-
-        public Bullet(int x, int y, Vector2 dir, string imagePath)
+        public Bullet(int x, int y, Vector2 dir, string imagePath, bool isHorizontal) : base(new Vector2(x, y), dir)
         {
-            transform = new Transform(new Vector2(x, y));
-            direction = dir;
-            image = Engine.LoadImage(imagePath);
+            bulletVel = 1500;
+            acceleration = 100;
+            coolDown = 0.3f;
             idlePath = imagePath;
-
-            CreateAnimations();
-        }
-
-        public Bullet(Vector2 position, Vector2 dir, string imagePath)
-        {
-            transform = new Transform(position);
-            direction = dir;
-            image = Engine.LoadImage(imagePath);
-            idlePath = imagePath;
-
+            isVertical = !isHorizontal;
             CreateAnimations();
         }
 
         public override void Update()
         {
+            BulletHeight = isVertical ? 10 : 40;
+            BulletWidth = isVertical ? 40 : 10;
+
             bulletVel += acceleration * Time.DeltaTime;
             transform.Translate(new Vector2(direction.x * bulletVel * Time.DeltaTime, direction.y * bulletVel * Time.DeltaTime));
+            base.Update();
         }
 
         public void CheckCollisions(Enemy enemy)
@@ -86,17 +69,12 @@ namespace MyGame
 
         private void CreateAnimations()
         {
-            IntPtr idleTexture = Engine.LoadImage(idlePath);
-            idle = new Animation("Idle", new List<IntPtr> { idleTexture }, 1.0f, false);
-
-            List<IntPtr> destroyTextures = new List<IntPtr>();
+            List<string> destroyPaths = new List<string>();
             for (int i = 0; i < 3; i++)
             {
-                IntPtr frame = Engine.LoadImage($"assets/bullet/destroy/{i}.png");
-                destroyTextures.Add(frame);
+                destroyPaths.Add($"assets/bullet/destroy/{i}.png");
             }
-            destroy = new Animation("Destroy", destroyTextures, 0.035f, false);
-            currentAnimation = idle;
+            CreateAnimations(idlePath, destroyPaths);
         }
     }
 }

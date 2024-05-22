@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Tao.Sdl;
 
 namespace MyGame
 {
@@ -12,9 +10,24 @@ namespace MyGame
         protected Animation currentAnimation;
         protected IntPtr image;
 
+        protected Vector2 direction;
+        protected Animation destroy;
+        protected Animation idle;
+
+        protected float bulletVel;
+        protected float acceleration;
+        protected float coolDown;
+        protected bool destroyed;
+
         public Projectile()
         {
             transform = new Transform(new Vector2());
+        }
+
+        public Projectile(Vector2 position, Vector2 dir)
+        {
+            transform = new Transform(position);
+            direction = dir;
         }
 
         public void Render()
@@ -27,5 +40,19 @@ namespace MyGame
             currentAnimation.Update();
         }
 
+        protected virtual void CreateAnimations(string idlePath, List<string> destroyPaths, float destroyFrameDuration = 0.035f)
+        {
+            IntPtr idleTexture = Engine.LoadImage(idlePath);
+            idle = new Animation("Idle", new List<IntPtr> { idleTexture }, 1.0f, false);
+
+            List<IntPtr> destroyTextures = new List<IntPtr>();
+            foreach (var path in destroyPaths)
+            {
+                IntPtr frame = Engine.LoadImage(path);
+                destroyTextures.Add(frame);
+            }
+            destroy = new Animation("Destroy", destroyTextures, destroyFrameDuration, false);
+            currentAnimation = idle;
+        }
     }
 }
