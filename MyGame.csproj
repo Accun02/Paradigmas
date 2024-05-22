@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="BackgroundManager.cs" />
+    <Compile Include="DynamicPool.cs" />
     <Compile Include="LevelController.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Teleport.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sound.cs" />
+    <Compile Include="Thunder.cs" />
     <Compile Include="ThunderAttack.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Transform.cs" />

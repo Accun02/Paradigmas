@@ -14,8 +14,6 @@ namespace MyGame
 
         private string idlePath = "assets/enemyBullet/bullet.png";
 
-
-
         public const float BulletHeight = 24;
         public const float BulletWidth = 24;
 
@@ -40,14 +38,16 @@ namespace MyGame
             bulletVel += acceleration * Time.DeltaTime;
             transform.Translate(direction, bulletVel * Time.DeltaTime);
         }
-        public void CheckPositions(Character player)
+        public void CheckPositions(Character player, Enemy enemy)
         {
-            if (transform.Position.x > player.transform.Position.x )
+            if (transform.Position.x >= player.transform.Position.x + Character.PlayerWidth /2 && transform.Position.x >= enemy.Transform.Position.x
+               || transform.Position.x <= player.transform.Position.x + Character.PlayerWidth / 2 && transform.Position.x <= enemy.Transform.Position.x)
             {
                GameManager.Instance.LevelController.thunderattacks.Remove(this);
+
             }
         }
-        public void Render()
+        public override void Render()
         {
             Engine.Draw(idlePath, transform.Position.x, transform.Position.y);
         }

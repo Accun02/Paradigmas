@@ -45,9 +45,9 @@ namespace MyGame
             {
                 enemy.Render();
 
-                foreach (Bullet bullet in BulletList)
+                for (int i = 0; i < BulletList.Count; i++)
                 {
-                    bullet.Render();
+                    BulletList[i].Render();
                 }
                 foreach (EnemyBullet enemyBullet in enemyBullets)
                 {
@@ -57,9 +57,9 @@ namespace MyGame
                 {
                     teleport.Render();
                 }
-                foreach (ThunderAttack thunderattack in thunderattacks)
+                for (int i = 0; i < thunderattacks.Count; i++)
                 {
-                    thunderattack.Render();
+                    thunderattacks[i].Render();
                 }
 
                 FontManager.Render(enemy);
@@ -78,10 +78,10 @@ namespace MyGame
                 enemy.Update(Time.DeltaTime);
                 enemy.CheckCollision(player);
 
-                foreach (Bullet bullet in BulletList.ToList())
+                for (int i = 0; i < BulletList.Count; i++)
                 {
-                    bullet.Update();
-                    bullet.CheckCollisions(enemy);
+                    BulletList[i].Update();
+                    BulletList[i].CheckCollisions(enemy);
                 }
 
                 foreach (EnemyBullet enemyBullet in enemyBullets.ToList())
@@ -90,15 +90,15 @@ namespace MyGame
                     enemyBullet.CheckCollisions(player);
                 }
 
-                foreach (Teleport teleport in TeleportList.ToList())
+                for (int i = 0; i < TeleportList.Count; i++)
                 {
-                    teleport.Update();
+                    TeleportList[i].Update();
                 }
 
-                foreach (ThunderAttack thunderattack in thunderattacks)
+                for (int i = 0; i < thunderattacks.Count; i++)
                 {
-                    thunderattack.Update();
-                    thunderattack.CheckPositions(player);
+                    thunderattacks[i].Update();
+                    thunderattacks[i].CheckPositions(player, enemy);
                 }
             }
         }

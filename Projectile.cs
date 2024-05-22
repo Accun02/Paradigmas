@@ -30,7 +30,7 @@ namespace MyGame
             direction = dir;
         }
 
-        public void Render()
+        public virtual void Render()
         {
             Engine.Draw(currentAnimation.CurrentFrame, transform.Position.x, transform.Position.y);
         }

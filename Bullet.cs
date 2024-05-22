@@ -5,11 +5,15 @@ namespace MyGame
 {
     public class Bullet : Projectile
     {
+        public event Action<Bullet> OnDestroy;
+
         private int BulletHeight;
         private int BulletWidth;
-        public bool isVertical;
+
+        private bool isVertical;
 
         private string idlePath;
+
 
         public Bullet(int x, int y, Vector2 dir, string imagePath, bool isHorizontal) : base(new Vector2(x, y), dir)
         {
@@ -17,14 +21,35 @@ namespace MyGame
             acceleration = 100;
             coolDown = 0.3f;
             idlePath = imagePath;
-            isVertical = !isHorizontal;
+            this.isVertical = !isHorizontal;
             CreateAnimations();
+        }
+
+        public void ResetBullet(Vector2 position, Vector2 dir, string imagePath, bool isHorizontal)
+        {
+            transform = new Transform(position);
+            direction = dir;
+            bulletVel = 1500;
+            acceleration = 100;
+            coolDown = 0.3f;
+            idlePath = imagePath;
+            this.isVertical = !isHorizontal;
+            CreateAnimations();
+            Engine.Debug(transform.Position.y + "/" + transform.Position.x);
         }
 
         public override void Update()
         {
-            BulletHeight = isVertical ? 10 : 40;
-            BulletWidth = isVertical ? 40 : 10;
+            if (isVertical)
+            {
+                BulletHeight = 60;
+                BulletWidth = 10;
+            }
+            else
+            {
+                BulletHeight = 10;
+                BulletWidth = 60;
+            }
 
             bulletVel += acceleration * Time.DeltaTime;
             transform.Translate(new Vector2(direction.x * bulletVel * Time.DeltaTime, direction.y * bulletVel * Time.DeltaTime));
@@ -56,17 +81,23 @@ namespace MyGame
 
                 coolDown -= Time.DeltaTime;
                 if (coolDown <= 0)
-                    GameManager.Instance.LevelController.BulletList.Remove(this);
+                    DestroyBullet();
             }
 
             if (transform.Position.y <= 0 - BulletHeight ||
                 transform.Position.x >= GameManager.Instance.LevelController.ScreenWidth ||
                 transform.Position.x <= 0 - BulletWidth)
             {
-                GameManager.Instance.LevelController.BulletList.Remove(this);
+                DestroyBullet();
             }
         }
 
+        private void DestroyBullet()
+        {
+            GameManager.Instance.LevelController.BulletList.Remove(this);
+            OnDestroy.Invoke(this);
+        }
+            
         private void CreateAnimations()
         {
             List<string> destroyPaths = new List<string>();
