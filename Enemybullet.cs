@@ -12,13 +12,18 @@ namespace MyGame
         public const float BulletWidth = 24;
 
         private string idlePath = "assets/enemyBullet/bullet.png";
+        private new float coolDown;
+        private float timeSinceSpawn;
 
-        public EnemyBullet(Vector2 position, Vector2 playerPosition, Vector2 offset)
-            : base(new Vector2(position.x + offset.x, position.y + offset.y), CalculateDirection(position, playerPosition, offset))
+        private Animation spawn;
+        private bool directionSet = false;
+
+        public EnemyBullet(Vector2 position, Vector2 offset) : base(new Vector2(position.x + offset.x, position.y + offset.y), new Vector2(0, 0))
         {
             bulletVel = 10;
             acceleration = 2000;
-            coolDown = 0.3f;
+            coolDown = 0.4f;
+            timeSinceSpawn = 0f;
 
             CreateAnimations();
         }
@@ -35,8 +40,26 @@ namespace MyGame
 
         public override void Update()
         {
-            bulletVel += acceleration * Time.DeltaTime;
-            transform.Translate(direction, bulletVel * Time.DeltaTime);
+            timeSinceSpawn += Time.DeltaTime;
+
+            if (timeSinceSpawn >= coolDown)
+            {
+                if (!directionSet)
+                {
+                    Vector2 playerPosition = GameManager.Instance.LevelController.player.Transform.Position;
+
+                    direction = CalculateDirection(transform.Position, playerPosition, new Vector2(0, 0));
+                    directionSet = true;
+                }
+
+                bulletVel += acceleration * Time.DeltaTime;
+                transform.Translate(direction, bulletVel * Time.DeltaTime);
+            }
+            else
+            {
+                currentAnimation = spawn;
+                currentAnimation.Update();
+            }
             base.Update();
         }
 
@@ -47,10 +70,10 @@ namespace MyGame
             float bulletTop = transform.Position.y;
             float bulletBottom = transform.Position.y + BulletHeight;
 
-            float playerLeft = player.transform.Position.x;
-            float playerRight = player.transform.Position.x + Character.PlayerWidth;
-            float playerTop = player.transform.Position.y;
-            float playerBottom = player.transform.Position.y + Character.PlayerHeight;
+            float playerLeft = player.Transform.Position.x;
+            float playerRight = player.Transform.Position.x + Character.PlayerWidth;
+            float playerTop = player.Transform.Position.y;
+            float playerBottom = player.Transform.Position.y + Character.PlayerHeight;
 
             if (bulletRight >= playerLeft && bulletLeft <= playerRight && bulletBottom >= playerTop && bulletTop <= playerBottom && !destroyed)
             {
@@ -75,20 +98,24 @@ namespace MyGame
                 if (coolDown <= 0)
                     GameManager.Instance.LevelController.enemyBullets.Remove(this);
             }
-            else
-            {
-                currentAnimation = idle;
-            }
         }
 
         private void CreateAnimations()
         {
             List<string> destroyPaths = new List<string>();
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 3; i++)
             {
                 destroyPaths.Add($"assets/enemyBullet/destroy/{i}.png");
             }
-            CreateAnimations(idlePath, destroyPaths, 0.030f);
+            List<IntPtr> spawn = new List<IntPtr>();
+            for (int i = 0; i < 4; i++)
+            {
+                IntPtr frame = Engine.LoadImage($"assets/enemyBullet/spawn/{i}.png");
+                spawn.Add(frame);
+            }
+            this.spawn = new Animation("Spawn", spawn, 0.1f, false);
+
+            CreateAnimations(idlePath, destroyPaths, 0.1f);
         }
     }
 }

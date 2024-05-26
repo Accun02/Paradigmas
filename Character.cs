@@ -39,7 +39,7 @@ namespace MyGame
 
         private Animation currentAnimation;
 
-        public Transform transform
+        public Transform Transform
         {
             get; 
             set;
@@ -49,8 +49,8 @@ namespace MyGame
 
         public Character(Vector2 position)
         {
-            transform = new Transform(position);
-            controller = new CharacterController(transform);
+            Transform = new Transform(position);
+            controller = new CharacterController(Transform);
 
             CreateAnimations();
             currentAnimation = idleRight;
@@ -68,7 +68,7 @@ namespace MyGame
         {
             if (player.Health > 0)
             {
-                controller.Update(player);
+                controller.Update();
                 isJumping = controller.IsJumping;
                 cuurentDeath = 0f;
                 isDead = false;
@@ -137,15 +137,15 @@ namespace MyGame
             }
         }
 
-        public void Render(Character player)
+        public void Render()
         {
             if (!isDead)
             {
-                Engine.Draw(currentAnimation.CurrentFrame, transform.Position.x, transform.Position.y);
+                Engine.Draw(currentAnimation.CurrentFrame, Transform.Position.x, Transform.Position.y);
             }
             else
             {
-                Engine.Draw(currentAnimation.CurrentFrame, transform.Position.x - 30, transform.Position.y - 50);
+                Engine.Draw(currentAnimation.CurrentFrame, Transform.Position.x - 30, Transform.Position.y - 50);
             }
         }
 

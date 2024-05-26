@@ -8,7 +8,7 @@ using Tao.Sdl;
 
 namespace MyGame
 {
-    public  class LevelController
+    public class LevelController
     {
         public int GroundHeight = 584;        // De arriba a abajo
         public int ScreenWidth = 1280;       // De izquierda a derecha
@@ -18,18 +18,18 @@ namespace MyGame
 
 
         public List<Bullet> BulletList;
-        public List<Teleport> TeleportList;
+        public List<EnemyTeleport> TeleportList;
         public List<EnemyBullet> enemyBullets;
-        public List<ThunderAttack> thunderattacks;
+        public List<EnemyThunderBubble> thunderattacks;
 
-        public void Initialize() 
+        public void Initialize()
         {
             player = new Character(new Vector2(ScreenWidth / 2 - Character.PlayerWidth / 2, 584 - Character.PlayerHeight));
-            enemy   = new Enemy(new Vector2(ScreenWidth / 2 - Enemy.EnemyWidth / 2, 100));
+            enemy = new Enemy(new Vector2(ScreenWidth / 2 - Enemy.EnemyWidth / 2, 100));
             BulletList = new List<Bullet>();
-            TeleportList = new List<Teleport>();
+            TeleportList = new List<EnemyTeleport>();
             enemyBullets = new List<EnemyBullet>();
-            thunderattacks = new List<ThunderAttack>();
+            thunderattacks = new List<EnemyThunderBubble>();
         }
 
         public void Render()
@@ -39,27 +39,27 @@ namespace MyGame
             if (player.Health > 0)
                 BackgroundManager.Render();
 
-            player.Render(player);
+            player.Render();
 
             if (player.Health > 0)
             {
                 enemy.Render();
 
-                foreach (Bullet bullet in BulletList)
+                for (int i = 0; i < BulletList.Count; i++)
                 {
-                    bullet.Render();
+                    BulletList[i].Render();
                 }
-                foreach (EnemyBullet enemyBullet in enemyBullets)
+                for (int i = 0; i < enemyBullets.Count; i++)
                 {
-                    enemyBullet.Render();
+                    enemyBullets[i].Render();
                 }
-                foreach (Teleport teleport in TeleportList)
+                for (int i = 0; i < TeleportList.Count; i++)
                 {
-                    teleport.Render();
+                    TeleportList[i].Render();
                 }
-                foreach (ThunderAttack thunderattack in thunderattacks)
+                for (int i = 0; i < thunderattacks.Count; i++)
                 {
-                    thunderattack.Render();
+                    thunderattacks[i].Render();
                 }
 
                 FontManager.Render(enemy);
@@ -69,7 +69,7 @@ namespace MyGame
             Engine.Show();
         }
 
-        public void Update() 
+        public void Update()
         {
             player.Update(player);
 
@@ -78,27 +78,27 @@ namespace MyGame
                 enemy.Update(Time.DeltaTime);
                 enemy.CheckCollision(player);
 
-                foreach (Bullet bullet in BulletList.ToList())
+                for (int i = 0; i < BulletList.Count; i++)
                 {
-                    bullet.Update();
-                    bullet.CheckCollisions(enemy);
+                    BulletList[i].Update();
+                    BulletList[i].CheckCollisions(enemy);
                 }
 
-                foreach (EnemyBullet enemyBullet in enemyBullets.ToList())
+                for (int i = 0; i < enemyBullets.Count; i++)
                 {
-                    enemyBullet.Update();
-                    enemyBullet.CheckCollisions(player);
+                    enemyBullets[i].Update();
+                    enemyBullets[i].CheckCollisions(player);
                 }
 
-                foreach (Teleport teleport in TeleportList.ToList())
+                for (int i = 0; i < TeleportList.Count; i++)
                 {
-                    teleport.Update();
+                    TeleportList[i].Update();
                 }
 
-                foreach (ThunderAttack thunderattack in thunderattacks)
+                for (int i = 0; i < thunderattacks.Count; i++)
                 {
-                    thunderattack.Update();
-                    thunderattack.CheckPositions(player);
+                    thunderattacks[i].Update();
+                    thunderattacks[i].CheckPositions(player);
                 }
             }
         }
@@ -109,16 +109,17 @@ namespace MyGame
             TeleportList.Clear();
             BulletList.Clear();
             enemyBullets.Clear();
+            thunderattacks.Clear();
 
             //Reset Player
-            player.transform.Position = new Vector2(ScreenWidth / 2 - Character.PlayerWidth / 2, 584 - Character.PlayerHeight);
+            player.Transform.Position = new Vector2(ScreenWidth / 4 - Character.PlayerWidth / 2, 584 - Character.PlayerHeight);
             player.ResetMomentum();
 
             player.Health = player.MaxHealth;
             player.IsDead = false;
 
             //Reset Enemy
-            enemy.ResetTransform(new Vector2(ScreenWidth / 2 - Enemy.EnemyWidth / 2, 100));
+            enemy.ResetTransform(new Vector2((ScreenWidth / 4) * 3 - Enemy.EnemyWidth / 2, 250));
             enemy.ResetAttacks();
             enemy.Health = enemy.MaxHealth;
 

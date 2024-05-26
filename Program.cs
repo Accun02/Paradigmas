@@ -8,12 +8,6 @@ namespace MyGame
 {
     class Program
     {
-        private static LevelController levelController = new LevelController();
-
-        private static GameManager gameManager;
-        public static GameManager GameManager => gameManager;
-
-
         static float delayFrame = 60f;             // FPS
         static public bool targetFrame = false;
 

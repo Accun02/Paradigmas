@@ -16,7 +16,7 @@ namespace MyGame
             this.transform = transform;
         }
 
-        public void MoverEnemigo() 
+        public void MoveEnemy() 
         {
             transform.Translate(new Vector2(1,0), speed);
         }

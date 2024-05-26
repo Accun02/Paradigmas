@@ -30,7 +30,7 @@ namespace MyGame
             direction = dir;
         }
 
-        public void Render()
+        public virtual void Render()
         {
             Engine.Draw(currentAnimation.CurrentFrame, transform.Position.x, transform.Position.y);
         }
@@ -40,7 +40,7 @@ namespace MyGame
             currentAnimation.Update();
         }
 
-        protected virtual void CreateAnimations(string idlePath, List<string> destroyPaths, float destroyFrameDuration = 0.035f)
+        protected virtual void CreateAnimations(string idlePath, List<string> destroyPaths, float destroyFrameDuration)
         {
             IntPtr idleTexture = Engine.LoadImage(idlePath);
             idle = new Animation("Idle", new List<IntPtr> { idleTexture }, 1.0f, false);

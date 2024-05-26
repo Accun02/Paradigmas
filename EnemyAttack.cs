@@ -4,12 +4,9 @@ using System.Diagnostics;
 
 public class EnemyAttack
 {
-    private Transform transform;
     private int enemyAttack;
-    public int EnemyAttackSelect { set { enemyAttack = value; } get { return enemyAttack; } }
     private Random rnd;
     private EnemyMovement enemyMovement;
-    private ThunderAttack thunderattack;
 
     private float attackTimer = 0;
     private float pauseTimer = 0;
@@ -18,7 +15,7 @@ public class EnemyAttack
     private bool canAttack = true;
     private bool isAttacking = false;
 
-    private bool effectPlayedDuringCooldown = false;
+    private bool effectDuringCooldown = false;
     private bool canTeleport = true;
 
     private float EnemyWidth = Enemy.EnemyWidth;
@@ -26,27 +23,51 @@ public class EnemyAttack
     private float BulletWidth = EnemyBullet.BulletWidth;
     private float BulletHeight = EnemyBullet.BulletHeight;
 
+    private float repeatCooldown = 0.75f;
+    private float currentRepeat = 0.0f;
+
     private float teleportCooldownTimer = 0;
     private float teleportCooldownDuration = 1.9f;
     private bool isTeleportOnCooldown = false;
 
-    public bool IsTeleportOnCooldown { set { isTeleportOnCooldown = value; } get { return isTeleportOnCooldown; } }
+    private float initialCooldown = 1.0f;
+    private bool initialCooldownCompleted = false;
+
+    private int repetitionCount = 0;
+    private bool nearAttacking = false;
+
+    public int EnemyAttackSelect { set { enemyAttack = value; } get { return enemyAttack; }}
+    public bool IsTeleportOnCooldown { set { isTeleportOnCooldown = value; } get { return isTeleportOnCooldown; }}
     public bool IsAttacking { set { isAttacking = value; } get { return isAttacking; } }
     public float AttackTimer { set { attackTimer = value; } get { return attackTimer; } }
 
-    public EnemyAttack(Vector2 position, EnemyMovement enemyMovement)
+    public EnemyAttack(EnemyMovement enemyMovement)
     {
-        transform = new Transform(position);
         this.enemyMovement = enemyMovement;
         rnd = new Random();
     }
+
     public void Update(Vector2 Position)
     {
-        timers(Position);
-        Selection(Position);
+        Timers(Position);
+        if (initialCooldownCompleted)
+        {
+            Selection(Position);
+        }
     }
-    private void timers(Vector2 Position)
+
+    private void Timers(Vector2 Position)
     {
+        if (!initialCooldownCompleted)
+        {
+            initialCooldown -= Time.DeltaTime;
+            if (initialCooldown <= 0)
+            {
+                initialCooldownCompleted = true;
+            }
+            return;
+        }
+
         if (canAttack)
         {
             attackTimer += Time.DeltaTime;
@@ -60,20 +81,24 @@ public class EnemyAttack
         {
             teleportCooldownTimer += Time.DeltaTime;
 
-            if (teleportCooldownTimer >= 1.25)
+            if (teleportCooldownTimer >= 1.25f)
             {
-                if (!effectPlayedDuringCooldown)
-                Effect(Position);
-                effectPlayedDuringCooldown = true;
+                if (!effectDuringCooldown)
+                {
+                    Effect(Position);
+                    effectDuringCooldown = true;
+                }
             }
 
             if (teleportCooldownTimer >= teleportCooldownDuration)
             {
                 isTeleportOnCooldown = false;
                 teleportCooldownTimer = 0;
-                effectPlayedDuringCooldown = false; 
+                effectDuringCooldown = false;
             }
         }
+
+        currentRepeat -= Time.DeltaTime;
     }
 
     public void ResetCurrent()
@@ -82,53 +107,151 @@ public class EnemyAttack
         isTeleportOnCooldown = false;
     }
 
-    private void Selection(Vector2 position)
+    private void Selection(Vector2 enemyPosition)
     {
+        float playerX = GameManager.Instance.LevelController.player.Transform.Position.x;
+        float enemyX = enemyPosition.x;
+        float distanceX = Math.Abs(playerX - enemyX);
+
         if (attackTimer >= 1 && canAttack)
         {
-            //enemyAttack = rnd.Next(1, 3);
-            //enemyAttack = 1;
+            nearAttacking = distanceX < 300;
+
+            if (nearAttacking)
+            {
+                Engine.Debug("ataque CERCA");
+                enemyAttack = rnd.Next(1, 3);
+            }
+            else
+            {
+                Engine.Debug("ataque LEJOS");
+                int[] farAttacks = { 1, 3 };
+                enemyAttack = farAttacks[rnd.Next(0, farAttacks.Length)];
+            }
             isAttacking = true;
+            repetitionCount = 0;
+            currentRepeat = 0;
         }
+
         if (isAttacking)
         {
+            if (!nearAttacking && distanceX < 300 && repetitionCount >= 2)
+            {
+                enemyAttack = 2;
+            }
+
             switch (enemyAttack)
             {
                 case 1:
-                    GameManager.Instance.LevelController.enemyBullets.Add(new EnemyBullet(position, GameManager.Instance.LevelController.player.transform.Position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
-                    GameManager.Instance.LevelController.enemyBullets.Add(new EnemyBullet(position, GameManager.Instance.LevelController.player.transform.Position, new Vector2(EnemyWidth + EnemyBullet.BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
-                    timeBetweenAttacks = 0.45f;
-                    canAttack = false;
-                    attackTimer = 0;
+                    ShootAtPlayer(enemyPosition);
                     break;
                 case 2:
-                    if (canTeleport && !isTeleportOnCooldown)
-                    {
-                        enemyMovement.Teleport();
-                        timeBetweenAttacks = 3.0f;
-                        canAttack = false;
-                        attackTimer = 0;
-                        isTeleportOnCooldown = true;
-                       
-                    }
+                    TeleportAway();
                     break;
                 case 3:
-                    GameManager.Instance.LevelController.thunderattacks.Add(new ThunderAttack(position, GameManager.Instance.LevelController.player.transform.Position, new Vector2(0,0)));
+                    LightningBolt(enemyPosition);
                     break;
             }
-            isAttacking = false;
         }
 
-        if (pauseTimer >= timeBetweenAttacks)
+        if (!isAttacking && pauseTimer >= timeBetweenAttacks)
         {
             canAttack = true;
             pauseTimer = 0;
         }
     }
 
+    // Tipos de ataques
+
+    private void ShootAtPlayer(Vector2 position)
+    {
+        float playerX = GameManager.Instance.LevelController.player.Transform.Position.x;
+        float enemyX = position.x;
+        float distanceX = Math.Abs(playerX - enemyX);
+
+        if (!nearAttacking && distanceX < 300 && repetitionCount >= 2)
+        {
+            enemyAttack = 2;
+            TeleportAway();
+            return;
+        }
+
+        repeatCooldown = 1f;
+
+        int maxRepetitions = GameManager.Instance.LevelController.enemy.Health <= GameManager.Instance.LevelController.enemy.MaxHealth / 2 ? 3 : 1;
+
+        if (repetitionCount < maxRepetitions && currentRepeat <= 0)
+        {
+            GameManager.Instance.LevelController.enemyBullets.Add(new EnemyBullet(position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
+            GameManager.Instance.LevelController.enemyBullets.Add(new EnemyBullet(position, new Vector2(EnemyWidth + EnemyBullet.BulletWidth - 20, EnemyHeight / 2 - BulletHeight / 2)));
+            timeBetweenAttacks = 0.45f;
+            canAttack = false;
+            attackTimer = 0;
+            currentRepeat = repeatCooldown;
+            repetitionCount++;
+        }
+        else if (repetitionCount < maxRepetitions && currentRepeat > 0)
+        {
+            currentRepeat -= Time.DeltaTime;
+        }
+        else
+        {
+            repetitionCount = 0;
+            isAttacking = false;
+        }
+    }
+
+    private void TeleportAway()
+    {
+        if (canTeleport && !isTeleportOnCooldown)
+        {
+            enemyMovement.Teleport();
+            timeBetweenAttacks = 3.0f;
+            canAttack = false;
+            attackTimer = 0;
+            isTeleportOnCooldown = true;
+            isAttacking = false;
+        }
+    }
+
+    private void LightningBolt(Vector2 position)
+    {
+        float playerX = GameManager.Instance.LevelController.player.Transform.Position.x;
+        float enemyX = position.x;
+        float distanceX = Math.Abs(playerX - enemyX);
+
+        if (!nearAttacking && distanceX < 300 && repetitionCount >= 2)
+        {
+            enemyAttack = 2;
+            TeleportAway();
+            return;
+        }
+
+        repeatCooldown = 1.25f;
+
+        if (repetitionCount <= 2 && currentRepeat <= 0)
+        {
+            GameManager.Instance.LevelController.thunderattacks.Add(new EnemyThunderBubble(position, GameManager.Instance.LevelController.player.Transform.Position, new Vector2(BulletWidth / 2, EnemyHeight / 2 - BulletHeight / 2)));
+            timeBetweenAttacks = 0.45f;
+            canAttack = false;
+            attackTimer = 0;
+            currentRepeat = repeatCooldown;
+            repetitionCount++;
+        }
+        else if (repetitionCount <= 3 && currentRepeat > 0)
+        {
+            currentRepeat -= Time.DeltaTime;
+        }
+        else
+        {
+            repetitionCount = 0;
+            isAttacking = false;
+        }
+    }
+
     private void Effect(Vector2 position)
     {
-        GameManager.Instance.LevelController.TeleportList.Add(new Teleport((int)position.x + (int)Enemy.EnemyWidth, (int)position.y, new Vector2(-1, 0), "assets/Misery/Teleport/0.png"));
-        GameManager.Instance.LevelController.TeleportList.Add(new Teleport((int)position.x - (int)Enemy.EnemyWidth, (int)position.y, new Vector2(1, 0), "assets/Misery/Teleport/1.png"));
+        GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)position.x + (int)Enemy.EnemyWidth, (int)position.y, new Vector2(-1, 0), "assets/Misery/Teleport/0.png"));
+        GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)position.x - (int)Enemy.EnemyWidth, (int)position.y, new Vector2(1, 0), "assets/Misery/Teleport/1.png"));
     }
 }

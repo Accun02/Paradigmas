@@ -4,39 +4,40 @@ using System.Collections.Generic;
 using Tao.Sdl;
 public class Enemy
 {
-    public const float EnemyWidth = 64;
-    public const float EnemyHeight = 64;
+    public const float EnemyWidth = 80;
+    public const float EnemyHeight = 80;
+
     private bool vulnerable = true;
-    public bool Vulnerable { set { vulnerable = value; } get { return vulnerable; } }
     private int health = 100;
     private int maxHealth = 100;
     private float levitationAmplitude = 90;
     private float levitationSpeed = 2;
-    private Transform transform;
-    public Transform Transform { get { return transform; } }
-    public int Health { set { health = value; } get { return health; } }
-    public int MaxHealth { set { maxHealth = value; } get { return maxHealth; } }
-    private EnemyMovement enemyMovement;
-    private EnemyAttack enemyattackselect;
-    private IntPtr image;
-    private Animation Idle;
-    private Animation enemyattack;
-    private Animation currentAnimation;
-    private Animation teleport;
-    private bool isShaking = false;
 
+    private bool isShaking = false;
     private float shakeOffsetX = 0;
     private float shakeTimer = 0;
     private float shakeDuration = 0.15f;
     private float shakeMagnitude = 2;
     private float shakeFrequency = 10;
 
+    private Transform transform;
+    private EnemyMovement enemyMovement;
+    private EnemyAttack enemyattackselect;
+    private Animation Idle;
+    private Animation enemyattack;
+    private Animation currentAnimation;
+    private Animation teleport;
+
+    public Transform Transform { get { return transform; } }
+    public bool Vulnerable { set { vulnerable = value; } get { return vulnerable; } }
+    public int Health { set { health = value; } get { return health; } }
+    public int MaxHealth { set { maxHealth = value; } get { return maxHealth; } }
+
     public Enemy(Vector2 position)
     {
         transform = new Transform(position);
         enemyMovement = new EnemyMovement(Transform);
-        enemyattackselect = new EnemyAttack(transform.Position, enemyMovement);
-        image = Engine.LoadImage("assets/Misery/Idle/0.png");
+        enemyattackselect = new EnemyAttack(enemyMovement);
         CreateAnimations();
         currentAnimation = Idle;
     }
@@ -98,10 +99,10 @@ public class Enemy
         float enemyRight = transform.Position.x + EnemyWidth;
         float enemyTop = transform.Position.y;
         float enemyBottom = transform.Position.y + EnemyHeight;
-        float playerLeft = player.transform.Position.x;
-        float playerRight = player.transform.Position.x + Character.PlayerWidth;
-        float playerTop = player.transform.Position.y;
-        float playerBottom = player.transform.Position.y + Character.PlayerHeight;
+        float playerLeft = player.Transform.Position.x;
+        float playerRight = player.Transform.Position.x + Character.PlayerWidth;
+        float playerTop = player.Transform.Position.y;
+        float playerBottom = player.Transform.Position.y + Character.PlayerHeight;
 
         if (vulnerable && enemyRight >= playerLeft && enemyLeft <= playerRight && enemyBottom >= playerTop && enemyTop <= playerBottom)
         {

@@ -50,9 +50,10 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="BackgroundManager.cs" />
+    <Compile Include="DynamicPool.cs" />
     <Compile Include="LevelController.cs" />
     <Compile Include="Projectile.cs" />
-    <Compile Include="Teleport.cs" />
+    <Compile Include="EnemyTeleport.cs" />
     <Compile Include="Bullet.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="CharacterController.cs" />
@@ -68,10 +69,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sound.cs" />
-    <Compile Include="ThunderAttack.cs" />
+    <Compile Include="EnemyThunderBubble.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Transform.cs" />
     <Compile Include="Vector2.cs" />
+    <Compile Include="WaveMovement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -99,6 +101,12 @@
     <Content Include="assets\Dead.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="assets\bullet\destroy\3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\bullet\destroy\4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\enemyBullet\bullet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -111,16 +119,42 @@
     <Content Include="assets\enemyBullet\destroy\2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="assets\enemyBullet\destroy\3.png">
+    <Content Include="assets\enemyBullet\spawn\0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="assets\enemyBullet\destroy\4.png">
+    <Content Include="assets\enemyBullet\spawn\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="assets\enemyBullet\destroy\5.png">
+    <Content Include="assets\enemyBullet\spawn\2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="assets\enemyBullet\destroy\6.png">
+    <Content Include="assets\enemyBullet\spawn\3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\enemyBullet\thunder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\enemyBullet\thunderBolt\0.png" />
+    <Content Include="assets\enemyBullet\thunderBolt\1.png" />
+    <Content Include="assets\enemyBullet\thunderSpawn\0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\enemyBullet\thunderSpawn\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\enemyBullet\thunderSpawn\2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\enemyBullet\thunderSpawn\3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\enemyBullet\thunderSpawn\4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\enemyBullet\thunderWait\0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\enemyBullet\thunderWait\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\explosion\0.png">

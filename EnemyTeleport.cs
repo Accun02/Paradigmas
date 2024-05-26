@@ -2,7 +2,7 @@
 
 namespace MyGame
 {
-    public class Teleport
+    public class EnemyTeleport
     {
         public const int TeleportHeight = 20;
         public const int TeleportWidth = 20;
@@ -14,18 +14,18 @@ namespace MyGame
         private IntPtr image;
 
         private Vector2 direction;
-        private float destructionTimer = 0.35f;
+        private float destructionTimer = 0.40f;
         private float coolDown = 0.3f;
         private bool isDestroyed = false;
 
-        public Teleport(int x, int y, Vector2 dir, string imagePath)
+        public EnemyTeleport(int x, int y, Vector2 dir, string imagePath)
         {
             transform = new Transform(new Vector2(x, y));
             direction = dir;
             image = Engine.LoadImage(imagePath);
         }
 
-        public Teleport(Vector2 position, Vector2 dir, string imagePath)
+        public EnemyTeleport(Vector2 position, Vector2 dir, string imagePath)
         {
             transform = new Transform(position);
             direction = dir;
