@@ -14,7 +14,7 @@ namespace MyGame
         public const float BulletHeight = 100;
         public const float BulletWidth = 48;
         private Animation spawn;
-        private float destrucctioncooldown = 0.1f;
+        private float destroyCoolDown = 0.1f;
 
         public EnemyLightningBolt(Vector2 position, Vector2 offset) : base(new Vector2(position.x + offset.x, position.y + offset.y), new Vector2(0, 1))
         {
@@ -57,9 +57,9 @@ namespace MyGame
                 destroyed = true;
                 bulletVel = 0;
                 acceleration = 0;
-                destrucctioncooldown -= Time.DeltaTime;
+                destroyCoolDown -= Time.DeltaTime;
 
-                if (destrucctioncooldown <= 0)
+                if (destroyCoolDown <= 0)
                 {
                     GameManager.Instance.LevelController.LightningList.Remove(this );
                 }
