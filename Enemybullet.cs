@@ -77,7 +77,7 @@ namespace MyGame
 
             if (bulletRight >= playerLeft && bulletLeft <= playerRight && bulletBottom >= playerTop && bulletTop <= playerBottom && !destroyed)
             {
-                player.Health -= 1;
+                player.TakeDamage(1);
 
                 currentAnimation = destroy;
                 currentAnimation.Update();

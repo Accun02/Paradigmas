@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Tao.Sdl;
-public class Enemy :  GameObject, Idamageable
+public class Enemy :  GameObject, IDamageable
 {
     public const float EnemyWidth = 80;
     public const float EnemyHeight = 80;
@@ -114,7 +114,7 @@ public class Enemy :  GameObject, Idamageable
         if (vulnerable && enemyRight >= playerLeft && enemyLeft <= playerRight && enemyBottom >= playerTop && enemyTop <= playerBottom)
         {
             Console.WriteLine(player.Health);
-            player.Health -= 1;
+            player.TakeDamage(1);
         }
     }
     public void TakeDamage(int amount)

@@ -17,7 +17,6 @@ namespace MyGame
         private float timeSinceSpawn;
         private float detectionCoolDown = 0.20f;
         private float timeSinceDetection;
-        private float deletionCoolDown = 0.1f;
         public const float BulletHeight = 48;
         public const float BulletWidth = 48;
         private float waveFrequency = 6f;
@@ -68,14 +67,13 @@ namespace MyGame
             if (bulletPosition.x + BulletWidth > playerPosition.x && bulletPosition.x < playerPosition.x + Character.PlayerWidth &&
                 bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && !shootThunder && timeSinceSpawn > initialDetection)
             {
-                player.Health -= 1;
+                player.TakeDamage(1);
                 playerDetected = true;
                 timeSinceDetection = 0;
                 return;
             }
             else if (Math.Abs(playerPosition.x - bulletPosition.x) <= Character.PlayerWidth / 2 && !playerDetected && timeSinceSpawn > initialDetection)
             {
-                Engine.Debug("INSTANCIAR ATAQUE");
                 playerDetected = true;
                 timeSinceDetection = 0;
             }
@@ -95,7 +93,7 @@ namespace MyGame
                 {
                     shootThunder = true;
 
-                    Vector2 lightningOffset = new Vector2(0, -10);
+                    Vector2 lightningOffset = new Vector2(0, -20);
                     GameManager.Instance.LevelController.LightningList.Add(new EnemyLightningBolt(transform.Position, lightningOffset));
                     GameManager.Instance.LevelController.ThunderList.Remove(this);
                 }

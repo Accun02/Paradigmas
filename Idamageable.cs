@@ -6,16 +6,10 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    public interface Idamageable
+    public interface IDamageable
     {
-
         int Health { get; set; }
 
-        
-
         void TakeDamage(int damage);
-
-
-
     }
 }

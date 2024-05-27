@@ -18,8 +18,8 @@ namespace MyGame
 
         public EnemyLightningBolt(Vector2 position, Vector2 offset) : base(new Vector2(position.x + offset.x, position.y + offset.y), new Vector2(0, 1))
         {
-            bulletVel = 550;
-            acceleration = 2000;
+            bulletVel = 250;
+            acceleration = 4000;
             coolDown = 0.4f;
             CreateAnimations();
         }
@@ -46,7 +46,7 @@ namespace MyGame
             if (bulletPosition.x + BulletWidth > playerPosition.x && bulletPosition.x < playerPosition.x + Character.PlayerWidth &&
                 bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && !shootThunder)
             {
-                player.Health -= 1;
+                player.TakeDamage(1);
 
                 return;
             }
@@ -78,7 +78,7 @@ namespace MyGame
                 IntPtr frame = Engine.LoadImage($"assets/enemyBullet/thunderBolt/{i}.png");
                 spawn.Add(frame);
             }
-            this.spawn = new Animation("Spawn", spawn, 0.095f, true);
+            this.spawn = new Animation("Spawn", spawn, 0.075f, true);
 
             List<string> destroyPaths = new List<string>();
             for (int i = 0; i < 2; i++)
