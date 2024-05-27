@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    public class Character
+    public class Character : GameObject,Idamageable
     {
         public const float PlayerWidth = 64;
         public const float PlayerHeight = 64;
 
         private bool isJumping = false;
         private bool isDead = false;
+        private bool vulnerable = true;
 
         private int health = 1;
         private int maxHealth = 1;
@@ -136,7 +137,14 @@ namespace MyGame
                     }
             }
         }
-
+        public void TakeDamage(int damage)
+        {
+            if (vulnerable)
+            {
+                health -= damage;
+               
+            }
+        }
         public void Render()
         {
             if (!isDead)

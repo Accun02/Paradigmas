@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Tao.Sdl;
-public class Enemy
+public class Enemy :  GameObject, Idamageable
 {
     public const float EnemyWidth = 80;
     public const float EnemyHeight = 80;

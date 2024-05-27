@@ -14,6 +14,7 @@ namespace MyGame
         public const float BulletHeight = 100;
         public const float BulletWidth = 48;
         private Animation spawn;
+        private float destrucctioncooldown = 0.1f;
 
         public EnemyLightningBolt(Vector2 position, Vector2 offset) : base(new Vector2(position.x + offset.x, position.y + offset.y), new Vector2(0, 1))
         {
@@ -46,7 +47,7 @@ namespace MyGame
                 bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && !shootThunder)
             {
                 player.Health -= 1;
-                GameManager.Instance.LevelController.LightningList.Remove(this);
+
                 return;
             }
             if (transform.Position.y >= GroundHeight - BulletHeight)
@@ -56,6 +57,12 @@ namespace MyGame
                 destroyed = true;
                 bulletVel = 0;
                 acceleration = 0;
+                destrucctioncooldown -= Time.DeltaTime;
+
+                if (destrucctioncooldown <= 0)
+                {
+                    GameManager.Instance.LevelController.LightningList.Remove(this );
+                }
             }
             else
             {
@@ -74,7 +81,7 @@ namespace MyGame
             this.spawn = new Animation("Spawn", spawn, 0.095f, true);
 
             List<string> destroyPaths = new List<string>();
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
                 destroyPaths.Add($"assets/enemyBullet/thunderBolt/destroy/{i}.png");
             }
