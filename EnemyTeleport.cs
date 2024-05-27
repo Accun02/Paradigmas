@@ -10,13 +10,13 @@ namespace MyGame
         private float imageVel = -10;
         private float acceleration = 1000;
 
-        private Transform transform;
-        private IntPtr image;
-
-        private Vector2 direction;
         private float destructionTimer = 0.40f;
         private float coolDown = 0.3f;
         private bool isDestroyed = false;
+
+        private Transform transform;
+        private IntPtr image;
+        private Vector2 direction;
 
         public EnemyTeleport(int x, int y, Vector2 dir, string imagePath)
         {

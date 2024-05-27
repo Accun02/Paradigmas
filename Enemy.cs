@@ -23,8 +23,10 @@ public class Enemy
     private Transform transform;
     private EnemyMovement enemyMovement;
     private EnemyAttack enemyattackselect;
+
     private Animation Idle;
     private Animation enemyattack;
+    private Animation enemyattack2;
     private Animation currentAnimation;
     private Animation teleport;
 
@@ -48,6 +50,11 @@ public class Enemy
         if (enemyattackselect.EnemyAttackSelect == 1)
         {
             currentAnimation = enemyattack;
+            currentAnimation.Update();
+        }
+        else if (enemyattackselect.EnemyAttackSelect == 3)
+        {
+            currentAnimation = enemyattack2;
             currentAnimation.Update();
         }
         else if (enemyattackselect.EnemyAttackSelect == 2)
@@ -133,19 +140,29 @@ public class Enemy
     private void CreateAnimations()
     {
         List<IntPtr> idle = new List<IntPtr>();
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 12; i++)
         {
             IntPtr frame = Engine.LoadImage($"assets/Misery/Idle/{i}.png");
             idle.Add(frame);
         }
-        Idle = new Animation("Idle", idle, 0.5f, true);
+        Idle = new Animation("Idle", idle, 0.075f, true);
+
         List<IntPtr> Attack = new List<IntPtr>();
         for (int i = 0; i < 1; i++)
         {
-            IntPtr frame = Engine.LoadImage($"assets/Misery/Bullet/{i}.png");
+            IntPtr frame = Engine.LoadImage($"assets/Misery/Bullet/bullet.png");
             Attack.Add(frame);
         }
-        enemyattack = new Animation("enemyattack", Attack, 0.025f, false);
+        enemyattack = new Animation("enemyattack", Attack, 0.45f, false);
+
+        List<IntPtr> Attack2 = new List<IntPtr>();
+        for (int i = 0; i < 1; i++)
+        {
+            IntPtr frame = Engine.LoadImage($"assets/Misery/Bullet/thunder.png");
+            Attack2.Add(frame);
+        }
+        enemyattack2 = new Animation("enemyattack2", Attack2, 0.45f, false);
+
         List<IntPtr> Teleport = new List<IntPtr>();
         for (int i = 0; i < 1; i++)
         {
@@ -154,4 +171,5 @@ public class Enemy
         }
         teleport = new Animation("teleport", Teleport, 0.1f, false);
     }
+
 }

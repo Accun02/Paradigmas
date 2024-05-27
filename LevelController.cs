@@ -10,7 +10,7 @@ namespace MyGame
 {
     public class LevelController
     {
-        public int GroundHeight = 584;        // De arriba a abajo
+        public int GroundHeight = 574;        // De arriba a abajo
         public int ScreenWidth = 1280;       // De izquierda a derecha
 
         public Character player;
@@ -24,7 +24,7 @@ namespace MyGame
 
         public void Initialize()
         {
-            player = new Character(new Vector2(ScreenWidth / 2 - Character.PlayerWidth / 2, 584 - Character.PlayerHeight));
+            player = new Character(new Vector2(ScreenWidth / 2 - Character.PlayerWidth / 2, GroundHeight - Character.PlayerHeight));
             enemy = new Enemy(new Vector2(ScreenWidth / 2 - Enemy.EnemyWidth / 2, 100));
             BulletList = new List<Bullet>();
             TeleportList = new List<EnemyTeleport>();
@@ -112,7 +112,7 @@ namespace MyGame
             thunderattacks.Clear();
 
             //Reset Player
-            player.Transform.Position = new Vector2(ScreenWidth / 4 - Character.PlayerWidth / 2, 584 - Character.PlayerHeight);
+            player.Transform.Position = new Vector2(ScreenWidth / 4 - Character.PlayerWidth / 2, GroundHeight - Character.PlayerHeight);
             player.ResetMomentum();
 
             player.Health = player.MaxHealth;

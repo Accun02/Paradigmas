@@ -220,12 +220,12 @@ namespace MyGame
         {
             if (isLookingRight)
             {
-                Bullet newBullet = pool.GetBullet(new Vector2((int)transform.Position.x + ((int)Character.PlayerWidth / 2) + 10 / 2, (int)transform.Position.y + (int)Character.PlayerHeight / 2), new Vector2(1, 0), "assets/bullet/bulletX.png", true);
+                Bullet newBullet = pool.GetBullet(new Vector2((int)transform.Position.x + ((int)Character.PlayerWidth / 2) + 0 / 2, (int)transform.Position.y + 16 + (int)Character.PlayerHeight / 2), new Vector2(1, 0), "assets/bullet/bulletX.png", true);
                 GameManager.Instance.LevelController.BulletList.Add(newBullet);
             }
             else if (isLookingLeft)
             {
-                Bullet newBullet = pool.GetBullet(new Vector2((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - 60, (int)transform.Position.y + (int)Character.PlayerHeight / 2), new Vector2(-1, 0), "assets/bullet/bulletX.png", true);
+                Bullet newBullet = pool.GetBullet(new Vector2((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - 60, (int)transform.Position.y + 16 + (int)Character.PlayerHeight / 2), new Vector2(-1, 0), "assets/bullet/bulletX.png", true);
                 GameManager.Instance.LevelController.BulletList.Add(newBullet);
             }
         }

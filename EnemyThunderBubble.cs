@@ -94,6 +94,14 @@ namespace MyGame
                 playerDetected = true;
                 timeSinceDetection = 0;
             }
+
+            if (transform.Position.y >= GroundHeight - BulletHeight || transform.Position.x >= ScreenWidth || transform.Position.x <= 0 - BulletWidth)
+            {
+                destroyed = true;
+                bulletVel = 0;
+                acceleration = 0;
+                GameManager.Instance.LevelController.thunderattacks.Remove(this);
+            }
         }
 
         private void CreateAnimations()
