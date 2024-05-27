@@ -96,7 +96,7 @@ namespace MyGame
 
                 coolDown -= Time.DeltaTime;
                 if (coolDown <= 0)
-                    GameManager.Instance.LevelController.enemyBullets.Remove(this);
+                    GameManager.Instance.LevelController.EnemyBulletList.Remove(this);
             }
         }
 

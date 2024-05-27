@@ -26,8 +26,8 @@ namespace MyGame
 
         public void Teleport()
         {
-            GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)transform.Position.x, (int)transform.Position.y, new Vector2(1, 0), "assets/Misery/Teleport/0.png"));
-            GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)transform.Position.x, (int)transform.Position.y, new Vector2(-1, 0), "assets/Misery/Teleport/1.png"));
+            GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)transform.Position.x, (int)transform.Position.y, new Vector2(1, 0), "assets/enemy/teleport/0.png"));
+            GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)transform.Position.x, (int)transform.Position.y, new Vector2(-1, 0), "assets/enemy/teleport/1.png"));
 
             float newX, newY;
             do

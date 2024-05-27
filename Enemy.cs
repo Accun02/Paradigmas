@@ -140,17 +140,17 @@ public class Enemy
     private void CreateAnimations()
     {
         List<IntPtr> idle = new List<IntPtr>();
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 16; i++)
         {
-            IntPtr frame = Engine.LoadImage($"assets/Misery/Idle/{i}.png");
+            IntPtr frame = Engine.LoadImage($"assets/enemy/idle/{i}.png");
             idle.Add(frame);
         }
-        Idle = new Animation("Idle", idle, 0.075f, true);
+        Idle = new Animation("Idle", idle, 0.060f, true);
 
         List<IntPtr> Attack = new List<IntPtr>();
         for (int i = 0; i < 1; i++)
         {
-            IntPtr frame = Engine.LoadImage($"assets/Misery/Bullet/bullet.png");
+            IntPtr frame = Engine.LoadImage($"assets/enemy/shooting/bullet.png");
             Attack.Add(frame);
         }
         enemyattack = new Animation("enemyattack", Attack, 0.45f, false);
@@ -158,7 +158,7 @@ public class Enemy
         List<IntPtr> Attack2 = new List<IntPtr>();
         for (int i = 0; i < 1; i++)
         {
-            IntPtr frame = Engine.LoadImage($"assets/Misery/Bullet/thunder.png");
+            IntPtr frame = Engine.LoadImage($"assets/enemy/shooting/thunder.png");
             Attack2.Add(frame);
         }
         enemyattack2 = new Animation("enemyattack2", Attack2, 0.45f, false);
@@ -166,7 +166,7 @@ public class Enemy
         List<IntPtr> Teleport = new List<IntPtr>();
         for (int i = 0; i < 1; i++)
         {
-            IntPtr frame = Engine.LoadImage($"assets/Misery/Teleport/2.png");
+            IntPtr frame = Engine.LoadImage($"assets/enemy/teleport/2.png");
             Teleport.Add(frame);
         }
         teleport = new Animation("teleport", Teleport, 0.1f, false);

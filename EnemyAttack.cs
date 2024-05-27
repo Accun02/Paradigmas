@@ -30,27 +30,28 @@ public class EnemyAttack
     private float teleportCooldownDuration = 1.9f;
     private bool isTeleportOnCooldown = false;
 
-    private float initialCooldown = 1.0f;
-    private bool initialCooldownCompleted = false;
+    private float initialWait = 1.0f;
+    private bool initialWaitDone = false;
 
     private int repetitionCount = 0;
     private bool nearAttacking = false;
+    private bool playerIsDown = false;
 
     public int EnemyAttackSelect { set { enemyAttack = value; } get { return enemyAttack; }}
     public bool IsTeleportOnCooldown { set { isTeleportOnCooldown = value; } get { return isTeleportOnCooldown; }}
     public bool IsAttacking { set { isAttacking = value; } get { return isAttacking; } }
     public float AttackTimer { set { attackTimer = value; } get { return attackTimer; } }
-
     public EnemyAttack(EnemyMovement enemyMovement)
     {
         this.enemyMovement = enemyMovement;
         rnd = new Random();
     }
 
+    // Lógica de selector de ataques
     public void Update(Vector2 Position)
     {
         Timers(Position);
-        if (initialCooldownCompleted)
+        if (initialWaitDone)
         {
             Selection(Position);
         }
@@ -58,12 +59,12 @@ public class EnemyAttack
 
     private void Timers(Vector2 Position)
     {
-        if (!initialCooldownCompleted)
+        if (!initialWaitDone)
         {
-            initialCooldown -= Time.DeltaTime;
-            if (initialCooldown <= 0)
+            initialWait -= Time.DeltaTime;
+            if (initialWait <= 0)
             {
-                initialCooldownCompleted = true;
+                initialWaitDone = true;
             }
             return;
         }
@@ -85,7 +86,7 @@ public class EnemyAttack
             {
                 if (!effectDuringCooldown)
                 {
-                    Effect(Position);
+                    TeleportEffect(Position);
                     effectDuringCooldown = true;
                 }
             }
@@ -101,12 +102,6 @@ public class EnemyAttack
         currentRepeat -= Time.DeltaTime;
     }
 
-    public void ResetCurrent()
-    {
-        teleportCooldownTimer = 0;
-        isTeleportOnCooldown = false;
-    }
-
     private void Selection(Vector2 enemyPosition)
     {
         float playerX = GameManager.Instance.LevelController.player.Transform.Position.x;
@@ -116,17 +111,23 @@ public class EnemyAttack
         if (attackTimer >= 1 && canAttack)
         {
             nearAttacking = distanceX < 300;
+            playerIsDown = distanceX < 60;
 
-            if (nearAttacking)
+            if (nearAttacking && !playerIsDown)
             {
                 Engine.Debug("ataque CERCA");
                 enemyAttack = rnd.Next(1, 3);
             }
-            else
+            else if (!nearAttacking && !playerIsDown)
             {
                 Engine.Debug("ataque LEJOS");
                 int[] farAttacks = { 1, 3 };
                 enemyAttack = farAttacks[rnd.Next(0, farAttacks.Length)];
+            }
+            else
+            {
+                Engine.Debug("ataque ABAJO");
+                enemyAttack = rnd.Next(1, 3);
             }
             isAttacking = true;
             repetitionCount = 0;
@@ -162,7 +163,6 @@ public class EnemyAttack
     }
 
     // Tipos de ataques
-
     private void ShootAtPlayer(Vector2 position)
     {
         float playerX = GameManager.Instance.LevelController.player.Transform.Position.x;
@@ -182,8 +182,8 @@ public class EnemyAttack
 
         if (repetitionCount < maxRepetitions && currentRepeat <= 0)
         {
-            GameManager.Instance.LevelController.enemyBullets.Add(new EnemyBullet(position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
-            GameManager.Instance.LevelController.enemyBullets.Add(new EnemyBullet(position, new Vector2(EnemyWidth + EnemyBullet.BulletWidth - 20, EnemyHeight / 2 - BulletHeight / 2)));
+            GameManager.Instance.LevelController.EnemyBulletList.Add(new EnemyBullet(position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
+            GameManager.Instance.LevelController.EnemyBulletList.Add(new EnemyBullet(position, new Vector2(EnemyWidth + EnemyBullet.BulletWidth - 20, EnemyHeight / 2 - BulletHeight / 2)));
             timeBetweenAttacks = 0.45f;
             canAttack = false;
             attackTimer = 0;
@@ -231,7 +231,7 @@ public class EnemyAttack
 
         if (repetitionCount <= 2 && currentRepeat <= 0)
         {
-            GameManager.Instance.LevelController.thunderattacks.Add(new EnemyThunderBubble(position, GameManager.Instance.LevelController.player.Transform.Position, new Vector2(BulletWidth / 2, EnemyHeight / 2 - BulletHeight / 2)));
+            GameManager.Instance.LevelController.ThunderList.Add(new EnemyThunderBubble(position, GameManager.Instance.LevelController.player.Transform.Position, new Vector2(BulletWidth / 2, EnemyHeight / 2 - BulletHeight / 2)));
             timeBetweenAttacks = 0.45f;
             canAttack = false;
             attackTimer = 0;
@@ -249,9 +249,15 @@ public class EnemyAttack
         }
     }
 
-    private void Effect(Vector2 position)
+    // Otro
+    private void TeleportEffect(Vector2 position)
     {
-        GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)position.x + (int)Enemy.EnemyWidth, (int)position.y, new Vector2(-1, 0), "assets/Misery/Teleport/0.png"));
-        GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)position.x - (int)Enemy.EnemyWidth, (int)position.y, new Vector2(1, 0), "assets/Misery/Teleport/1.png"));
+        GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)position.x + (int)Enemy.EnemyWidth, (int)position.y, new Vector2(-1, 0), "assets/enemy/teleport/0.png"));
+        GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)position.x - (int)Enemy.EnemyWidth, (int)position.y, new Vector2(1, 0), "assets/enemy/teleport/1.png"));
+    }
+    public void ResetCurrent()
+    {
+        teleportCooldownTimer = 0;
+        isTeleportOnCooldown = false;
     }
 }

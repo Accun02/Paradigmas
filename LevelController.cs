@@ -19,8 +19,9 @@ namespace MyGame
 
         public List<Bullet> BulletList;
         public List<EnemyTeleport> TeleportList;
-        public List<EnemyBullet> enemyBullets;
-        public List<EnemyThunderBubble> thunderattacks;
+        public List<EnemyBullet> EnemyBulletList;
+        public List<EnemyThunderBubble> ThunderList;
+        public List<EnemyLightningBolt> LightningList;
 
         public void Initialize()
         {
@@ -28,8 +29,9 @@ namespace MyGame
             enemy = new Enemy(new Vector2(ScreenWidth / 2 - Enemy.EnemyWidth / 2, 100));
             BulletList = new List<Bullet>();
             TeleportList = new List<EnemyTeleport>();
-            enemyBullets = new List<EnemyBullet>();
-            thunderattacks = new List<EnemyThunderBubble>();
+            EnemyBulletList = new List<EnemyBullet>();
+            ThunderList = new List<EnemyThunderBubble>();
+            LightningList = new List<EnemyLightningBolt>();
         }
 
         public void Render()
@@ -49,17 +51,21 @@ namespace MyGame
                 {
                     BulletList[i].Render();
                 }
-                for (int i = 0; i < enemyBullets.Count; i++)
+                for (int i = 0; i < EnemyBulletList.Count; i++)
                 {
-                    enemyBullets[i].Render();
+                    EnemyBulletList[i].Render();
                 }
                 for (int i = 0; i < TeleportList.Count; i++)
                 {
                     TeleportList[i].Render();
                 }
-                for (int i = 0; i < thunderattacks.Count; i++)
+                for (int i = 0; i < ThunderList.Count; i++)
                 {
-                    thunderattacks[i].Render();
+                    ThunderList[i].Render();
+                }
+                for (int i = 0; i < LightningList.Count; i++)
+                {
+                    LightningList[i].Render();
                 }
 
                 FontManager.Render(enemy);
@@ -84,10 +90,10 @@ namespace MyGame
                     BulletList[i].CheckCollisions(enemy);
                 }
 
-                for (int i = 0; i < enemyBullets.Count; i++)
+                for (int i = 0; i < EnemyBulletList.Count; i++)
                 {
-                    enemyBullets[i].Update();
-                    enemyBullets[i].CheckCollisions(player);
+                    EnemyBulletList[i].Update();
+                    EnemyBulletList[i].CheckCollisions(player);
                 }
 
                 for (int i = 0; i < TeleportList.Count; i++)
@@ -95,10 +101,16 @@ namespace MyGame
                     TeleportList[i].Update();
                 }
 
-                for (int i = 0; i < thunderattacks.Count; i++)
+                for (int i = 0; i < ThunderList.Count; i++)
                 {
-                    thunderattacks[i].Update();
-                    thunderattacks[i].CheckPositions(player);
+                    ThunderList[i].Update();
+                    ThunderList[i].CheckPositions(player);
+                }
+
+                for (int i = 0; i < LightningList.Count; i++)
+                {
+                    LightningList[i].Update();
+                    LightningList[i].CheckPositions(player);
                 }
             }
         }
@@ -108,8 +120,9 @@ namespace MyGame
             //Clear Scene
             TeleportList.Clear();
             BulletList.Clear();
-            enemyBullets.Clear();
-            thunderattacks.Clear();
+            EnemyBulletList.Clear();
+            ThunderList.Clear();
+            LightningList.Clear();
 
             //Reset Player
             player.Transform.Position = new Vector2(ScreenWidth / 4 - Character.PlayerWidth / 2, GroundHeight - Character.PlayerHeight);
