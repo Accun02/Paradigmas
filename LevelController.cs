@@ -93,7 +93,7 @@ namespace MyGame
                 for (int i = 0; i < EnemyBulletList.Count; i++)
                 {
                     EnemyBulletList[i].Update();
-                    EnemyBulletList[i].CheckCollisions(player);
+                    EnemyBulletList[i].CheckPositions(player);
                 }
 
                 for (int i = 0; i < TeleportList.Count; i++)

@@ -53,7 +53,9 @@
     <Compile Include="DynamicPool.cs" />
     <Compile Include="EnemyLightningBolt.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="Icheckplayer.cs" />
     <Compile Include="IDamageable.cs" />
+    <Compile Include="Interface1.cs" />
     <Compile Include="LevelController.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="EnemyTeleport.cs" />

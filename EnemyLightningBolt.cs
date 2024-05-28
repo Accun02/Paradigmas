@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    public class EnemyLightningBolt : Projectile
+    public class EnemyLightningBolt : Projectile ,ICheckplayer
     {
         private readonly int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
         private string idlePath = "assets/enemyBullet/thunderBolt/0.png";
