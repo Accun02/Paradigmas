@@ -53,7 +53,6 @@ namespace MyGame
             }
         }
 
-
         private static void AdjustDelayFrame(int frameCount)
         {
             if (!targetFrame)

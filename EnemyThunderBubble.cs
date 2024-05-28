@@ -24,7 +24,6 @@ namespace MyGame
         private float waveTime = 0;
         private Animation spawn;
         private Animation wait;
-        private Animation blank;
         public EnemyThunderBubble(Vector2 position, Vector2 playerPosition, Vector2 offset)
         {
             Vector2 adjustedPosition = new Vector2(position.x + offset.x, position.y + offset.y);
@@ -101,14 +100,6 @@ namespace MyGame
         }
         private void CreateAnimations()
         {
-            List<IntPtr> Blank = new List<IntPtr>();
-            for (int i = 0; i < 1; i++)
-            {
-                IntPtr frame = Engine.LoadImage($"assets/enemyBullet/blank.png");
-                Blank.Add(frame);
-            }
-            blank = new Animation("enemyattack2", Blank, 0.45f, false);
-
             List<string> destroyPaths = new List<string>();
             for (int i = 0; i < 3; i++)
             {

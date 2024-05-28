@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+
 namespace MyGame
 {
     public class EnemyLightningBolt : Projectile
@@ -23,6 +24,7 @@ namespace MyGame
             coolDown = 0.4f;
             CreateAnimations();
         }
+
         public override void Update()
         {
             if (!shootThunder)
@@ -33,12 +35,13 @@ namespace MyGame
                 if (transform.Position.y >= GroundHeight - BulletHeight)
                 {
                     shootThunder = true;
-                    transform.Position = new Vector2(transform.Position.x, GroundHeight - BulletHeight);
+                    transform.Position = new Vector2(transform.Position.x - 15, GroundHeight - BulletHeight);
                     bulletVel = 0;
                     acceleration = 0;
                 }
             }
         }
+
         public void CheckPositions(Character player)
         {
             Vector2 playerPosition = player.Transform.Position;
@@ -47,9 +50,9 @@ namespace MyGame
                 bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && !shootThunder)
             {
                 player.TakeDamage(1);
-
                 return;
             }
+
             if (transform.Position.y >= GroundHeight - BulletHeight)
             {
                 currentAnimation = destroy;
@@ -61,7 +64,7 @@ namespace MyGame
 
                 if (destroyCoolDown <= 0)
                 {
-                    GameManager.Instance.LevelController.LightningList.Remove(this );
+                    GameManager.Instance.LevelController.LightningList.Remove(this);
                 }
             }
             else
@@ -70,6 +73,7 @@ namespace MyGame
                 currentAnimation.Update();
             }
         }
+
         private void CreateAnimations()
         {
             List<IntPtr> spawn = new List<IntPtr>();
