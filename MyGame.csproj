@@ -76,6 +76,7 @@
     <Compile Include="EnemyThunderBubble.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Transform.cs" />
+    <Compile Include="UIMainMenu.cs" />
     <Compile Include="Vector2.cs" />
     <Compile Include="WaveMovement.cs" />
   </ItemGroup>
@@ -102,6 +103,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="assets\cursor.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\Dead.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -134,9 +134,6 @@ namespace MyGame
             enemy.ResetTransform(new Vector2((ScreenWidth / 4) * 3 - Enemy.EnemyWidth / 2, 250));
             enemy.ResetAttacks();
             enemy.Health = enemy.MaxHealth;
-
-            // Reset Input
-            GameManager.Instance.ZKeyReleased = false;
         }
     }
 }

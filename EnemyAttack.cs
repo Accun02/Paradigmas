@@ -136,11 +136,6 @@ public class EnemyAttack
 
         if (isAttacking)
         {
-            if (!nearAttacking && distanceX < 300 && repetitionCount >= 2)
-            {
-                enemyAttack = 2;
-            }
-
             switch (enemyAttack)
             {
                 case 1:
@@ -171,6 +166,8 @@ public class EnemyAttack
 
         if (!nearAttacking && distanceX < 300 && repetitionCount >= 2)
         {
+            canAttack = true;
+            pauseTimer = 0;
             enemyAttack = 2;
             TeleportAway();
             return;
@@ -206,7 +203,7 @@ public class EnemyAttack
         if (canTeleport && !isTeleportOnCooldown)
         {
             enemyMovement.Teleport();
-            timeBetweenAttacks = 3.0f;
+            timeBetweenAttacks = 1.5f;
             canAttack = false;
             attackTimer = 0;
             isTeleportOnCooldown = true;
@@ -222,6 +219,8 @@ public class EnemyAttack
 
         if (!nearAttacking && distanceX < 300 && repetitionCount >= 2)
         {
+            canAttack = true;
+            pauseTimer = 0;
             enemyAttack = 2;
             TeleportAway();
             return;
