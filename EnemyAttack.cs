@@ -115,18 +115,18 @@ public class EnemyAttack
 
             if (nearAttacking && !playerIsDown)
             {
-                Engine.Debug("ataque CERCA");
+                Engine.Debug("Ataque CERCA");
                 enemyAttack = rnd.Next(1, 3);
             }
             else if (!nearAttacking && !playerIsDown)
             {
-                Engine.Debug("ataque LEJOS");
+                Engine.Debug("Ataque LEJOS");
                 int[] farAttacks = { 1, 3 };
                 enemyAttack = farAttacks[rnd.Next(0, farAttacks.Length)];
             }
             else
             {
-                Engine.Debug("ataque ABAJO");
+                Engine.Debug("Ataque ABAJO");
                 enemyAttack = rnd.Next(1, 3);
             }
             isAttacking = true;

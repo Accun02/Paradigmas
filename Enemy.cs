@@ -35,7 +35,7 @@ public class Enemy :  GameObject, IDamageable
     public int Health { set { health = value; } get { return health; } }
     public int MaxHealth { set { maxHealth = value; } get { return maxHealth; } }
 
-    public Enemy(Vector2 position)
+    public Enemy(Vector2 position) : base(position, EnemyWidth, EnemyHeight)
     {
         transform = new Transform(position);
         enemyMovement = new EnemyMovement(Transform);
@@ -113,7 +113,6 @@ public class Enemy :  GameObject, IDamageable
 
         if (vulnerable && enemyRight >= playerLeft && enemyLeft <= playerRight && enemyBottom >= playerTop && enemyTop <= playerBottom)
         {
-            Console.WriteLine(player.Health);
             player.TakeDamage(1);
         }
     }

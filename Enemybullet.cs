@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MyGame
 {
-    public class EnemyBullet : Projectile, ICheckplayer
+    public class EnemyBullet : Projectile, ICheckForCollision
     {
         private int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
         private int ScreenWidth = GameManager.Instance.LevelController.ScreenWidth;

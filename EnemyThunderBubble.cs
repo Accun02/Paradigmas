@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace MyGame
 {
-    public class EnemyThunderBubble : Projectile, ICheckplayer
+    public class EnemyThunderBubble : Projectile, ICheckForCollision
     {
         private readonly int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
         private readonly int ScreenWidth = GameManager.Instance.LevelController.ScreenWidth;

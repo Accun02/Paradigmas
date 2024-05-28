@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
-    public interface ICheckplayer
+    public interface ICheckForCollision
     {
-        
         void CheckPositions(Character player);
     } 
 }

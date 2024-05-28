@@ -48,7 +48,7 @@ namespace MyGame
 
         private CharacterController controller;
 
-        public Character(Vector2 position)
+        public Character(Vector2 position) : base(position, PlayerWidth, PlayerHeight)
         {
             Transform = new Transform(position);
             controller = new CharacterController(Transform);
@@ -144,6 +144,7 @@ namespace MyGame
                 health -= damage;
             }
         }
+
         public void Render()
         {
             if (!isDead)

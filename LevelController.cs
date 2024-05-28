@@ -117,26 +117,25 @@ namespace MyGame
 
         public void Restart()
         {
-            //Clear Scene
+            // Clear Scene
             TeleportList.Clear();
             BulletList.Clear();
             EnemyBulletList.Clear();
             ThunderList.Clear();
             LightningList.Clear();
 
-            //Reset Player
+            // Reset Player
             player.Transform.Position = new Vector2(ScreenWidth / 4 - Character.PlayerWidth / 2, GroundHeight - Character.PlayerHeight);
             player.ResetMomentum();
-
             player.Health = player.MaxHealth;
             player.IsDead = false;
 
-            //Reset Enemy
+            // Reset Enemy
             enemy.ResetTransform(new Vector2((ScreenWidth / 4) * 3 - Enemy.EnemyWidth / 2, 250));
             enemy.ResetAttacks();
             enemy.Health = enemy.MaxHealth;
 
-            //Reset Input
+            // Reset Input
             GameManager.Instance.ZKeyReleased = false;
         }
     }
