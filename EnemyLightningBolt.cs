@@ -89,7 +89,7 @@ namespace MyGame
             {
                 destroyPaths.Add($"assets/enemyBullet/thunderBolt/destroy/{i}.png");
             }
-            CreateAnimations(idlePath, destroyPaths, 0.06f);
+            CreateAnimations(idlePath, destroyPaths, 0.05f);
         }
     }
 }
