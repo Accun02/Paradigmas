@@ -8,7 +8,7 @@ namespace MyGame
 {
     internal class BackgroundManager
     {
-        static IntPtr image = Engine.LoadImage("assets/fondo.png");
+        static IntPtr image = Engine.LoadImage("assets/background.png");
         static IntPtr fade = Engine.LoadImage("assets/fade.png");
 
         public static void Render()

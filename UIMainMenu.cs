@@ -1,35 +1,62 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tao.Sdl;
 
 namespace MyGame
 {
     public class UIMainMenu
     {
-        private string[] menuItems = { "Start", "Tutorial", "Exit" };
+        private ButtonFactory buttonFactory;
+        private Button[] buttons;
         private int selectedItem = 0;
         private bool arrowKeyReleased = true;
 
-        private IntPtr mainMenuScreen = Engine.LoadImage("assets/MainMenu.png");
-        private IntPtr cursorImage = Engine.LoadImage("assets/cursor.png");
+        private IntPtr mainMenuScreen = Engine.LoadImage("assets/mainMenu/MainMenu.png");
+        private IntPtr cursorImage = Engine.LoadImage("assets/mainMenu/cursor.png");
+        private IntPtr orbImage = Engine.LoadImage("assets/mainMenu/crown.png");
 
-        private int[] menuItemYPositions = { 440, 520, 610 };
-        private int cursorBaseXPosition = 750;
+        private int[] cursorXPositions = { 565, 425, 565 };
+        private int[] cursorYPositions = { 345, 480, 610 };
+        private float cursorBaseXPosition;
         private float cursorXPosition;
         private float cursorTime = 0f;
+
+        private float cursorYPosition;
+        private float cursorTargetYPosition;
+        private float cursorTargetXPosition;
+        private const float lerpSpeed = 25f;
+
+        private float orbXPosition;
+        private float orbYPosition;
+        private float orbTime = 0f;
+        private const float orbCenterX = 950f;
+        private const float orbCenterY = 65f;
+
+        private int[] menuXPositions = { 202, 62, 202 };
+        private int[] menuYPositions = { 303, 438, 572 };
 
         public delegate void MenuAction();
         public event MenuAction OnStartGame;
         public event MenuAction OnTutorial;
         public event MenuAction OnExit;
+
         public UIMainMenu()
         {
+            buttonFactory = new ButtonFactory();
+
+            buttons = new Button[]
+            {
+                buttonFactory.CreateButton(ButtonType.Start, ButtonState.Off, new Vector2(cursorXPositions[0], cursorYPositions[0])),
+                buttonFactory.CreateButton(ButtonType.Tutorial, ButtonState.Off, new Vector2(cursorXPositions[1], cursorYPositions[1])),
+                buttonFactory.CreateButton(ButtonType.Exit, ButtonState.Off, new Vector2(cursorXPositions[2], cursorYPositions[2]))
+            };
+
+            cursorBaseXPosition = cursorXPositions[selectedItem];
             cursorXPosition = cursorBaseXPosition;
+            cursorYPosition = cursorYPositions[selectedItem];
+            cursorTargetYPosition = cursorYPosition;
+            cursorTargetXPosition = cursorBaseXPosition;
         }
+
         public void Update()
         {
             if (!Engine.KeyPress(Engine.KEY_UP) && !Engine.KeyPress(Engine.KEY_DOWN))
@@ -39,12 +66,18 @@ namespace MyGame
             if (Engine.KeyPress(Engine.KEY_UP) && arrowKeyReleased)
             {
                 arrowKeyReleased = false;
-                selectedItem = (selectedItem - 1 + menuItems.Length) % menuItems.Length;
+                selectedItem = (selectedItem - 1 + buttons.Length) % buttons.Length;
+                cursorTargetYPosition = cursorYPositions[selectedItem];
+                cursorTargetXPosition = cursorXPositions[selectedItem];
+                cursorTime = 0f;
             }
             if (Engine.KeyPress(Engine.KEY_DOWN) && arrowKeyReleased)
             {
                 arrowKeyReleased = false;
-                selectedItem = (selectedItem + 1) % menuItems.Length;
+                selectedItem = (selectedItem + 1) % buttons.Length;
+                cursorTargetYPosition = cursorYPositions[selectedItem];
+                cursorTargetXPosition = cursorXPositions[selectedItem];
+                cursorTime = 0f;
             }
             if (Engine.KeyPress(Engine.KEY_Z) && GameManager.Instance.ZKeyReleased)
             {
@@ -53,8 +86,19 @@ namespace MyGame
             }
 
             cursorTime += Time.DeltaTime;
-            cursorXPosition = cursorBaseXPosition + 10f * (float)Math.Sin(5f * cursorTime);
+            cursorXPosition = Lerp(cursorXPosition, cursorTargetXPosition + 10f * (float)Math.Sin(5f * cursorTime), lerpSpeed * Time.DeltaTime);
+            cursorYPosition = Lerp(cursorYPosition, cursorTargetYPosition, lerpSpeed * Time.DeltaTime);
+
+            orbTime += Time.DeltaTime * 1.5f;
+            orbXPosition = orbCenterX + 20f * (float)Math.Cos(orbTime);
+            orbYPosition = orbCenterY + 20f * (float)Math.Sin(orbTime);
         }
+
+        private float Lerp(float start, float end, float t)
+        {
+            return start + t * (end - start);
+        }
+
         private void ExecuteItem()
         {
             switch (selectedItem)
@@ -71,13 +115,21 @@ namespace MyGame
                     break;
             }
         }
+
         public void Render()
         {
-            int cursorYPosition = menuItemYPositions[selectedItem];
-
             Engine.Clear();
             Engine.Draw(mainMenuScreen, 0, 0);
-            Engine.Draw(cursorImage, (int)cursorXPosition, cursorYPosition);
+
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                ButtonState state = (i == selectedItem) ? ButtonState.On : ButtonState.Off;
+                buttons[i] = buttonFactory.CreateButton((ButtonType)i, state, new Vector2(menuXPositions[i], menuYPositions[i]));
+                buttons[i].Render();
+            }
+
+            Engine.Draw(cursorImage, (int)cursorXPosition, (int)cursorYPosition);
+            Engine.Draw(orbImage, (int)orbXPosition, (int)orbYPosition);
             Engine.Show();
         }
     }

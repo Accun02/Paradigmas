@@ -111,23 +111,22 @@ public class EnemyAttack
         if (attackTimer >= 1 && canAttack)
         {
             nearAttacking = distanceX < 300;
-            playerIsDown = distanceX < 60;
+            playerIsDown = distanceX < 30;
 
             if (nearAttacking && !playerIsDown)
             {
                 Engine.Debug("Ataque CERCA");
-                enemyAttack = rnd.Next(1, 3);
+                enemyAttack = rnd.Next(2, 3 + 1);
             }
             else if (!nearAttacking && !playerIsDown)
             {
                 Engine.Debug("Ataque LEJOS");
-                int[] farAttacks = { 1, 3 };
-                enemyAttack = farAttacks[rnd.Next(0, farAttacks.Length)];
+                enemyAttack = rnd.Next(3, 4 + 1);
             }
             else
             {
                 Engine.Debug("Ataque ABAJO");
-                enemyAttack = rnd.Next(1, 3);
+                enemyAttack = rnd.Next(1, 2 + 1); 
             }
             isAttacking = true;
             repetitionCount = 0;
@@ -139,12 +138,15 @@ public class EnemyAttack
             switch (enemyAttack)
             {
                 case 1:
-                    ShootAtPlayer(enemyPosition);
+                    FallingAnvil(enemyPosition);
                     break;
                 case 2:
                     TeleportAway();
                     break;
                 case 3:
+                    ShootAtPlayer(enemyPosition);
+                    break;
+                case 4:
                     LightningBolt(enemyPosition);
                     break;
             }
@@ -247,6 +249,19 @@ public class EnemyAttack
             isAttacking = false;
         }
     }
+
+    private void FallingAnvil(Vector2 position)
+    {
+        float anvilX = position.x - EnemyWidth / 2 - BulletWidth / 2;
+        float anvilY = -BulletHeight - 70;
+        GameManager.Instance.LevelController.AnvilList.Add(new EnemyAnvil(new Vector2(anvilX, anvilY), new Vector2(0,0)));
+        timeBetweenAttacks = 0.3f;
+        canAttack = false;
+        attackTimer = 0;
+        repetitionCount = 0;
+        isAttacking = false;
+    }
+
 
     // Otro
     private void TeleportEffect(Vector2 position)

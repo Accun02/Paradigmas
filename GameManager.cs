@@ -15,8 +15,9 @@ namespace MyGame
         private UIMainMenu mainMenu;
         private GameStatus gameStatus = GameStatus.Menu;
 
-        private IntPtr winScreen = Engine.LoadImage("assets/Win.png");
-        private IntPtr loseScreen = Engine.LoadImage("assets/Dead.png");
+        private IntPtr winScreen = Engine.LoadImage("assets/screens/win.png");
+        private IntPtr loseScreen = Engine.LoadImage("assets/screens/dead.png");
+        private IntPtr tutorialScreen = Engine.LoadImage("assets/screens/tutorial.png");
 
         private bool zKeyReleased = false;
         private bool gameOverDelayStarted = false;
@@ -44,7 +45,7 @@ namespace MyGame
                 return instance;
             }
         }
-        public enum GameStatus { Menu, Game, Win, Lose }
+        public enum GameStatus { Menu, Game, Win, Lose, Tutorial }
         public void Initialize()
         {
             levelController = new LevelController();
@@ -82,6 +83,7 @@ namespace MyGame
         private void TutorialManager()
         {
             Console.WriteLine("Tutorial");
+            gameStatus = GameStatus.Tutorial;
         }
         private void ExitManager()
         {
@@ -111,6 +113,9 @@ namespace MyGame
                     break;
                 case GameStatus.Lose:   // Derrota
                     UpdateLose();
+                    break;
+                case GameStatus.Tutorial:   // Tutorial
+                    UpdateTutorial();
                     break;
             }
         }
@@ -155,6 +160,16 @@ namespace MyGame
                 StartGame();
             }
         }
+        private void UpdateTutorial()
+        {
+            if (Engine.KeyPress(Engine.KEY_Z) && zKeyReleased)
+            {
+                zKeyReleased = false;
+                gameStatus = GameStatus.Menu;
+                Program.targetFrame = false;
+                StartGame();
+            }
+        }
         private void StartGame()
         {
             gameOverDelayStarted = false;
@@ -179,6 +194,11 @@ namespace MyGame
                 case GameStatus.Lose:   // Derrota
                     Engine.Clear();
                     Engine.Draw(loseScreen, 0, 0);
+                    Engine.Show();
+                    break;
+                case GameStatus.Tutorial:   // Tutorial
+                    Engine.Clear();
+                    Engine.Draw(tutorialScreen, 0, 0);
                     Engine.Show();
                     break;
             }

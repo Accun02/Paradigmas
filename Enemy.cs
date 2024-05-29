@@ -47,12 +47,12 @@ public class Enemy :  GameObject, IDamageable
     {
         vulnerable = !enemyattackselect.IsTeleportOnCooldown;
         enemyattackselect.Update(transform.Position);
-        if (enemyattackselect.EnemyAttackSelect == 1)
+        if (enemyattackselect.EnemyAttackSelect == 3)
         {
             currentAnimation = enemyattack;
             currentAnimation.Update();
         }
-        else if (enemyattackselect.EnemyAttackSelect == 3)
+        else if (enemyattackselect.EnemyAttackSelect == 4 || enemyattackselect.EnemyAttackSelect == 1)
         {
             currentAnimation = enemyattack2;
             currentAnimation.Update();

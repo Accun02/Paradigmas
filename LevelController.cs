@@ -16,12 +16,12 @@ namespace MyGame
         public Character player;
         public Enemy enemy;
 
-
         public List<Bullet> BulletList;
         public List<EnemyTeleport> TeleportList;
         public List<EnemyBullet> EnemyBulletList;
         public List<EnemyThunderBubble> ThunderList;
         public List<EnemyLightningBolt> LightningList;
+        public List<EnemyAnvil> AnvilList;
 
         public void Initialize()
         {
@@ -32,6 +32,7 @@ namespace MyGame
             EnemyBulletList = new List<EnemyBullet>();
             ThunderList = new List<EnemyThunderBubble>();
             LightningList = new List<EnemyLightningBolt>();
+            AnvilList = new List<EnemyAnvil>();
         }
 
         public void Render()
@@ -66,6 +67,10 @@ namespace MyGame
                 for (int i = 0; i < LightningList.Count; i++)
                 {
                     LightningList[i].Render();
+                }
+                for (int i = 0; i < AnvilList.Count; i++)
+                {
+                    AnvilList[i].Render();
                 }
 
                 FontManager.Render(enemy);
@@ -112,6 +117,11 @@ namespace MyGame
                     LightningList[i].Update();
                     LightningList[i].CheckPositions(player);
                 }
+                for (int i = 0; i < AnvilList.Count; i++)
+                {
+                    AnvilList[i].Update();
+                    AnvilList[i].CheckPositions(player);
+                }
             }
         }
 
@@ -123,6 +133,7 @@ namespace MyGame
             EnemyBulletList.Clear();
             ThunderList.Clear();
             LightningList.Clear();
+            AnvilList.Clear();
 
             // Reset Player
             player.Transform.Position = new Vector2(ScreenWidth / 4 - Character.PlayerWidth / 2, GroundHeight - Character.PlayerHeight);
