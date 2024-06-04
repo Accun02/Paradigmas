@@ -48,9 +48,13 @@ namespace MyGame
         private float actualCoolDown = 0f;
         private float dobleJumpCoolDown = 0.25f;
 
-        //Cooldown disparo
+        // Cooldown disparo
         private float shootCooldown = 0.15f;
         private float shootTime;
+
+        // Input buffer
+        private float jumpBufferTime = 0.1f;
+        private float jumpBufferCounter = 0f;
 
         private Transform transform;
         private DynamicPool pool;
@@ -82,8 +86,10 @@ namespace MyGame
                 shootTime -= Time.DeltaTime;
             }
 
-            // Debug
-            //Console.WriteLine(zKeyReleased);
+            if (jumpBufferCounter > 0)
+            {
+                jumpBufferCounter -= Time.DeltaTime;
+            }
         }
 
         private void GetInputs()
@@ -120,12 +126,18 @@ namespace MyGame
                 GameManager.Instance.ZKeyReleased = true;
             }
 
-            if (Engine.KeyPress(Engine.KEY_Z) && actualCoolDown <= 0 && jumpCounter < 2 && GameManager.Instance.ZKeyReleased) // Salto
+            if (Engine.KeyPress(Engine.KEY_Z) && GameManager.Instance.ZKeyReleased) // Salto
+            {
+                jumpBufferCounter = jumpBufferTime;
+                GameManager.Instance.ZKeyReleased = false;
+            }
+
+            if (jumpBufferCounter > 0 && actualCoolDown <= 0 && jumpCounter < 2)
             {
                 Jump();
                 jumpCounter++;
                 actualCoolDown = dobleJumpCoolDown;
-                GameManager.Instance.ZKeyReleased = false;
+                jumpBufferCounter = 0;
             }
 
             if (Engine.KeyPress(Engine.KEY_X) && Engine.KeyPress(Engine.KEY_UP) && shootTime <= 0)

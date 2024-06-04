@@ -12,7 +12,6 @@ namespace MyGame
         private readonly int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
         private string idlePath = "assets/enemyBullet/anvil.png";
 
-        private bool shootAnvil;
         private bool bounced;
 
         public const float BulletHeight = 67;
@@ -31,18 +30,15 @@ namespace MyGame
 
         public override void Update()
         {
-            if (!shootAnvil)
+            bulletVel += acceleration * Time.DeltaTime;
+            transform.Translate(direction, bulletVel * Time.DeltaTime);
+            
+            if (transform.Position.y >= GroundHeight - 92 && !bounced)
             {
-                bulletVel += acceleration * Time.DeltaTime;
-                transform.Translate(direction, bulletVel * Time.DeltaTime);
-
-                if (transform.Position.y >= GroundHeight - 92 && !bounced)
-                {
-                    bounced = true;
-                    shakeSize = 6.5f;
-                    anvilShakeSpeed = 60f;
-                    bulletVel = -bulletVel * 0.5f;
-                }
+                bounced = true;
+                shakeSize = 6.5f;
+                anvilShakeSpeed = 60f;
+                bulletVel = -bulletVel * 0.5f;
             }
         }
 
@@ -61,7 +57,7 @@ namespace MyGame
             Vector2 playerPosition = player.Transform.Position;
             Vector2 bulletPosition = transform.Position;
             if (bulletPosition.x + BulletWidth > playerPosition.x && bulletPosition.x < playerPosition.x + Character.PlayerWidth &&
-                bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && !shootAnvil)
+                bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight)
             {
                 player.TakeDamage(1);
                 return;

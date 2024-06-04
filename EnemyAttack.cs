@@ -1,6 +1,7 @@
 ﻿using MyGame;
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 public class EnemyAttack
 {
@@ -30,6 +31,8 @@ public class EnemyAttack
     private float teleportCooldownDuration = 1.9f;
     private bool isTeleportOnCooldown = false;
 
+    private bool dashAttack = false;
+
     private float initialWait = 1.0f;
     private bool initialWaitDone = false;
 
@@ -37,14 +40,27 @@ public class EnemyAttack
     private bool nearAttacking = false;
     private bool playerIsDown = false;
 
-    public int EnemyAttackSelect { set { enemyAttack = value; } get { return enemyAttack; }}
-    public bool IsTeleportOnCooldown { set { isTeleportOnCooldown = value; } get { return isTeleportOnCooldown; }}
+    private Dictionary<int, string> attackMethods;
+
+    public bool DashAttacking { set { dashAttack = value; } get { return dashAttack; } }
+    public int EnemyAttackSelect { set { enemyAttack = value; } get { return enemyAttack; } }
+    public bool IsTeleportOnCooldown { set { isTeleportOnCooldown = value; } get { return isTeleportOnCooldown; } }
     public bool IsAttacking { set { isAttacking = value; } get { return isAttacking; } }
     public float AttackTimer { set { attackTimer = value; } get { return attackTimer; } }
+
     public EnemyAttack(EnemyMovement enemyMovement)
     {
         this.enemyMovement = enemyMovement;
         rnd = new Random();
+
+        attackMethods = new Dictionary<int, string>
+        {
+            { 1, "FallingAnvil" },
+            { 2, "TeleportAway" },
+            { 3, "DashAttack" },
+            { 4, "Shooting" },
+            { 5, "Lightning" }
+        };
     }
 
     // Lógica de selector de ataques
@@ -115,18 +131,18 @@ public class EnemyAttack
 
             if (nearAttacking && !playerIsDown)
             {
-                Engine.Debug("Ataque CERCA");
-                enemyAttack = rnd.Next(2, 3 + 1);
+                enemyAttack = rnd.Next(2, 4 + 1);
+                Engine.Debug($"CERCA - {attackMethods[enemyAttack]} ({enemyAttack})");
             }
             else if (!nearAttacking && !playerIsDown)
             {
-                Engine.Debug("Ataque LEJOS");
-                enemyAttack = rnd.Next(3, 4 + 1);
+                enemyAttack = rnd.Next(3, 5 + 1);
+                Engine.Debug($"LEJOS - {attackMethods[enemyAttack]} ({enemyAttack})");
             }
             else
             {
-                Engine.Debug("Ataque ABAJO");
-                enemyAttack = rnd.Next(1, 2 + 1); 
+                enemyAttack = rnd.Next(1, 2 + 1);
+                Engine.Debug($"ABAJO - {attackMethods[enemyAttack]} ({enemyAttack})");
             }
             isAttacking = true;
             repetitionCount = 0;
@@ -144,10 +160,13 @@ public class EnemyAttack
                     TeleportAway();
                     break;
                 case 3:
-                    ShootAtPlayer(enemyPosition);
+                    DashAttack();
                     break;
                 case 4:
-                    LightningBolt(enemyPosition);
+                    ShootMagic(enemyPosition);
+                    break;
+                case 5:
+                    Lightning(enemyPosition);
                     break;
             }
         }
@@ -160,7 +179,7 @@ public class EnemyAttack
     }
 
     // Tipos de ataques
-    private void ShootAtPlayer(Vector2 position)
+    private void ShootMagic(Vector2 position)
     {
         float playerX = GameManager.Instance.LevelController.player.Transform.Position.x;
         float enemyX = position.x;
@@ -200,6 +219,16 @@ public class EnemyAttack
         }
     }
 
+    private void DashAttack()
+    {
+        dashAttack = true;
+        enemyMovement.LeaveScene();
+        timeBetweenAttacks = 1.5f;
+        canAttack = false;
+        attackTimer = 0;
+        isAttacking = false;
+    }
+
     private void TeleportAway()
     {
         if (canTeleport && !isTeleportOnCooldown)
@@ -213,7 +242,7 @@ public class EnemyAttack
         }
     }
 
-    private void LightningBolt(Vector2 position)
+    private void Lightning(Vector2 position)
     {
         float playerX = GameManager.Instance.LevelController.player.Transform.Position.x;
         float enemyX = position.x;
@@ -254,7 +283,7 @@ public class EnemyAttack
     {
         float anvilX = position.x - EnemyWidth / 2 - BulletWidth / 2;
         float anvilY = -BulletHeight - 70;
-        GameManager.Instance.LevelController.AnvilList.Add(new EnemyAnvil(new Vector2(anvilX, anvilY), new Vector2(0,0)));
+        GameManager.Instance.LevelController.AnvilList.Add(new EnemyAnvil(new Vector2(anvilX, anvilY), new Vector2(0, 0)));
         timeBetweenAttacks = 0.3f;
         canAttack = false;
         attackTimer = 0;
@@ -262,13 +291,13 @@ public class EnemyAttack
         isAttacking = false;
     }
 
-
     // Otro
     private void TeleportEffect(Vector2 position)
     {
         GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)position.x + (int)Enemy.EnemyWidth, (int)position.y, new Vector2(-1, 0), "assets/enemy/teleport/0.png"));
         GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)position.x - (int)Enemy.EnemyWidth, (int)position.y, new Vector2(1, 0), "assets/enemy/teleport/1.png"));
     }
+
     public void ResetCurrent()
     {
         teleportCooldownTimer = 0;

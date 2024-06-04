@@ -47,12 +47,12 @@ public class Enemy :  GameObject, IDamageable
     {
         vulnerable = !enemyattackselect.IsTeleportOnCooldown;
         enemyattackselect.Update(transform.Position);
-        if (enemyattackselect.EnemyAttackSelect == 3)
+        if (enemyattackselect.EnemyAttackSelect == 4)
         {
             currentAnimation = enemyattack;
             currentAnimation.Update();
         }
-        else if (enemyattackselect.EnemyAttackSelect == 4 || enemyattackselect.EnemyAttackSelect == 1)
+        else if (enemyattackselect.EnemyAttackSelect == 1 || enemyattackselect.EnemyAttackSelect == 5)
         {
             currentAnimation = enemyattack2;
             currentAnimation.Update();
@@ -74,7 +74,7 @@ public class Enemy :  GameObject, IDamageable
             currentAnimation = Idle;
             currentAnimation.Update();
         }
-        if (!enemyattackselect.IsTeleportOnCooldown)
+        if (!enemyattackselect.IsTeleportOnCooldown && !enemyattackselect.DashAttacking)
         {
             float levitationOffset = (float)Math.Sin(levitationSpeed * DateTime.Now.Millisecond / 1000f * Math.PI) * levitationAmplitude;
             SetPositionY(transform.Position.y + levitationOffset * deltaTime);

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyGame
 {
@@ -12,6 +7,10 @@ namespace MyGame
         private Transform transform;
         private Random rnd = new Random();
         private bool teleported = false;
+
+        private float velocityY = 0;
+        private const float Acceleration = 3000;
+        private const float MaxSpeed = 450;
 
         public bool Teleported
         {
@@ -38,6 +37,21 @@ namespace MyGame
             while (Math.Abs(newX - transform.Position.x) < 400 && Math.Abs(newY - transform.Position.y) < 400);
 
             transform.Position = new Vector2(newX, newY);
+        }
+
+        public void LeaveScene()
+        {
+            // Actualizar la velocidad con aceleración
+            velocityY = Math.Min(velocityY + Acceleration * Time.DeltaTime, MaxSpeed);
+
+            // Actualizar la posición
+            transform.Translate(new Vector2(0, -velocityY * Time.DeltaTime));
+
+            // Verificar si ha salido de la pantalla
+            if (transform.Position.y < 0)
+            {
+
+            }
         }
     }
 }
