@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Threading;
-using System.Drawing;
 using Tao.Sdl;
-using static System.Net.Mime.MediaTypeNames;
 
 class Engine
 {

@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyGame
 {
-    public class EnemyLightningBolt : Projectile ,ICheckForCollision
+    public class EnemyLightningBolt : Projectile, ICheckForCollision
     {
         private readonly int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
         private string idlePath = "assets/enemyBullet/thunderBolt/0.png";

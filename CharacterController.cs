@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace MyGame
 {
@@ -30,34 +29,29 @@ namespace MyGame
         private bool isLookingLeft = false;
         private bool isLookingRight = true;
 
-        public float VelocityX { set { velocityX = value; } get { return velocityX; } }
-        public float VelocityY { set { velocityY = value; } get { return velocityY; } }
-        public bool IsLookingLeft { set { isLookingLeft = value; } get { return isLookingLeft; } }
-        public bool IsLookingRight { set { isLookingRight = value; } get { return isLookingRight; } }
-
         // Salto doble
         private bool isJumping = false;
-
-        public bool IsJumping
-        {
-            get { return isJumping; }
-            set { isJumping = value; }
-        }
 
         private int jumpCounter = 0;
         private float actualCoolDown = 0f;
         private float dobleJumpCoolDown = 0.25f;
 
+        // Input buffer
+        private float jumpBufferTime = 0.15f;
+        private float jumpBufferCounter = 0f;
+
         // Cooldown disparo
         private float shootCooldown = 0.15f;
         private float shootTime;
 
-        // Input buffer
-        private float jumpBufferTime = 0.1f;
-        private float jumpBufferCounter = 0f;
-
         private Transform transform;
         private DynamicPool pool;
+        public float VelocityX { set { velocityX = value; } get { return velocityX; } }
+        public float VelocityY { set { velocityY = value; } get { return velocityY; } }
+        public float JumpBufferCounter { set { jumpBufferCounter = value; } get { return jumpBufferCounter; } }
+        public bool IsLookingLeft { set { isLookingLeft = value; } get { return isLookingLeft; } }
+        public bool IsLookingRight { set { isLookingRight = value; } get { return isLookingRight; } }
+        public bool IsJumping { set { isJumping = value; } get { return isJumping; } }
 
         public CharacterController(Transform transform)
         {

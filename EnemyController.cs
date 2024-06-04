@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MyGame
+﻿namespace MyGame
 {
     public class EnemyController
     {
@@ -16,9 +10,9 @@ namespace MyGame
             this.transform = transform;
         }
 
-        public void MoveEnemy() 
+        public void MoveEnemy()
         {
-            transform.Translate(new Vector2(1,0), speed);
+            transform.Translate(new Vector2(1, 0), speed);
         }
     }
 }

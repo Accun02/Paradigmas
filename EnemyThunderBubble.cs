@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 namespace MyGame
 {
     public class EnemyThunderBubble : Projectile, ICheckForCollision
@@ -43,9 +39,9 @@ namespace MyGame
             {
                 if (!shootThunder)
                 {
-                currentAnimation = wait;
-                currentAnimation.Update();
-                timeSinceDetection += Time.DeltaTime;
+                    currentAnimation = wait;
+                    currentAnimation.Update();
+                    timeSinceDetection += Time.DeltaTime;
                 }
             }
             else

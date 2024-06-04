@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Tao.Sdl;
 
 namespace MyGame
@@ -9,7 +7,7 @@ namespace MyGame
     class Program
     {
         static float delayFrame = 60f;             // FPS
-        static public bool targetFrame = false;
+        public static bool targetFrame = false;
 
         static Stopwatch stopwatch = new Stopwatch();
 
@@ -19,7 +17,7 @@ namespace MyGame
             GameManager.Instance.Initialize();
             Time.Initialize();
             stopwatch.Start();
-        
+
             int frameCount = 0;
             float elapsedTime = 0f;
 

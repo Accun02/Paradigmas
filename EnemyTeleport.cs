@@ -45,14 +45,14 @@ namespace MyGame
                 coolDown -= Time.DeltaTime;
                 if (coolDown <= 0)
                 {
-                imageVel += acceleration * Time.DeltaTime;
-                transform.Translate(new Vector2(direction.x * imageVel * Time.DeltaTime, direction.y * imageVel * Time.DeltaTime));
+                    imageVel += acceleration * Time.DeltaTime;
+                    transform.Translate(new Vector2(direction.x * imageVel * Time.DeltaTime, direction.y * imageVel * Time.DeltaTime));
 
-                destructionTimer -= Time.DeltaTime;
-                if (destructionTimer <= 0)
-                {
-                    Destroy();
-                }
+                    destructionTimer -= Time.DeltaTime;
+                    if (destructionTimer <= 0)
+                    {
+                        Destroy();
+                    }
                 }
             }
         }

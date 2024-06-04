@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tao.Sdl;
+﻿using System.Collections.Generic;
 
 namespace MyGame
 {
@@ -25,8 +19,8 @@ namespace MyGame
 
         public void Initialize()
         {
-            player = new Character(new Vector2(ScreenWidth / 2 - Character.PlayerWidth / 2, GroundHeight - Character.PlayerHeight));
-            enemy = new Enemy(new Vector2(ScreenWidth / 2 - Enemy.EnemyWidth / 2, 100));
+            player = new Character(new Vector2(0, 0));
+            enemy = new Enemy(new Vector2(0, 0));
             BulletList = new List<Bullet>();
             TeleportList = new List<EnemyTeleport>();
             EnemyBulletList = new List<EnemyBullet>();
@@ -86,7 +80,7 @@ namespace MyGame
 
             if (player.Health > 0)
             {
-                enemy.Update(Time.DeltaTime);
+                enemy.Update();
                 enemy.CheckCollision(player);
 
                 for (int i = 0; i < BulletList.Count; i++)
@@ -143,7 +137,7 @@ namespace MyGame
 
             // Reset Enemy
             enemy.ResetTransform(new Vector2((ScreenWidth / 4) * 3 - Enemy.EnemyWidth / 2, 250));
-            enemy.ResetAttacks();
+            enemy.ResetEnemy();
             enemy.Health = enemy.MaxHealth;
         }
     }

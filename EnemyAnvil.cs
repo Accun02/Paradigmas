@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyGame
 {
@@ -32,7 +28,7 @@ namespace MyGame
         {
             bulletVel += acceleration * Time.DeltaTime;
             transform.Translate(direction, bulletVel * Time.DeltaTime);
-            
+
             if (transform.Position.y >= GroundHeight - 92 && !bounced)
             {
                 bounced = true;

@@ -1,6 +1,5 @@
 ﻿using MyGame;
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 
 public class EnemyAttack
@@ -43,7 +42,7 @@ public class EnemyAttack
     private Dictionary<int, string> attackMethods;
 
     public bool DashAttacking { set { dashAttack = value; } get { return dashAttack; } }
-    public int EnemyAttackSelect { set { enemyAttack = value; } get { return enemyAttack; } }
+    public int attackNumber { set { enemyAttack = value; } get { return enemyAttack; } }
     public bool IsTeleportOnCooldown { set { isTeleportOnCooldown = value; } get { return isTeleportOnCooldown; } }
     public bool IsAttacking { set { isAttacking = value; } get { return isAttacking; } }
     public float AttackTimer { set { attackTimer = value; } get { return attackTimer; } }
@@ -67,7 +66,7 @@ public class EnemyAttack
     public void Update(Vector2 Position)
     {
         Timers(Position);
-        if (initialWaitDone)
+        if (initialWaitDone && !dashAttack)
         {
             Selection(Position);
         }
@@ -223,7 +222,7 @@ public class EnemyAttack
     {
         dashAttack = true;
         enemyMovement.LeaveScene();
-        timeBetweenAttacks = 1.5f;
+        timeBetweenAttacks = 1f;
         canAttack = false;
         attackTimer = 0;
         isAttacking = false;

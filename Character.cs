@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyGame
 {
@@ -42,7 +39,7 @@ namespace MyGame
 
         public Transform Transform
         {
-            get; 
+            get;
             set;
         }
 
@@ -61,6 +58,7 @@ namespace MyGame
         {
             controller.VelocityX = 0;
             controller.VelocityY = 0;
+            controller.JumpBufferCounter = 0f;
             controller.IsLookingLeft = false;
             controller.IsLookingRight = true;
         }
@@ -75,66 +73,66 @@ namespace MyGame
                 isDead = false;
                 died.Restart();
 
-            if (isJumping)
-            {
-                if (controller.IsLookingLeft)
-                {
-                    currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? jumpUpLeft : jumpLeft;
-                }
-                if (controller.IsLookingRight)
-                {
-                    currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? jumpUpRight : jumpRight;
-                }
-            }
-            else
-            {
-                if (Engine.KeyPress(Engine.KEY_LEFT) && !Engine.KeyPress(Engine.KEY_RIGHT))
-                {
-                    if (Engine.KeyPress(Engine.KEY_UP))
-                    {
-                        currentAnimation = walkUp;
-                    }
-                    else
-                    {
-                        currentAnimation = walk;
-                    }
-                    currentAnimation.Update();
-                }
-                else if (Engine.KeyPress(Engine.KEY_RIGHT) && !Engine.KeyPress(Engine.KEY_LEFT))
-                {
-                    if (Engine.KeyPress(Engine.KEY_UP))
-                    {
-                        currentAnimation = walkUpRight;
-                    }
-                    else
-                    {
-                        currentAnimation = walkRight;
-                    }
-                    currentAnimation.Update();
-                }
-                else
+                if (isJumping)
                 {
                     if (controller.IsLookingLeft)
                     {
-                        currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? idleUpLeft : idleLeft;
+                        currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? jumpUpLeft : jumpLeft;
                     }
-                    else if (controller.IsLookingRight)
+                    if (controller.IsLookingRight)
                     {
-                        currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? idleUpRight : idleRight;
+                        currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? jumpUpRight : jumpRight;
                     }
                 }
-            }
+                else
+                {
+                    if (Engine.KeyPress(Engine.KEY_LEFT) && !Engine.KeyPress(Engine.KEY_RIGHT))
+                    {
+                        if (Engine.KeyPress(Engine.KEY_UP))
+                        {
+                            currentAnimation = walkUp;
+                        }
+                        else
+                        {
+                            currentAnimation = walk;
+                        }
+                        currentAnimation.Update();
+                    }
+                    else if (Engine.KeyPress(Engine.KEY_RIGHT) && !Engine.KeyPress(Engine.KEY_LEFT))
+                    {
+                        if (Engine.KeyPress(Engine.KEY_UP))
+                        {
+                            currentAnimation = walkUpRight;
+                        }
+                        else
+                        {
+                            currentAnimation = walkRight;
+                        }
+                        currentAnimation.Update();
+                    }
+                    else
+                    {
+                        if (controller.IsLookingLeft)
+                        {
+                            currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? idleUpLeft : idleLeft;
+                        }
+                        else if (controller.IsLookingRight)
+                        {
+                            currentAnimation = Engine.KeyPress(Engine.KEY_UP) ? idleUpRight : idleRight;
+                        }
+                    }
+                }
             }
             else
             {
                 cuurentDeath += Time.DeltaTime;
 
-                    if (cuurentDeath >= deathWait)
-                    {
-                        isDead = true;
-                        currentAnimation = died;
-                        currentAnimation.Update();
-                    }
+                if (cuurentDeath >= deathWait)
+                {
+                    isDead = true;
+                    currentAnimation = died;
+                    currentAnimation.Update();
+                }
             }
         }
         public void TakeDamage(int damage)

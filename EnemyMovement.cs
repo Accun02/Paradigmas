@@ -8,10 +8,6 @@ namespace MyGame
         private Random rnd = new Random();
         private bool teleported = false;
 
-        private float velocityY = 0;
-        private const float Acceleration = 3000;
-        private const float MaxSpeed = 450;
-
         public bool Teleported
         {
             set { teleported = value; }
@@ -41,17 +37,7 @@ namespace MyGame
 
         public void LeaveScene()
         {
-            // Actualizar la velocidad con aceleración
-            velocityY = Math.Min(velocityY + Acceleration * Time.DeltaTime, MaxSpeed);
 
-            // Actualizar la posición
-            transform.Translate(new Vector2(0, -velocityY * Time.DeltaTime));
-
-            // Verificar si ha salido de la pantalla
-            if (transform.Position.y < 0)
-            {
-
-            }
         }
     }
 }

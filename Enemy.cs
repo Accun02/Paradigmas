@@ -1,8 +1,7 @@
 ﻿using MyGame;
 using System;
 using System.Collections.Generic;
-using Tao.Sdl;
-public class Enemy :  GameObject, IDamageable
+public class Enemy : GameObject, IDamageable
 {
     public const float EnemyWidth = 80;
     public const float EnemyHeight = 80;
@@ -20,9 +19,15 @@ public class Enemy :  GameObject, IDamageable
     private float shakeMagnitude = 2;
     private float shakeFrequency = 10;
 
+    private float speedY = 0;
+    private float acceleration = 550;
+
+    private bool offScreen = false;
+    private bool dashing = false;
+
     private Transform transform;
     private EnemyMovement enemyMovement;
-    private EnemyAttack enemyattackselect;
+    private EnemyAttack enemyAttack;
 
     private Animation Idle;
     private Animation enemyattack;
@@ -39,27 +44,23 @@ public class Enemy :  GameObject, IDamageable
     {
         transform = new Transform(position);
         enemyMovement = new EnemyMovement(Transform);
-        enemyattackselect = new EnemyAttack(enemyMovement);
+        enemyAttack = new EnemyAttack(enemyMovement);
         CreateAnimations();
         currentAnimation = Idle;
     }
-    public void Update(float deltaTime)
+    public void Update()
     {
-        vulnerable = !enemyattackselect.IsTeleportOnCooldown;
-        enemyattackselect.Update(transform.Position);
-        if (enemyattackselect.EnemyAttackSelect == 4)
-        {
-            currentAnimation = enemyattack;
-            currentAnimation.Update();
-        }
-        else if (enemyattackselect.EnemyAttackSelect == 1 || enemyattackselect.EnemyAttackSelect == 5)
+        vulnerable = !enemyAttack.IsTeleportOnCooldown;
+        enemyAttack.Update(transform.Position);
+
+        if (enemyAttack.attackNumber == 1 || enemyAttack.attackNumber == 5)
         {
             currentAnimation = enemyattack2;
             currentAnimation.Update();
         }
-        else if (enemyattackselect.EnemyAttackSelect == 2)
+        else if (enemyAttack.attackNumber == 2)
         {
-            if (enemyattackselect.IsTeleportOnCooldown)
+            if (enemyAttack.IsTeleportOnCooldown)
             {
                 currentAnimation = teleport;
             }
@@ -69,22 +70,40 @@ public class Enemy :  GameObject, IDamageable
             }
             currentAnimation.Update();
         }
+        else if (enemyAttack.attackNumber == 4)
+        {
+            currentAnimation = enemyattack;
+            currentAnimation.Update();
+        }
         else
         {
             currentAnimation = Idle;
             currentAnimation.Update();
         }
-        if (!enemyattackselect.IsTeleportOnCooldown && !enemyattackselect.DashAttacking)
-        {
-            float levitationOffset = (float)Math.Sin(levitationSpeed * DateTime.Now.Millisecond / 1000f * Math.PI) * levitationAmplitude;
-            SetPositionY(transform.Position.y + levitationOffset * deltaTime);
-        }
+
         if (isShaking)
         {
-            shakeTimer -= deltaTime;
+            shakeTimer -= Time.DeltaTime;
             if (shakeTimer <= 0)
             {
                 isShaking = false;
+            }
+        }
+
+        if (!enemyAttack.IsTeleportOnCooldown && !enemyAttack.DashAttacking)
+        {
+            float levitationOffset = (float)Math.Sin(levitationSpeed * DateTime.Now.Millisecond / 1000f * Math.PI) * levitationAmplitude;
+            transform.Position = new Vector2(transform.Position.x, (transform.Position.y + levitationOffset * Time.DeltaTime));
+        }
+        else if (enemyAttack.DashAttacking && !offScreen)
+        {
+            speedY += acceleration * Time.DeltaTime;
+            transform.Translate(new Vector2(0, -1), speedY * Time.DeltaTime);
+
+            if (transform.Position.y < -EnemyHeight * 2)
+            {
+                speedY = 0;
+                offScreen = true;
             }
         }
     }
@@ -96,10 +115,7 @@ public class Enemy :  GameObject, IDamageable
         }
         Engine.Draw(currentAnimation.CurrentFrame, transform.Position.x + shakeOffsetX, transform.Position.y);
     }
-    private void SetPositionY(float y)
-    {
-        transform.Position = new Vector2(transform.Position.x, y);
-    }
+
     public void CheckCollision(Character player)
     {
         float enemyLeft = transform.Position.x;
@@ -129,12 +145,18 @@ public class Enemy :  GameObject, IDamageable
     {
         transform.Position = newPosition;
     }
-    public void ResetAttacks()
+    public void ResetEnemy()
     {
-        enemyattackselect.IsAttacking = false;
-        enemyattackselect.AttackTimer = -1;
-        enemyattackselect.EnemyAttackSelect = 0;
-        enemyattackselect.ResetCurrent();
+        isShaking = false;
+        dashing = false;
+        offScreen = false;
+        enemyAttack.IsAttacking = false;
+        enemyAttack.DashAttacking = false;
+        enemyAttack.AttackTimer = -1;
+        enemyAttack.attackNumber = 0;
+        currentAnimation = Idle;
+        currentAnimation.Update();
+        enemyAttack.ResetCurrent();
     }
     private void CreateAnimations()
     {

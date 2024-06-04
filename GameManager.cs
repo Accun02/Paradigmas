@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tao.Sdl;
 
 namespace MyGame
 {
@@ -29,7 +23,9 @@ namespace MyGame
         public delegate void GameLose();
         public delegate void GameOver();
 
+#pragma warning disable CS0067 // El evento 'GameManager.OnGameStart' nunca se usa
         public event GameStart OnGameStart;
+#pragma warning restore CS0067 // El evento 'GameManager.OnGameStart' nunca se usa
         public event GameWin OnGameWin;
         public event GameLose OnGameLose;
         public event GameOver OnGameOver;
