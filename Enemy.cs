@@ -1,6 +1,7 @@
 ﻿using MyGame;
 using System;
 using System.Collections.Generic;
+
 public class Enemy : GameObject, IDamageable
 {
     public const float EnemyWidth = 80;
@@ -22,8 +23,10 @@ public class Enemy : GameObject, IDamageable
     private float moveDirectionX;
     private float speedX = 0;
     private float speedY = 0;
-    private float acceleration = 700;
+    private float acceleration = 750;
 
+    private bool goingLeft = false;
+    private bool goingRight = false;
     private bool offScreen = false;
     private bool dashing = false;
     private bool finishedDash = false;
@@ -68,6 +71,20 @@ public class Enemy : GameObject, IDamageable
             case 1:
             case 5:
                 currentAnimation = enemyattack2;
+                break;
+            case 3:
+                if (!goingLeft && !goingRight)
+                {
+                    currentAnimation = Idle;
+                }
+                else if (goingLeft && !goingRight)
+                {
+                    currentAnimation = left;
+                }
+                else if (goingRight && !goingLeft)
+                {
+                    currentAnimation = right;
+                }
                 break;
             case 2:
                 currentAnimation = enemyAttack.IsTeleportOnCooldown ? teleport : Idle;
@@ -141,6 +158,8 @@ public class Enemy : GameObject, IDamageable
     }
     public void ResetEnemy()
     {
+        goingLeft = false;
+        goingRight = false;
         finishedDash = false;
         dashing = false;
         offScreen = false;
@@ -193,11 +212,15 @@ public class Enemy : GameObject, IDamageable
                 {
                     if (moveDirectionX == -1 && !finishedDash)
                     {
+                        goingLeft = true;
+                        goingRight = false;
                         speedX += acceleration * Time.DeltaTime;
                         transform.Translate(new Vector2(-1, 0), speedX * Time.DeltaTime);
                     }
                     else if (!finishedDash)
                     {
+                        goingRight = true;
+                        goingLeft = false;
                         speedX += acceleration * Time.DeltaTime;
                         transform.Translate(new Vector2(1, 0), speedX * Time.DeltaTime);
                     }
@@ -206,6 +229,8 @@ public class Enemy : GameObject, IDamageable
                     {
                         if (!finishedDash)
                         {
+                            goingLeft = false;
+                            goingRight = false;
                             float newX = random.Next(200, 1000);
                             ResetTransform(new Vector2(newX, -EnemyHeight));
                             finishedDash = true;
@@ -265,6 +290,22 @@ public class Enemy : GameObject, IDamageable
             Teleport.Add(frame);
         }
         teleport = new Animation("teleport", Teleport, 0.1f, false);
+
+        List<IntPtr> Left = new List<IntPtr>();
+        for (int i = 0; i < 1; i++)
+        {
+            IntPtr frame = Engine.LoadImage($"assets/enemy/dash/left.png");
+            Left.Add(frame);
+        }
+        left = new Animation("left", Left, 0.1f, false);
+
+        List<IntPtr> Right = new List<IntPtr>();
+        for (int i = 0; i < 1; i++)
+        {
+            IntPtr frame = Engine.LoadImage($"assets/enemy/dash/right.png");
+            Right.Add(frame);
+        }
+        right = new Animation("right", Right, 0.1f, false);
     }
 
 }
