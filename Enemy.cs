@@ -32,7 +32,7 @@ public class Enemy : GameObject, IDamageable
     private bool finishedDash = false;
 
     private float teleportTimer = 0f;
-    private float teleportDelay = 0.35f;
+    private float teleportDelay = 0.15f;
 
     Random random = new Random();
 
@@ -65,38 +65,7 @@ public class Enemy : GameObject, IDamageable
     {
         vulnerable = !enemyAttack.IsTeleportOnCooldown;
         enemyAttack.Update(transform.Position);
-
-        switch (enemyAttack.attackNumber)
-        {
-            case 1:
-            case 5:
-                currentAnimation = enemyattack2;
-                break;
-            case 3:
-                if (!goingLeft && !goingRight)
-                {
-                    currentAnimation = Idle;
-                }
-                else if (goingLeft && !goingRight)
-                {
-                    currentAnimation = left;
-                }
-                else if (goingRight && !goingLeft)
-                {
-                    currentAnimation = right;
-                }
-                break;
-            case 2:
-                currentAnimation = enemyAttack.IsTeleportOnCooldown ? teleport : Idle;
-                break;
-            case 4:
-                currentAnimation = enemyattack;
-                break;
-            default:
-                currentAnimation = Idle;
-                break;
-        }
-        currentAnimation.Update();
+        ManageAnimations();
 
         if (isShaking)
         {
@@ -177,7 +146,6 @@ public class Enemy : GameObject, IDamageable
         currentAnimation.Update();
         enemyAttack.ResetCurrent();
     }
-
     private void DashState()
     {
         if (!offScreen)
@@ -197,8 +165,8 @@ public class Enemy : GameObject, IDamageable
             {
                 moveDirectionX = random.Next(0, 2) == 0 ? -1 : 1;
 
-                float newX = moveDirectionX == 1 ? 0 - (EnemyWidth * 3) : GameManager.Instance.LevelController.ScreenWidth + (EnemyWidth * 3);
-                float newY = GameManager.Instance.LevelController.GroundHeight - EnemyHeight - 20;
+                float newX = moveDirectionX == 1 ? 0 - (EnemyWidth * 5) : GameManager.Instance.LevelController.ScreenWidth + (EnemyWidth * 5);
+                float newY = GameManager.Instance.LevelController.GroundHeight - EnemyHeight - 10;
 
                 ResetTransform(new Vector2(newX, newY));
 
@@ -225,7 +193,7 @@ public class Enemy : GameObject, IDamageable
                         transform.Translate(new Vector2(1, 0), speedX * Time.DeltaTime);
                     }
 
-                    if (teleportTimer >= teleportDelay + 2.4f)
+                    if (teleportTimer >= teleportDelay + 2.6f)
                     {
                         if (!finishedDash)
                         {
@@ -239,7 +207,7 @@ public class Enemy : GameObject, IDamageable
                         {
                             speedY += acceleration * Time.DeltaTime;
                             transform.Translate(new Vector2(0, 1), speedY * Time.DeltaTime);
-                            if (teleportTimer >= teleportDelay + 3.35f)
+                            if (teleportTimer >= teleportDelay + 3.4f)
                             {
                                 finishedDash = false;
                                 dashing = false;
@@ -255,8 +223,40 @@ public class Enemy : GameObject, IDamageable
             }
         }
     }
-
-
+    private void ManageAnimations()
+    {
+        switch (enemyAttack.attackNumber)
+        {
+            case 1:
+            case 5:
+                currentAnimation = enemyattack2;
+                break;
+            case 3:
+                if (!goingLeft && !goingRight)
+                {
+                    currentAnimation = Idle;
+                }
+                else if (goingLeft && !goingRight)
+                {
+                    currentAnimation = left;
+                }
+                else if (goingRight && !goingLeft)
+                {
+                    currentAnimation = right;
+                }
+                break;
+            case 2:
+                currentAnimation = enemyAttack.IsTeleportOnCooldown ? teleport : Idle;
+                break;
+            case 4:
+                currentAnimation = enemyattack;
+                break;
+            default:
+                currentAnimation = Idle;
+                break;
+        }
+        currentAnimation.Update();
+    }
     private void CreateAnimations()
     {
         List<IntPtr> idle = new List<IntPtr>();

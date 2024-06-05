@@ -34,10 +34,5 @@ namespace MyGame
 
             transform.Position = new Vector2(newX, newY);
         }
-
-        public void LeaveScene()
-        {
-
-        }
     }
 }

@@ -142,7 +142,6 @@ namespace MyGame
                 health -= damage;
             }
         }
-
         public void Render()
         {
             if (!isDead)
@@ -154,8 +153,6 @@ namespace MyGame
                 Engine.Draw(currentAnimation.CurrentFrame, Transform.Position.x - 30, Transform.Position.y - 50);
             }
         }
-
-
         private void CreateAnimations()
         {
 

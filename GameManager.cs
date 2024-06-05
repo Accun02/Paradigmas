@@ -23,9 +23,6 @@ namespace MyGame
         public delegate void GameLose();
         public delegate void GameOver();
 
-#pragma warning disable CS0067 // El evento 'GameManager.OnGameStart' nunca se usa
-        public event GameStart OnGameStart;
-#pragma warning restore CS0067 // El evento 'GameManager.OnGameStart' nunca se usa
         public event GameWin OnGameWin;
         public event GameLose OnGameLose;
         public event GameOver OnGameOver;
@@ -52,7 +49,6 @@ namespace MyGame
             mainMenu.OnExit += ExitManager;
             OnGameWin += GameWinManager;
             OnGameLose += GameLoseManager;
-            OnGameStart += GameStartManager;
             OnGameOver += GameOverManager;
         }
         private void GameStartManager()

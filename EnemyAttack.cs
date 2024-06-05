@@ -221,7 +221,7 @@ public class EnemyAttack
     private void DashAttack()
     {
         dashAttack = true;
-        enemyMovement.LeaveScene();
+
         timeBetweenAttacks = 1f;
         canAttack = false;
         attackTimer = 0;
