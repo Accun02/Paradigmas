@@ -19,11 +19,19 @@ public class Enemy : GameObject, IDamageable
     private float shakeMagnitude = 2;
     private float shakeFrequency = 10;
 
+    private float moveDirectionX;
+    private float speedX = 0;
     private float speedY = 0;
-    private float acceleration = 550;
+    private float acceleration = 700;
 
     private bool offScreen = false;
     private bool dashing = false;
+    private bool finishedDash = false;
+
+    private float teleportTimer = 0f;
+    private float teleportDelay = 0.35f;
+
+    Random random = new Random();
 
     private Transform transform;
     private EnemyMovement enemyMovement;
@@ -34,6 +42,8 @@ public class Enemy : GameObject, IDamageable
     private Animation enemyattack2;
     private Animation currentAnimation;
     private Animation teleport;
+    private Animation right;
+    private Animation left;
 
     public Transform Transform { get { return transform; } }
     public bool Vulnerable { set { vulnerable = value; } get { return vulnerable; } }
@@ -53,33 +63,23 @@ public class Enemy : GameObject, IDamageable
         vulnerable = !enemyAttack.IsTeleportOnCooldown;
         enemyAttack.Update(transform.Position);
 
-        if (enemyAttack.attackNumber == 1 || enemyAttack.attackNumber == 5)
+        switch (enemyAttack.attackNumber)
         {
-            currentAnimation = enemyattack2;
-            currentAnimation.Update();
-        }
-        else if (enemyAttack.attackNumber == 2)
-        {
-            if (enemyAttack.IsTeleportOnCooldown)
-            {
-                currentAnimation = teleport;
-            }
-            else
-            {
+            case 1:
+            case 5:
+                currentAnimation = enemyattack2;
+                break;
+            case 2:
+                currentAnimation = enemyAttack.IsTeleportOnCooldown ? teleport : Idle;
+                break;
+            case 4:
+                currentAnimation = enemyattack;
+                break;
+            default:
                 currentAnimation = Idle;
-            }
-            currentAnimation.Update();
+                break;
         }
-        else if (enemyAttack.attackNumber == 4)
-        {
-            currentAnimation = enemyattack;
-            currentAnimation.Update();
-        }
-        else
-        {
-            currentAnimation = Idle;
-            currentAnimation.Update();
-        }
+        currentAnimation.Update();
 
         if (isShaking)
         {
@@ -95,18 +95,12 @@ public class Enemy : GameObject, IDamageable
             float levitationOffset = (float)Math.Sin(levitationSpeed * DateTime.Now.Millisecond / 1000f * Math.PI) * levitationAmplitude;
             transform.Position = new Vector2(transform.Position.x, (transform.Position.y + levitationOffset * Time.DeltaTime));
         }
-        else if (enemyAttack.DashAttacking && !offScreen)
+        else if (enemyAttack.DashAttacking)
         {
-            speedY += acceleration * Time.DeltaTime;
-            transform.Translate(new Vector2(0, -1), speedY * Time.DeltaTime);
-
-            if (transform.Position.y < -EnemyHeight * 2)
-            {
-                speedY = 0;
-                offScreen = true;
-            }
+            DashState();
         }
     }
+
     public void Render()
     {
         if (isShaking)
@@ -147,6 +141,12 @@ public class Enemy : GameObject, IDamageable
     }
     public void ResetEnemy()
     {
+        finishedDash = false;
+        dashing = false;
+        offScreen = false;
+        teleportTimer = 0f;
+        speedX = 0f;
+        speedY = 0f;
         isShaking = false;
         dashing = false;
         offScreen = false;
@@ -158,6 +158,80 @@ public class Enemy : GameObject, IDamageable
         currentAnimation.Update();
         enemyAttack.ResetCurrent();
     }
+
+    private void DashState()
+    {
+        if (!offScreen)
+        {
+            speedY += acceleration * Time.DeltaTime;
+            transform.Translate(new Vector2(0, -1), speedY * Time.DeltaTime);
+
+            if (transform.Position.y < -EnemyHeight * 2)
+            {
+                offScreen = true;
+                speedY = 0;
+            }
+        }
+        else
+        {
+            if (!dashing)
+            {
+                moveDirectionX = random.Next(0, 2) == 0 ? -1 : 1;
+
+                float newX = moveDirectionX == 1 ? 0 - (EnemyWidth * 3) : GameManager.Instance.LevelController.ScreenWidth + (EnemyWidth * 3);
+                float newY = GameManager.Instance.LevelController.GroundHeight - EnemyHeight - 20;
+
+                ResetTransform(new Vector2(newX, newY));
+
+                dashing = true;
+                teleportTimer = 0f;
+            }
+            else
+            {
+                teleportTimer += Time.DeltaTime;
+                if (teleportTimer >= teleportDelay)
+                {
+                    if (moveDirectionX == -1 && !finishedDash)
+                    {
+                        speedX += acceleration * Time.DeltaTime;
+                        transform.Translate(new Vector2(-1, 0), speedX * Time.DeltaTime);
+                    }
+                    else if (!finishedDash)
+                    {
+                        speedX += acceleration * Time.DeltaTime;
+                        transform.Translate(new Vector2(1, 0), speedX * Time.DeltaTime);
+                    }
+
+                    if (teleportTimer >= teleportDelay + 2.4f)
+                    {
+                        if (!finishedDash)
+                        {
+                            float newX = random.Next(200, 1000);
+                            ResetTransform(new Vector2(newX, -EnemyHeight));
+                            finishedDash = true;
+                        }
+                        else
+                        {
+                            speedY += acceleration * Time.DeltaTime;
+                            transform.Translate(new Vector2(0, 1), speedY * Time.DeltaTime);
+                            if (teleportTimer >= teleportDelay + 3.35f)
+                            {
+                                finishedDash = false;
+                                dashing = false;
+                                offScreen = false;
+                                teleportTimer = 0f;
+                                speedX = 0f;
+                                speedY = 0f;
+                                enemyAttack.DashAttacking = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     private void CreateAnimations()
     {
         List<IntPtr> idle = new List<IntPtr>();
