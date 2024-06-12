@@ -2,12 +2,12 @@ using System;
 
 namespace MyGame
 {
-    internal class BackgroundManager
+    internal class staticImage
     {
         static IntPtr image = Engine.LoadImage("assets/background.png");
         static IntPtr fade = Engine.LoadImage("assets/fade.png");
 
-        public static void Render()
+        public static void RenderBG()
         {
             Engine.Draw(image, 0, 0);
         }

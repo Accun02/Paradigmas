@@ -34,7 +34,7 @@ namespace MyGame
             Engine.Clear();
 
             if (player.Health > 0)
-                BackgroundManager.Render();
+                staticImage.Render();
 
             player.Render();
 
