@@ -4,47 +4,47 @@ using Tao.Sdl;
 class Engine
 {
     static IntPtr screen;
-    static int ancho, alto;
+    static int width, height;
 
     public static void Initialize()
     {
-        ancho = 1024;
-        alto = 768;
+        width = 1024;
+        height = 768;
         int colores = 24;
 
         int flags = (Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT);
         Sdl.SDL_Init(Sdl.SDL_INIT_EVERYTHING);
         screen = Sdl.SDL_SetVideoMode(
-            ancho,
-            alto,
+            width,
+            height,
             colores,
             flags);
 
         Sdl.SDL_Rect rect2 =
-            new Sdl.SDL_Rect(0, 0, (short)ancho, (short)alto);
+            new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
         Sdl.SDL_SetClipRect(screen, ref rect2);
 
         SdlTtf.TTF_Init();
     }
 
-    public static void Initialize(int an, int al)
+    public static void Initialize(int wi, int he)
     {
-        ancho = an;
-        alto = al;
+        width = wi;
+        height = he;
         int colores = 24;
 
         int flags = (Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT);
         Sdl.SDL_Init(Sdl.SDL_INIT_EVERYTHING);
         screen = Sdl.SDL_SetVideoMode(
-            ancho,
-            alto,
+            width,
+            height,
             colores,
             flags);
 
-        Sdl.SDL_WM_SetCaption("COLISEUM CONQUEST", null);
+        Sdl.SDL_WM_SetCaption("COLISEUM CONQUEST", "assets/skull.png");
 
         Sdl.SDL_Rect rect2 =
-            new Sdl.SDL_Rect(0, 0, (short)ancho, (short)alto);
+            new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
         Sdl.SDL_SetClipRect(screen, ref rect2);
 
         SdlTtf.TTF_Init();
@@ -57,14 +57,14 @@ class Engine
 
     public static void Clear()
     {
-        Sdl.SDL_Rect origin = new Sdl.SDL_Rect(0, 0, (short)ancho, (short)alto);
+        Sdl.SDL_Rect origin = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
         Sdl.SDL_FillRect(screen, ref origin, 0);
     }
 
     public static void Draw(IntPtr imagen, float x, float y)
     {
-        Sdl.SDL_Rect origen = new Sdl.SDL_Rect(0, 0, (short)ancho, (short)alto);
-        Sdl.SDL_Rect dest = new Sdl.SDL_Rect((short)x, (short)y, (short)ancho, (short)alto);
+        Sdl.SDL_Rect origen = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
+        Sdl.SDL_Rect dest = new Sdl.SDL_Rect((short)x, (short)y, (short)width, (short)height);
         Sdl.SDL_BlitSurface(imagen, ref origen, screen, ref dest);
     }
 
@@ -72,8 +72,8 @@ class Engine
     {
         IntPtr image = LoadImage(tempimage);
 
-        Sdl.SDL_Rect origin = new Sdl.SDL_Rect(0, 0, (short)ancho, (short)alto);
-        Sdl.SDL_Rect dest = new Sdl.SDL_Rect((short)x, (short)y, (short)ancho, (short)alto);
+        Sdl.SDL_Rect origin = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
+        Sdl.SDL_Rect dest = new Sdl.SDL_Rect((short)x, (short)y, (short)width, (short)height);
         Sdl.SDL_BlitSurface(image, ref origin, screen, ref dest);
     }
     public static void Draw(IntPtr image, float x, float y, float width, float height)
@@ -116,8 +116,8 @@ class Engine
         if (textAsImage == IntPtr.Zero)
             Environment.Exit(5);
 
-        Sdl.SDL_Rect origen = new Sdl.SDL_Rect(0, 0, (short)ancho, (short)alto);
-        Sdl.SDL_Rect dest = new Sdl.SDL_Rect((short)x, (short)y, (short)ancho, (short)alto);
+        Sdl.SDL_Rect origen = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
+        Sdl.SDL_Rect dest = new Sdl.SDL_Rect((short)x, (short)y, (short)width, (short)height);
 
         Sdl.SDL_BlitSurface(textAsImage, ref origen,
             screen, ref dest);
