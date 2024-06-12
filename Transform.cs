@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace MyGame
+﻿namespace MyGame
 {
     public class Transform
     {

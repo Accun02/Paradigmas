@@ -34,7 +34,7 @@ namespace MyGame
             Engine.Clear();
 
             if (player.Health > 0)
-                staticImage.Render();
+                StaticImage.RenderBG();
 
             player.Render();
 
@@ -67,9 +67,9 @@ namespace MyGame
                     AnvilList[i].Render();
                 }
 
-                FontManager.Render(enemy);
+                EnemyHealthBar.RenderEnemyHP(enemy);
+                //StaticImage.Fade(); //Reduce demasiado el performance.
 
-                //BackgroundManager.Fade(); //Reduce demasiado el performance.
             }
             Engine.Show();
         }

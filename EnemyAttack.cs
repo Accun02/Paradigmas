@@ -42,7 +42,7 @@ public class EnemyAttack
     private Dictionary<int, string> attackMethods;
 
     public bool DashAttacking { set { dashAttack = value; } get { return dashAttack; } }
-    public int attackNumber { set { enemyAttack = value; } get { return enemyAttack; } }
+    public int AttackNumber { set { enemyAttack = value; } get { return enemyAttack; } }
     public bool IsTeleportOnCooldown { set { isTeleportOnCooldown = value; } get { return isTeleportOnCooldown; } }
     public bool IsAttacking { set { isAttacking = value; } get { return isAttacking; } }
     public float AttackTimer { set { attackTimer = value; } get { return attackTimer; } }

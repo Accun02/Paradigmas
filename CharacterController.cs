@@ -45,7 +45,8 @@ namespace MyGame
         private float shootTime;
 
         private Transform transform;
-        private DynamicPool pool;
+        private CharacterWeapon weapon;
+
         public float VelocityX { set { velocityX = value; } get { return velocityX; } }
         public float VelocityY { set { velocityY = value; } get { return velocityY; } }
         public float JumpBufferCounter { set { jumpBufferCounter = value; } get { return jumpBufferCounter; } }
@@ -56,7 +57,7 @@ namespace MyGame
         public CharacterController(Transform transform)
         {
             this.transform = transform;
-            pool = new DynamicPool();
+            weapon = new CharacterWeapon();
         }
 
         public void Update()
@@ -136,13 +137,13 @@ namespace MyGame
 
             if (Engine.KeyPress(Engine.KEY_X) && Engine.KeyPress(Engine.KEY_UP) && shootTime <= 0)
             {
-                ShootVertical();
+                weapon.ShootVertical();
                 shootTime = shootCooldown;
             }
 
             if (Engine.KeyPress(Engine.KEY_X) && !Engine.KeyPress(Engine.KEY_UP) && shootTime <= 0)
             {
-                ShootHorizontal();
+                weapon.ShootHorizontal(isLookingRight, isLookingLeft);
                 shootTime = shootCooldown;
             }
         }
@@ -215,26 +216,5 @@ namespace MyGame
                 canMoveRight = true;
             }
         }
-
-        public void ShootVertical()
-        {
-            Bullet newBullet = pool.GetBullet(new Vector2((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - 10 / 2, (int)transform.Position.y - 60 / 2), new Vector2(0, -1), "assets/bullet/bulletY.png", false);
-            GameManager.Instance.LevelController.BulletList.Add(newBullet);
-        }
-
-        public void ShootHorizontal()
-        {
-            if (isLookingRight)
-            {
-                Bullet newBullet = pool.GetBullet(new Vector2((int)transform.Position.x + ((int)Character.PlayerWidth / 2) + 0 / 2, (int)transform.Position.y + 16 + (int)Character.PlayerHeight / 2), new Vector2(1, 0), "assets/bullet/bulletX.png", true);
-                GameManager.Instance.LevelController.BulletList.Add(newBullet);
-            }
-            else if (isLookingLeft)
-            {
-                Bullet newBullet = pool.GetBullet(new Vector2((int)transform.Position.x + ((int)Character.PlayerWidth / 2) - 60, (int)transform.Position.y + 16 + (int)Character.PlayerHeight / 2), new Vector2(-1, 0), "assets/bullet/bulletX.png", true);
-                GameManager.Instance.LevelController.BulletList.Add(newBullet);
-            }
-        }
-
     }
 }

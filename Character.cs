@@ -43,7 +43,7 @@ namespace MyGame
             set;
         }
 
-        private CharacterController controller;
+        public CharacterController controller;
 
         public Character(Vector2 position) : base(position, PlayerWidth, PlayerHeight)
         {

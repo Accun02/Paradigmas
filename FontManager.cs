@@ -4,19 +4,18 @@ namespace MyGame
 {
     internal class FontManager
     {
-        static IntPtr font1 = Engine.LoadFont("assets/Cave-Story.ttf", 35);
+        static IntPtr gameFont = Engine.LoadFont("assets/Cave-Story.ttf", 30);
 
-        public static void Render(Enemy enemy)
+        public static void Render(Enemy enemy, Vector2 position)
         {
             if (enemy.Health > 50)
             {
-                Engine.DrawText("Enemigo: " + enemy.Health + "/100", GameManager.Instance.LevelController.ScreenWidth / 2 - 100, 20, 255, 255, 255, font1);
+                Engine.DrawText("Shiori Hisoka,  Eminencia del Torneo", GameManager.Instance.LevelController.ScreenWidth / 2 - (int)position.x + (int)enemy.ShakeOffsetX, (int)position.y, 255, 255, 255, gameFont);
             }
             else
             {
-                Engine.DrawText("Enemigo: " + enemy.Health + "/100", GameManager.Instance.LevelController.ScreenWidth / 2 - 100, 20, 255, 0, 0, font1);
+                Engine.DrawText("Shiori Hisoka,  Eminencia del Torneo", GameManager.Instance.LevelController.ScreenWidth / 2 - (int)position.x + (int)enemy.ShakeOffsetX, (int)position.y, 255, 0, 0, gameFont);
             }
         }
-
     }
 }

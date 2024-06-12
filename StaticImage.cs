@@ -1,8 +1,7 @@
 using System;
-
 namespace MyGame
 {
-    internal class staticImage
+    internal static class StaticImage
     {
         static IntPtr image = Engine.LoadImage("assets/background.png");
         static IntPtr fade = Engine.LoadImage("assets/fade.png");
@@ -11,10 +10,9 @@ namespace MyGame
         {
             Engine.Draw(image, 0, 0);
         }
-        public static void Fade()
+        public static void RenderFade()
         {
             Engine.Draw(fade, 0, 0);
         }
-
     }
 }

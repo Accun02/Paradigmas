@@ -52,6 +52,7 @@ public class Enemy : GameObject, IDamageable
     public bool Vulnerable { set { vulnerable = value; } get { return vulnerable; } }
     public int Health { set { health = value; } get { return health; } }
     public int MaxHealth { set { maxHealth = value; } get { return maxHealth; } }
+    public float ShakeOffsetX { set { shakeOffsetX = value; } get { return shakeOffsetX; } }
 
     public Enemy(Vector2 position) : base(position, EnemyWidth, EnemyHeight)
     {
@@ -141,7 +142,7 @@ public class Enemy : GameObject, IDamageable
         enemyAttack.IsAttacking = false;
         enemyAttack.DashAttacking = false;
         enemyAttack.AttackTimer = -1;
-        enemyAttack.attackNumber = 0;
+        enemyAttack.AttackNumber = 0;
         currentAnimation = Idle;
         currentAnimation.Update();
         enemyAttack.ResetCurrent();
@@ -225,7 +226,7 @@ public class Enemy : GameObject, IDamageable
     }
     private void ManageAnimations()
     {
-        switch (enemyAttack.attackNumber)
+        switch (enemyAttack.AttackNumber)
         {
             case 1:
             case 5:
