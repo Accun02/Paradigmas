@@ -14,9 +14,12 @@ namespace MyGame
         private IntPtr tutorialScreen = Engine.LoadImage("assets/screens/tutorial.png");
 
         private bool zKeyReleased = false;
+        private bool fKeyReleased = false;
         private bool gameOverDelayStarted = false;
+        private bool fullScreenToggle = false;
         private float currentDeath;
         private float waitForDeath = 2.25f;
+
 
         public delegate void GameStart();
         public delegate void GameWin();
@@ -92,6 +95,17 @@ namespace MyGame
             {
                 zKeyReleased = true;
             }
+            if (Engine.KeyPress(Engine.KEY_F) && fKeyReleased)
+            {
+                fKeyReleased = false;
+                fullScreenToggle = !fullScreenToggle;
+                Engine.ToggleFullScreen(fullScreenToggle);
+            }
+            if (!Engine.KeyPress(Engine.KEY_F))
+            {
+                fKeyReleased = true;
+            }
+
             switch (gameStatus)
             {
                 case GameStatus.Menu:   // Menú
@@ -114,7 +128,7 @@ namespace MyGame
         private void UpdateGame()
         {
             levelController.Update();
-            if (LevelController.enemy.Health <= 0) // Entrar a Victoria
+            if (LevelController.enemy.Health <= -1) // Entrar a Victoria
             {
                 OnGameWin?.Invoke();
             }

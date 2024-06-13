@@ -1,5 +1,6 @@
 ﻿using System;
 using Tao.Sdl;
+using static Tao.Sdl.Sdl;
 
 class Engine
 {
@@ -8,8 +9,8 @@ class Engine
 
     public static void Initialize()
     {
-        width = 1024;
-        height = 768;
+        width = 1920;
+        height = 1080;
         int colores = 24;
 
         int flags = (Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT);
@@ -41,7 +42,11 @@ class Engine
             colores,
             flags);
 
-        Sdl.SDL_WM_SetCaption("COLISEUM CONQUEST", "assets/skull.png");
+        IntPtr icon = LoadImage("assets/icon.png");
+
+        Sdl.SDL_WM_SetIcon(icon, null);
+
+        Sdl.SDL_WM_SetCaption("COLISEUM CONQUEST", null);
 
         Sdl.SDL_Rect rect2 =
             new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
@@ -152,6 +157,26 @@ class Engine
     {
         System.Console.WriteLine(texto);
         Environment.Exit(1);
+    }
+
+    public static void ToggleFullScreen(bool fullScreenToggle)
+    {
+        if (!fullScreenToggle)
+        {
+            Sdl.SDL_FreeSurface(screen);
+            int flags = (Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT);
+            screen = Sdl.SDL_SetVideoMode(width, height, 24, flags);
+
+            Sdl.SDL_ShowCursor(Sdl.SDL_ENABLE);
+        }
+        else
+        {
+            Sdl.SDL_FreeSurface(screen);
+            int flags = (Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_FULLSCREEN | Sdl.SDL_NOFRAME);
+            screen = Sdl.SDL_SetVideoMode(width, height, 24, flags);
+
+            Sdl.SDL_ShowCursor(Sdl.SDL_DISABLE);
+        }
     }
 
     // Definiciones de teclas

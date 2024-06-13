@@ -299,6 +299,7 @@ public class EnemyAttack
 
     public void ResetCurrent()
     {
+        initialWait = 1f;
         teleportCooldownTimer = 0;
         isTeleportOnCooldown = false;
     }

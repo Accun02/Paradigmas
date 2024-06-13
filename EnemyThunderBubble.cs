@@ -4,22 +4,29 @@ namespace MyGame
 {
     public class EnemyThunderBubble : Projectile, ICheckForCollision
     {
-        private readonly int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
-        private readonly int ScreenWidth = GameManager.Instance.LevelController.ScreenWidth;
-        private string idlePath = "assets/enemyBullet/thunder.png";
-        private bool playerDetected;
-        private bool shootThunder;
-        private float initialDetection = 0.375f;
-        private float timeSinceSpawn;
-        private float detectionCoolDown = 0.20f;
-        private float timeSinceDetection;
         public const float BulletHeight = 48;
         public const float BulletWidth = 48;
+
+        private readonly int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
+        private readonly int ScreenWidth = GameManager.Instance.LevelController.ScreenWidth;
+
+        private string idlePath = "assets/enemyBullet/thunder.png";
+
+        private bool playerDetected;
+        private bool shootThunder;
+
+        private float initialDetection = 0.375f;
+        private float timeSinceSpawn;
+        private float detectionCoolDown = 0.13f;
+        private float timeSinceDetection;
+
         private float waveFrequency = 6f;
         private float waveAmplitude = 3f;
         private float waveTime = 0;
+
         private Animation spawn;
         private Animation wait;
+
         public EnemyThunderBubble(Vector2 position, Vector2 playerPosition, Vector2 offset)
         {
             Vector2 adjustedPosition = new Vector2(position.x + offset.x, position.y + offset.y);

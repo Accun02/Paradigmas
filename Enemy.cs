@@ -49,6 +49,7 @@ public class Enemy : GameObject, IDamageable
     private Animation left;
 
     public Transform Transform { get { return transform; } }
+    public bool IsShaking { set { isShaking = value; } get { return isShaking; } }
     public bool Vulnerable { set { vulnerable = value; } get { return vulnerable; } }
     public int Health { set { health = value; } get { return health; } }
     public int MaxHealth { set { maxHealth = value; } get { return maxHealth; } }

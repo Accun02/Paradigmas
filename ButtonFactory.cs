@@ -17,35 +17,26 @@ namespace MyGame
 
     public class ButtonFactory
     {
-        private Dictionary<ButtonType, string> baseSpritePaths = new Dictionary<ButtonType, string>
-        {
-            { ButtonType.Start, "assets/mainMenu/start_" },
-            { ButtonType.Tutorial, "assets/mainMenu/tutorial_" },
-            { ButtonType.Exit, "assets/mainMenu/exit_" }
-        };
+        private static readonly Dictionary<ButtonType, string> baseSpritePaths;
+        private static readonly Dictionary<ButtonType, Dictionary<ButtonState, string>> spritePaths;
 
-        private Dictionary<ButtonType, Dictionary<ButtonState, string>> spritePaths = new Dictionary<ButtonType, Dictionary<ButtonState, string>>();
-
-        public ButtonFactory()
+        static ButtonFactory()
         {
+            baseSpritePaths = new Dictionary<ButtonType, string>
+            {
+                { ButtonType.Start, "assets/mainMenu/start_" },
+                { ButtonType.Tutorial, "assets/mainMenu/tutorial_" },
+                { ButtonType.Exit, "assets/mainMenu/exit_" }
+            };
+
+            spritePaths = new Dictionary<ButtonType, Dictionary<ButtonState, string>>();
             foreach (ButtonType type in Enum.GetValues(typeof(ButtonType)))
             {
-                var paths = new Dictionary<ButtonState, string>();
-                switch (type)
+                var paths = new Dictionary<ButtonState, string>
                 {
-                    case ButtonType.Start:
-                        paths.Add(ButtonState.On, baseSpritePaths[type] + "on.png");
-                        paths.Add(ButtonState.Off, baseSpritePaths[type] + "off.png");
-                        break;
-                    case ButtonType.Tutorial:
-                        paths.Add(ButtonState.On, baseSpritePaths[type] + "on.png");
-                        paths.Add(ButtonState.Off, baseSpritePaths[type] + "off.png");
-                        break;
-                    case ButtonType.Exit:
-                        paths.Add(ButtonState.On, baseSpritePaths[type] + "on.png");
-                        paths.Add(ButtonState.Off, baseSpritePaths[type] + "off.png");
-                        break;
-                }
+                    { ButtonState.On, baseSpritePaths[type] + "on.png" },
+                    { ButtonState.Off, baseSpritePaths[type] + "off.png" }
+                };
                 spritePaths.Add(type, paths);
             }
         }

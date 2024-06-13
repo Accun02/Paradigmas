@@ -68,8 +68,6 @@ namespace MyGame
                 }
 
                 EnemyHealthBar.RenderEnemyHP(enemy);
-                //StaticImage.Fade(); //Reduce demasiado el performance.
-
             }
             Engine.Show();
         }
@@ -128,6 +126,7 @@ namespace MyGame
             ThunderList.Clear();
             LightningList.Clear();
             AnvilList.Clear();
+            FontManager.ResetText();
 
             // Reset Player
             player.Transform.Position = new Vector2(ScreenWidth / 4 - Character.PlayerWidth / 2, GroundHeight - Character.PlayerHeight);
