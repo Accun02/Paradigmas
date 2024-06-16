@@ -38,11 +38,11 @@ namespace MyGame
 
             Engine.Draw(bossBar, positionX + ((int)enemy.ShakeOffsetX * 2), positionY);
 
-            if (enemy.Health >= 10 && enemy.Health < 50 && GameManager.Instance.HardMode)
+            if (enemy.Health >= 10 && enemy.Health < 75 && GameManager.Instance.HardMode || enemy.Health >= 10 && enemy.Health < 50)
             {
                 Engine.Draw(skullPhase2, positionX - 23 + enemy.ShakeOffsetX, positionY - 6);
             }
-            else if  (enemy.Health >= 50 || !GameManager.Instance.HardMode)
+            else if (enemy.Health >= 50 || !GameManager.Instance.HardMode)
             {
                 Engine.Draw(skull, positionX - 23 + enemy.ShakeOffsetX, positionY - 6);
             }

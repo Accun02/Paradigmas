@@ -10,16 +10,26 @@ namespace MyGame
 
         private bool bounced;
 
-        public const float BulletHeight = 67;
-        public const float BulletWidth = 184;
+        public const float anvilHeight = 67;
+        public const float anvilWidth = 184;
 
         private float shakeSize = 3f;
         private float anvilShakeTime = 0f;
         private float anvilShakeSpeed = 55f;
+
         public EnemyAnvil(Vector2 position, Vector2 offset) : base(new Vector2(position.x + offset.x, position.y + offset.y), new Vector2(0, 1))
         {
             bulletVel = 0;
-            acceleration = 1250;
+
+            if (GameManager.Instance.HardMode)
+            {
+                acceleration = 1500;
+            }
+            else
+            {
+                acceleration = 1250;
+            }
+
             coolDown = 0.4f;
             CreateAnimations();
         }
@@ -53,8 +63,8 @@ namespace MyGame
         {
             Vector2 playerPosition = player.Transform.Position;
             Vector2 bulletPosition = transform.Position;
-            if (bulletPosition.x + BulletWidth > playerPosition.x && bulletPosition.x < playerPosition.x + Character.PlayerWidth &&
-                bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && player.Vulnerable)
+            if (bulletPosition.x + anvilWidth > playerPosition.x && bulletPosition.x < playerPosition.x + Character.PlayerWidth &&
+                bulletPosition.y + anvilHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && player.Vulnerable)
             {
                 player.TakeDamage(1);
                 return;

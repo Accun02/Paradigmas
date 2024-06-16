@@ -15,7 +15,7 @@ namespace MyGame
         public static void RenderPlayerUI(Character player)
         {
             if (GameManager.Instance.HardMode)
-            { 
+            {
                 for (int i = 0; i < player.MaxHealthHard; i++)
                 {
                     IntPtr sprite = (i < player.Health) ? hpSprite : hpEmptySprite;

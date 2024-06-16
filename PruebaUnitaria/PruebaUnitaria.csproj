@@ -56,7 +56,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Paradigmas\MyGame.csproj">
+    <ProjectReference Include="..\MyGame.csproj">
       <Project>{2cdcd5dc-5145-4c37-acea-ce81d939f89e}</Project>
       <Name>MyGame</Name>
     </ProjectReference>

@@ -20,11 +20,20 @@ namespace MyGame
 
         public EnemyBullet(Vector2 position, Vector2 offset) : base(new Vector2(position.x + offset.x, position.y + offset.y), new Vector2(0, 0))
         {
-            bulletVel = 10;
-            acceleration = 2000;
-            coolDown = 0.4f;
-            timeSinceSpawn = 0f;
+            if (GameManager.Instance.HardMode)
+            {
+                bulletVel = 30;
+                acceleration = 2500;
+                coolDown = 0.3f;
+            }
+            else
+            {
+                bulletVel = 10;
+                acceleration = 2000;
+                coolDown = 0.4f;
+            }
 
+            timeSinceSpawn = 0f;
             CreateAnimations();
         }
 

@@ -16,8 +16,17 @@ namespace MyGame
         public EnemyLightningBolt(Vector2 position, Vector2 offset) : base(new Vector2(position.x + offset.x, position.y + offset.y), new Vector2(0, 1))
         {
             bulletVel = 250;
-            acceleration = 4000;
             coolDown = 0.4f;
+
+            if (GameManager.Instance.HardMode)
+            {
+                acceleration = 4500;
+            }
+            else
+            {
+                acceleration = 4000;
+            }
+
             CreateAnimations();
         }
 

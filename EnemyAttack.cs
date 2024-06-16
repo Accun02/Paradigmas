@@ -14,9 +14,13 @@ public class EnemyAttack
 
     private bool canAttack = true;
     private bool isAttacking = false;
-
     private bool effectDuringCooldown = false;
     private bool canTeleport = true;
+    private bool dashAttack = false;
+    private bool initialWaitDone = false;
+    private bool nearAttacking = false;
+    private bool playerIsDown = false;
+    private bool isTeleportOnCooldown = false;
 
     private float EnemyWidth = Enemy.EnemyWidth;
     private float EnemyHeight = Enemy.EnemyHeight;
@@ -25,27 +29,43 @@ public class EnemyAttack
 
     private float repeatCooldown = 0.75f;
     private float currentRepeat = 0.0f;
-
     private float teleportCooldownTimer = 0;
     private float teleportCooldownDuration = 1.9f;
-    private bool isTeleportOnCooldown = false;
-
-    private bool dashAttack = false;
-
     private float initialWait = 1.0f;
-    private bool initialWaitDone = false;
 
     private int repetitionCount = 0;
-    private bool nearAttacking = false;
-    private bool playerIsDown = false;
 
     private Dictionary<int, string> attackMethods;
 
-    public bool DashAttacking { set { dashAttack = value; } get { return dashAttack; } }
-    public int AttackNumber { set { enemyAttack = value; } get { return enemyAttack; } }
-    public bool IsTeleportOnCooldown { set { isTeleportOnCooldown = value; } get { return isTeleportOnCooldown; } }
-    public bool IsAttacking { set { isAttacking = value; } get { return isAttacking; } }
-    public float AttackTimer { set { attackTimer = value; } get { return attackTimer; } }
+    public bool DashAttacking
+    {
+        set { dashAttack = value; }
+        get { return dashAttack; }
+    }
+
+    public int AttackNumber
+    {
+        set { enemyAttack = value; }
+        get { return enemyAttack; }
+    }
+
+    public bool IsTeleportOnCooldown
+    {
+        set { isTeleportOnCooldown = value; }
+        get { return isTeleportOnCooldown; }
+    }
+
+    public bool IsAttacking
+    {
+        set { isAttacking = value; }
+        get { return isAttacking; }
+    }
+
+    public float AttackTimer
+    {
+        set { attackTimer = value; }
+        get { return attackTimer; }
+    }
 
     public EnemyAttack(EnemyMovement enemyMovement)
     {
@@ -194,8 +214,8 @@ public class EnemyAttack
         }
 
         repeatCooldown = 1f;
-
-        int maxRepetitions = GameManager.Instance.HardMode && GameManager.Instance.LevelController.enemy.Health <= GameManager.Instance.LevelController.enemy.MaxHealth / 2 ? 3 : 1;
+        int maxRepetitions = !GameManager.Instance.HardMode && GameManager.Instance.LevelController.enemy.Health <= 50 
+            || GameManager.Instance.HardMode && GameManager.Instance.LevelController.enemy.Health <= 75 ? 3 : 1;
 
         if (repetitionCount < maxRepetitions && currentRepeat <= 0)
         {
@@ -222,7 +242,7 @@ public class EnemyAttack
     {
         dashAttack = true;
 
-        timeBetweenAttacks = 1f;
+        timeBetweenAttacks = GameManager.Instance.HardMode ? 0.7f : 1f;
         canAttack = false;
         attackTimer = 0;
         isAttacking = false;
@@ -233,7 +253,7 @@ public class EnemyAttack
         if (canTeleport && !isTeleportOnCooldown)
         {
             enemyMovement.Teleport();
-            timeBetweenAttacks = 1.5f;
+            timeBetweenAttacks = GameManager.Instance.HardMode ? 1.0f : 1.5f;
             canAttack = false;
             attackTimer = 0;
             isTeleportOnCooldown = true;
@@ -256,18 +276,18 @@ public class EnemyAttack
             return;
         }
 
-        repeatCooldown = 1.25f;
+        repeatCooldown = GameManager.Instance.HardMode ? 0.75f : 1.25f;
 
-        if (repetitionCount <= 2 && currentRepeat <= 0)
+        if (repetitionCount <= (GameManager.Instance.HardMode ? 3 : 2) && currentRepeat <= 0)
         {
             GameManager.Instance.LevelController.ThunderList.Add(new EnemyThunderBubble(position, GameManager.Instance.LevelController.player.Transform.Position, new Vector2(BulletWidth / 2, EnemyHeight / 2 - BulletHeight / 2)));
-            timeBetweenAttacks = 0.45f;
+            timeBetweenAttacks = GameManager.Instance.HardMode ? 0.3f : 0.45f;
             canAttack = false;
             attackTimer = 0;
             currentRepeat = repeatCooldown;
             repetitionCount++;
         }
-        else if (repetitionCount <= 3 && currentRepeat > 0)
+        else if (repetitionCount <= (GameManager.Instance.HardMode ? 3 : 2) && currentRepeat > 0)
         {
             currentRepeat -= Time.DeltaTime;
         }
@@ -283,7 +303,7 @@ public class EnemyAttack
         float anvilX = position.x - EnemyWidth / 2 - BulletWidth / 2;
         float anvilY = -BulletHeight - 70;
         GameManager.Instance.LevelController.AnvilList.Add(new EnemyAnvil(new Vector2(anvilX, anvilY), new Vector2(0, 0)));
-        timeBetweenAttacks = 0.3f;
+        timeBetweenAttacks = GameManager.Instance.HardMode ? 0.2f : 0.3f;
         canAttack = false;
         attackTimer = 0;
         repetitionCount = 0;

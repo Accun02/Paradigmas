@@ -23,7 +23,7 @@ public class Enemy : GameObject, IDamageable
     private float moveDirectionX;
     private float speedX = 0;
     private float speedY = 0;
-    private float acceleration = 750;
+    private float acceleration;
 
     private bool goingLeft = false;
     private bool goingRight = false;
@@ -147,6 +147,15 @@ public class Enemy : GameObject, IDamageable
         currentAnimation = Idle;
         currentAnimation.Update();
         enemyAttack.ResetCurrent();
+
+        if (GameManager.Instance.HardMode)
+        {
+            acceleration = 1200;
+        }
+        else
+        {
+            acceleration = 750;
+        }
     }
     private void DashState()
     {

@@ -41,6 +41,11 @@ namespace MyGame
             {
                 staticImage.RenderBG();
                 enemy.Render();
+
+                for (int i = 0; i < TeleportList.Count; i++)
+                {
+                    TeleportList[i].Render();
+                }
             }
 
             player.Render();
@@ -54,10 +59,6 @@ namespace MyGame
                 for (int i = 0; i < EnemyBulletList.Count; i++)
                 {
                     EnemyBulletList[i].Render();
-                }
-                for (int i = 0; i < TeleportList.Count; i++)
-                {
-                    TeleportList[i].Render();
                 }
                 for (int i = 0; i < ThunderList.Count; i++)
                 {
@@ -83,7 +84,7 @@ namespace MyGame
             if (player.JustHit)
             {
                 player.JustHit = false;
-                pauseCounter = 6;
+                pauseCounter = 3;
             }
 
             if (pauseCounter > 0)

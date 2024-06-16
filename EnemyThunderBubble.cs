@@ -17,7 +17,7 @@ namespace MyGame
 
         private float initialDetection = 0.375f;
         private float timeSinceSpawn;
-        private float detectionCoolDown = 0.13f;
+        private float detectionCoolDown;
         private float timeSinceDetection;
 
         private float waveFrequency = 6f;
@@ -34,9 +34,21 @@ namespace MyGame
             direction = new Vector2(playerPosition.x + (Character.PlayerWidth / 2) - adjustedPosition.x, 0);
             float length = (float)Math.Sqrt(direction.x * direction.x + direction.y * direction.y);
             direction.x /= length;
-            bulletVel = 150;
-            acceleration = 100;
             timeSinceDetection = 0;
+
+            if (GameManager.Instance.HardMode)
+            {
+                acceleration = 250;
+                bulletVel = 10;
+                detectionCoolDown = 0.02f;
+            }
+            else
+            {
+                acceleration = 100;
+                bulletVel = 150;
+                detectionCoolDown = 0.13f;
+            }
+
             CreateAnimations();
         }
         public override void Update()
