@@ -147,26 +147,28 @@ public class Enemy : GameObject, IDamageable
         currentAnimation = Idle;
         currentAnimation.Update();
         enemyAttack.ResetCurrent();
-
-        if (GameManager.Instance.HardMode)
-        {
-            acceleration = 1200;
-        }
-        else
-        {
-            acceleration = 750;
-        }
     }
     private void DashState()
     {
         if (!offScreen)
         {
+
+            if (GameManager.Instance.HardMode)
+            {
+                acceleration = 1200;
+            }
+            else
+            {
+                acceleration = 750;
+            }
+
             speedY += acceleration * Time.DeltaTime;
             transform.Translate(new Vector2(0, -1), speedY * Time.DeltaTime);
 
             if (transform.Position.y < -EnemyHeight * 2)
             {
                 offScreen = true;
+
                 speedY = 0;
             }
         }
@@ -208,6 +210,7 @@ public class Enemy : GameObject, IDamageable
                     {
                         if (!finishedDash)
                         {
+                            acceleration = 750;
                             goingLeft = false;
                             goingRight = false;
                             float newX = random.Next(200, 1000);

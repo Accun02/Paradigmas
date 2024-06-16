@@ -40,7 +40,7 @@ namespace MyGame
             {
                 acceleration = 250;
                 bulletVel = 10;
-                detectionCoolDown = 0.02f;
+                detectionCoolDown = 0.07f;
             }
             else
             {
