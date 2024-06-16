@@ -53,6 +53,7 @@ namespace MyGame
         public bool IsLookingLeft { set { isLookingLeft = value; } get { return isLookingLeft; } }
         public bool IsLookingRight { set { isLookingRight = value; } get { return isLookingRight; } }
         public bool IsJumping { set { isJumping = value; } get { return isJumping; } }
+        public int JumpCounter { set { jumpCounter = value; } get { return jumpCounter; } }
 
         public CharacterController(Transform transform)
         {

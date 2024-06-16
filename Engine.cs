@@ -1,6 +1,5 @@
 ﻿using System;
 using Tao.Sdl;
-using static Tao.Sdl.Sdl;
 
 class Engine
 {

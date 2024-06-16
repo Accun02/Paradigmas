@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Tao.Sdl;
 
 namespace MyGame
 {
@@ -11,15 +12,24 @@ namespace MyGame
         private bool isJumping = false;
         private bool isDead = false;
         private bool vulnerable = true;
+        private bool justHit = false;
 
-        private int health = 1;
-        private int maxHealth = 1;
+        private int invulnerabilityFrames = 95;
+        private int currentInvulnerabilityFrame = 0;
+
+        private int health;
+        private int maxHealthNormal = 3;
+        private int maxHealthHard = 1;
         private const float deathWait = 0.75f;
-        private float cuurentDeath;
+        private float currentDeath;
 
+        public bool JustHit { set { justHit = value; } get { return justHit; } }
         public bool IsDead { set { isDead = value; } get { return isDead; } }
         public int Health { set { health = value; } get { return health; } }
-        public int MaxHealth { set { maxHealth = value; } get { return maxHealth; } }
+        public int MaxHealthNormal { set { maxHealthNormal = value; } get { return maxHealthNormal; } }
+        public int MaxHealthHard { set { maxHealthHard = value; } get { return maxHealthHard; } }
+        public bool Vulnerable { set { vulnerable = value; } get { return vulnerable; } }
+        public int CurrentInvulnerabilityFrame { set { currentInvulnerabilityFrame = value; } get { return currentInvulnerabilityFrame; } }
 
         private Animation walk;
         private Animation walkUp;
@@ -69,9 +79,18 @@ namespace MyGame
             {
                 controller.Update();
                 isJumping = controller.IsJumping;
-                cuurentDeath = 0f;
+                currentDeath = 0f;
                 isDead = false;
                 died.Restart();
+
+                if (currentInvulnerabilityFrame > 0)
+                {
+                    currentInvulnerabilityFrame--;
+                    if (currentInvulnerabilityFrame == 0)
+                    {
+                        vulnerable = true;
+                    }
+                }
 
                 if (isJumping)
                 {
@@ -125,9 +144,10 @@ namespace MyGame
             }
             else
             {
-                cuurentDeath += Time.DeltaTime;
+                currentDeath += Time.DeltaTime;
+                vulnerable = true;
 
-                if (cuurentDeath >= deathWait)
+                if (currentDeath >= deathWait)
                 {
                     isDead = true;
                     currentAnimation = died;
@@ -135,18 +155,38 @@ namespace MyGame
                 }
             }
         }
+
         public void TakeDamage(int damage)
         {
             if (vulnerable)
             {
+                CameraShake.Instance.HitShake();
                 health -= damage;
+
+                if (health > 0)
+                {
+                    justHit = true;
+                    vulnerable = false;
+                    currentInvulnerabilityFrame = invulnerabilityFrames;
+                }
             }
         }
+
         public void Render()
         {
             if (!isDead)
             {
-                Engine.Draw(currentAnimation.CurrentFrame, Transform.Position.x, Transform.Position.y);
+                if (currentInvulnerabilityFrame > 0 && !vulnerable)
+                {
+                    if ((currentInvulnerabilityFrame / 3) % 2 == 1)
+                    {
+                        Engine.Draw(currentAnimation.CurrentFrame, Transform.Position.x + CameraShake.Instance.value, Transform.Position.y);
+                    }
+                }
+                else
+                {
+                    Engine.Draw(currentAnimation.CurrentFrame, Transform.Position.x + CameraShake.Instance.value, Transform.Position.y);
+                }
             }
             else
             {
@@ -245,7 +285,6 @@ namespace MyGame
                 boomTextures.Add(frame);
             }
             died = new Animation("Boom", boomTextures, 0.035f, false);
-
         }
     }
 }

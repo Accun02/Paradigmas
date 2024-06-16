@@ -58,12 +58,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animation.cs" />
+    <Compile Include="CameraShake.cs" />
     <Compile Include="CharacterWeapon.cs" />
-    <Compile Include="EnemyHealthBar.cs" />
+    <Compile Include="UIDifficultySelector.cs" />
+    <Compile Include="UIEnemyHealthBar.cs" />
+    <Compile Include="UIPlayerManager.cs" />
     <Compile Include="StaticImage.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="ButtonFactory.cs" />
-    <Compile Include="DynamicPool.cs" />
+    <Compile Include="GenericPool.cs" />
     <Compile Include="EnemyAnvil.cs" />
     <Compile Include="EnemyLightningBolt.cs" />
     <Compile Include="GameObject.cs" />
@@ -122,6 +125,21 @@
     <Content Include="assets\HUD\hpHit.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="assets\HUD\player\hp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\HUD\player\hpEmpty.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\HUD\player\jump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\HUD\player\jumpBar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\HUD\player\jumpEmpty.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\HUD\skull.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -129,6 +147,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\mainMenu\hard.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\mainMenu\normal.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\screens\dead.png">

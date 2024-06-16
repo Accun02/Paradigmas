@@ -15,6 +15,7 @@ namespace MyGame
 
         private bool zKeyReleased = false;
         private bool fKeyReleased = false;
+        private bool hardMode = false;
         private bool gameOverDelayStarted = false;
         private bool fullScreenToggle = false;
         private float currentDeath;
@@ -31,6 +32,7 @@ namespace MyGame
         public event GameOver OnGameOver;
         public LevelController LevelController { get => levelController; set => levelController = value; }
         public bool ZKeyReleased { get => zKeyReleased; set => zKeyReleased = value; }
+        public bool HardMode { get => hardMode; set => hardMode = value; }
         public bool GameOverDelayStarted { get => gameOverDelayStarted; set => gameOverDelayStarted = value; }
         public static GameManager Instance
         {

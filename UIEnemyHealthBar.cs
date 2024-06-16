@@ -2,7 +2,7 @@
 
 namespace MyGame
 {
-    internal class EnemyHealthBar
+    internal class UIEnemyHealthBar
     {
         static IntPtr bossBar = Engine.LoadImage("assets/HUD/bossBar.png");
         static IntPtr skull = Engine.LoadImage("assets/HUD/skull.png");
@@ -38,11 +38,11 @@ namespace MyGame
 
             Engine.Draw(bossBar, positionX + ((int)enemy.ShakeOffsetX * 2), positionY);
 
-            if (enemy.Health >= 10 && enemy.Health < 50)
+            if (enemy.Health >= 10 && enemy.Health < 50 && GameManager.Instance.HardMode)
             {
                 Engine.Draw(skullPhase2, positionX - 23 + enemy.ShakeOffsetX, positionY - 6);
             }
-            else if  (enemy.Health >= 50)
+            else if  (enemy.Health >= 50 || !GameManager.Instance.HardMode)
             {
                 Engine.Draw(skull, positionX - 23 + enemy.ShakeOffsetX, positionY - 6);
             }

@@ -30,6 +30,7 @@ namespace MyGame
 
                 if (transform.Position.y >= GroundHeight - BulletHeight)
                 {
+                    CameraShake.Instance.EnemySmallShake();
                     shootThunder = true;
                     transform.Position = new Vector2(transform.Position.x - 15, GroundHeight - BulletHeight);
                     bulletVel = 0;
@@ -43,7 +44,7 @@ namespace MyGame
             Vector2 playerPosition = player.Transform.Position;
             Vector2 bulletPosition = transform.Position;
             if (bulletPosition.x + BulletWidth > playerPosition.x && bulletPosition.x < playerPosition.x + Character.PlayerWidth &&
-                bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && !shootThunder)
+                bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && !shootThunder && player.Vulnerable)
             {
                 player.TakeDamage(1);
                 return;

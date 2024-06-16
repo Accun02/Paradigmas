@@ -31,7 +31,7 @@ namespace MyGame
 
         public virtual void Render()
         {
-            Engine.Draw(currentAnimation.CurrentFrame, transform.Position.x, transform.Position.y);
+            Engine.Draw(currentAnimation.CurrentFrame, transform.Position.x + CameraShake.Instance.value, transform.Position.y);
         }
 
         public virtual void Update()

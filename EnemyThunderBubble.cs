@@ -67,7 +67,8 @@ namespace MyGame
             Vector2 playerPosition = player.Transform.Position;
             Vector2 bulletPosition = transform.Position;
             if (bulletPosition.x + BulletWidth > playerPosition.x && bulletPosition.x < playerPosition.x + Character.PlayerWidth &&
-                bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && !shootThunder && timeSinceSpawn > initialDetection)
+                bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight &&
+                !shootThunder && timeSinceSpawn > initialDetection && player.Vulnerable)
             {
                 player.TakeDamage(1);
                 playerDetected = true;

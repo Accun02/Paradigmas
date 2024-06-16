@@ -195,7 +195,7 @@ public class EnemyAttack
 
         repeatCooldown = 1f;
 
-        int maxRepetitions = GameManager.Instance.LevelController.enemy.Health <= GameManager.Instance.LevelController.enemy.MaxHealth / 2 ? 3 : 1;
+        int maxRepetitions = GameManager.Instance.HardMode && GameManager.Instance.LevelController.enemy.Health <= GameManager.Instance.LevelController.enemy.MaxHealth / 2 ? 3 : 1;
 
         if (repetitionCount < maxRepetitions && currentRepeat <= 0)
         {

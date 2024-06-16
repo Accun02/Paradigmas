@@ -31,6 +31,7 @@ namespace MyGame
 
             if (transform.Position.y >= GroundHeight - 92 && !bounced)
             {
+                CameraShake.Instance.EnemyHugeShake();
                 bounced = true;
                 shakeSize = 6.5f;
                 anvilShakeSpeed = 60f;
@@ -44,7 +45,7 @@ namespace MyGame
             anvilShakeTime += Time.DeltaTime;
             float offsetX = shakeSize * (float)Math.Sin(anvilShakeSpeed * anvilShakeTime);
 
-            Engine.Draw(currentAnimation.CurrentFrame, (transform.Position.x + offsetX), transform.Position.y);
+            Engine.Draw(currentAnimation.CurrentFrame, (transform.Position.x + offsetX) + CameraShake.Instance.value, transform.Position.y);
         }
 
 
@@ -53,7 +54,7 @@ namespace MyGame
             Vector2 playerPosition = player.Transform.Position;
             Vector2 bulletPosition = transform.Position;
             if (bulletPosition.x + BulletWidth > playerPosition.x && bulletPosition.x < playerPosition.x + Character.PlayerWidth &&
-                bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight)
+                bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && player.Vulnerable)
             {
                 player.TakeDamage(1);
                 return;

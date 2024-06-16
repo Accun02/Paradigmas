@@ -95,7 +95,7 @@ public class Enemy : GameObject, IDamageable
         {
             shakeOffsetX = (float)(shakeMagnitude * Math.Sin(2 * Math.PI * (shakeDuration - shakeTimer) * shakeFrequency));
         }
-        Engine.Draw(currentAnimation.CurrentFrame, transform.Position.x + shakeOffsetX, transform.Position.y);
+        Engine.Draw(currentAnimation.CurrentFrame, transform.Position.x + shakeOffsetX + CameraShake.Instance.value, transform.Position.y);
     }
 
     public void CheckCollision(Character player)
@@ -109,7 +109,7 @@ public class Enemy : GameObject, IDamageable
         float playerTop = player.Transform.Position.y;
         float playerBottom = player.Transform.Position.y + Character.PlayerHeight;
 
-        if (vulnerable && enemyRight >= playerLeft && enemyLeft <= playerRight && enemyBottom >= playerTop && enemyTop <= playerBottom)
+        if (vulnerable && enemyRight >= playerLeft && enemyLeft <= playerRight && enemyBottom >= playerTop && enemyTop <= playerBottom && player.Vulnerable)
         {
             player.TakeDamage(1);
         }
@@ -309,5 +309,4 @@ public class Enemy : GameObject, IDamageable
         }
         right = new Animation("right", Right, 0.1f, false);
     }
-
 }

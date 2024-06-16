@@ -33,6 +33,8 @@ namespace MyGame
         private int[] menuXPositions = { 202, 62, 202 };
         private int[] menuYPositions = { 303, 438, 572 };
 
+        private UIDifficultySelector difficultySelector;
+
         public delegate void MenuAction();
         public event MenuAction OnStartGame;
         public event MenuAction OnTutorial;
@@ -41,19 +43,19 @@ namespace MyGame
         public UIMainMenu()
         {
             buttonFactory = new ButtonFactory();
-
             buttons = new Button[]
             {
                 buttonFactory.CreateButton(ButtonType.Start, ButtonState.Off, new Vector2(cursorXPositions[0], cursorYPositions[0])),
                 buttonFactory.CreateButton(ButtonType.Tutorial, ButtonState.Off, new Vector2(cursorXPositions[1], cursorYPositions[1])),
                 buttonFactory.CreateButton(ButtonType.Exit, ButtonState.Off, new Vector2(cursorXPositions[2], cursorYPositions[2]))
             };
-
             cursorBaseXPosition = cursorXPositions[selectedItem];
             cursorXPosition = cursorBaseXPosition;
             cursorYPosition = cursorYPositions[selectedItem];
             cursorTargetYPosition = cursorYPosition;
             cursorTargetXPosition = cursorBaseXPosition;
+
+            difficultySelector = new UIDifficultySelector();
         }
 
         public void Update()
@@ -83,7 +85,6 @@ namespace MyGame
                 GameManager.Instance.ZKeyReleased = false;
                 ExecuteItem();
             }
-
             cursorTime += Time.DeltaTime;
             cursorXPosition = Lerp(cursorXPosition, cursorTargetXPosition + 10f * (float)Math.Sin(5f * cursorTime), lerpSpeed * Time.DeltaTime);
             cursorYPosition = Lerp(cursorYPosition, cursorTargetYPosition, lerpSpeed * Time.DeltaTime);
@@ -91,6 +92,8 @@ namespace MyGame
             orbTime += Time.DeltaTime * 1.5f;
             orbXPosition = orbCenterX + 20f * (float)Math.Cos(orbTime);
             orbYPosition = orbCenterY + 20f * (float)Math.Sin(orbTime);
+
+            difficultySelector.Update();
         }
 
         private float Lerp(float start, float end, float t)
@@ -126,6 +129,8 @@ namespace MyGame
                 buttons[i] = buttonFactory.CreateButton((ButtonType)i, state, new Vector2(menuXPositions[i], menuYPositions[i]));
                 buttons[i].Render();
             }
+
+            difficultySelector.Render();
 
             Engine.Draw(cursorImage, (int)cursorXPosition, (int)cursorYPosition);
             Engine.Draw(orbImage, (int)orbXPosition, (int)orbYPosition);

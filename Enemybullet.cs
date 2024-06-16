@@ -75,7 +75,7 @@ namespace MyGame
             float playerTop = player.Transform.Position.y;
             float playerBottom = player.Transform.Position.y + Character.PlayerHeight;
 
-            if (bulletRight >= playerLeft && bulletLeft <= playerRight && bulletBottom >= playerTop && bulletTop <= playerBottom && !destroyed)
+            if (bulletRight >= playerLeft && bulletLeft <= playerRight && bulletBottom >= playerTop && bulletTop <= playerBottom && !destroyed && player.Vulnerable)
             {
                 player.TakeDamage(1);
 

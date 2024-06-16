@@ -9,6 +9,7 @@ namespace MyGame
 
         public Character player;
         public Enemy enemy;
+        public StaticImage staticImage;
 
         public List<Bullet> BulletList;
         public List<EnemyTeleport> TeleportList;
@@ -17,8 +18,11 @@ namespace MyGame
         public List<EnemyLightningBolt> LightningList;
         public List<EnemyAnvil> AnvilList;
 
+        private int pauseCounter = 0;
+
         public void Initialize()
         {
+            staticImage = new StaticImage();
             player = new Character(new Vector2(0, 0));
             enemy = new Enemy(new Vector2(0, 0));
             BulletList = new List<Bullet>();
@@ -34,14 +38,15 @@ namespace MyGame
             Engine.Clear();
 
             if (player.Health > 0)
-                StaticImage.RenderBG();
+            {
+                staticImage.RenderBG();
+                enemy.Render();
+            }
 
             player.Render();
 
             if (player.Health > 0)
             {
-                enemy.Render();
-
                 for (int i = 0; i < BulletList.Count; i++)
                 {
                     BulletList[i].Render();
@@ -67,13 +72,27 @@ namespace MyGame
                     AnvilList[i].Render();
                 }
 
-                EnemyHealthBar.RenderEnemyHP(enemy);
+                UIEnemyHealthBar.RenderEnemyHP(enemy);
+                UIPlayerManager.RenderPlayerUI(player);
             }
             Engine.Show();
         }
 
         public void Update()
         {
+            if (player.JustHit)
+            {
+                player.JustHit = false;
+                pauseCounter = 6;
+            }
+
+            if (pauseCounter > 0)
+            {
+                pauseCounter--;
+                return;
+            }
+
+            CameraShake.Instance.Update();
             player.Update(player);
 
             if (player.Health > 0)
@@ -109,6 +128,7 @@ namespace MyGame
                     LightningList[i].Update();
                     LightningList[i].CheckPositions(player);
                 }
+
                 for (int i = 0; i < AnvilList.Count; i++)
                 {
                     AnvilList[i].Update();
@@ -119,20 +139,30 @@ namespace MyGame
 
         public void Restart()
         {
-            // Clear Scene
+            // Reset Scene
             TeleportList.Clear();
             BulletList.Clear();
             EnemyBulletList.Clear();
             ThunderList.Clear();
             LightningList.Clear();
             AnvilList.Clear();
+            CameraShake.Instance.value = 0;
             FontManager.ResetText();
 
             // Reset Player
             player.Transform.Position = new Vector2(ScreenWidth / 4 - Character.PlayerWidth / 2, GroundHeight - Character.PlayerHeight);
             player.ResetMomentum();
-            player.Health = player.MaxHealth;
+            if (GameManager.Instance.HardMode)
+            {
+                player.Health = player.MaxHealthHard;
+            }
+            else
+            {
+                player.Health = player.MaxHealthNormal;
+            }
             player.IsDead = false;
+            player.Vulnerable = true;
+            player.CurrentInvulnerabilityFrame = 0;
 
             // Reset Enemy
             enemy.ResetTransform(new Vector2((ScreenWidth / 4) * 3 - Enemy.EnemyWidth / 2, 250));

@@ -35,7 +35,7 @@ namespace MyGame
         public void Render()
         {
             if (!isDestroyed)
-                Engine.Draw(image, (int)transform.Position.x, (int)transform.Position.y);
+                Engine.Draw(image, (int)transform.Position.x + CameraShake.Instance.value, (int)transform.Position.y);
         }
 
         public void Update()
