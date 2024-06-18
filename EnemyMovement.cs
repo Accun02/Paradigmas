@@ -28,7 +28,15 @@ namespace MyGame
             do
             {
                 newX = rnd.Next(200, 1000);
-                newY = rnd.Next(100, 300);
+
+                if (GameManager.Instance.HardMode)
+                {
+                    newY = rnd.Next(100, 250);
+                }
+                else
+                {
+                    newY = rnd.Next(100, 300);
+                }
             }
             while (Math.Abs(newX - transform.Position.x) < 400 && Math.Abs(newY - transform.Position.y) < 400);
 

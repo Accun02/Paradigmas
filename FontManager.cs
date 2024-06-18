@@ -14,7 +14,7 @@ namespace MyGame
         {
             Engine.DrawText(displayedText, GameManager.Instance.LevelController.ScreenWidth / 2 - (int)position.x + (int)enemy.ShakeOffsetX, (int)position.y, 255, 255, 255, gameFont);
 
-            if (displayedText.Length < fullText.Length)
+            if (displayedText.Length < fullText.Length && !GameManager.Instance.Paused)
             {
                 letterCooldown -= Time.DeltaTime;
                 if (letterCooldown <= 0)

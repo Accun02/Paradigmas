@@ -52,9 +52,12 @@ namespace MyGame
 
         public override void Render()
         {
-            anvilShakeTime += Time.DeltaTime;
-            float offsetX = shakeSize * (float)Math.Sin(anvilShakeSpeed * anvilShakeTime);
+            if (!GameManager.Instance.Paused)
+            {
+                anvilShakeTime += Time.DeltaTime;
+            }
 
+            float offsetX = shakeSize * (float)Math.Sin(anvilShakeSpeed * anvilShakeTime);
             Engine.Draw(currentAnimation.CurrentFrame, (transform.Position.x + offsetX) + CameraShake.Instance.value, transform.Position.y);
         }
 

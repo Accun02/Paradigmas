@@ -7,7 +7,7 @@
     <ProjectGuid>{2CDCD5DC-5145-4C37-ACEA-CE81D939F89E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>MyGame</RootNamespace>
-    <AssemblyName>MyGame</AssemblyName>
+    <AssemblyName>COLISEUM CONQUEST</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animation.cs" />
+    <Compile Include="BlinkingImage.cs" />
     <Compile Include="CameraShake.cs" />
     <Compile Include="CharacterWeapon.cs" />
     <Compile Include="EnemyAttackManager.cs" />
@@ -141,6 +142,9 @@
     <Content Include="assets\HUD\player\jumpEmpty.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="assets\HUD\quit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\HUD\skull.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -150,6 +154,9 @@
     <Content Include="assets\icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="assets\mainMenu\crownHard.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\mainMenu\hard.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -157,6 +164,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\screens\dead.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\screens\pause.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\screens\pressZ.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\screens\tutorial.png">

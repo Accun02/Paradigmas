@@ -11,7 +11,8 @@ namespace MyGame
 
         private IntPtr mainMenuScreen = Engine.LoadImage("assets/mainMenu/MainMenu.png");
         private IntPtr cursorImage = Engine.LoadImage("assets/mainMenu/cursor.png");
-        private IntPtr orbImage = Engine.LoadImage("assets/mainMenu/crown.png");
+        private IntPtr crownImage = Engine.LoadImage("assets/mainMenu/crown.png");
+        private IntPtr goldCrownImage = Engine.LoadImage("assets/mainMenu/crownHard.png");
 
         private int[] cursorXPositions = { 565, 425, 565 };
         private int[] cursorYPositions = { 345, 480, 610 };
@@ -133,7 +134,14 @@ namespace MyGame
             difficultySelector.Render();
 
             Engine.Draw(cursorImage, (int)cursorXPosition, (int)cursorYPosition);
-            Engine.Draw(orbImage, (int)orbXPosition, (int)orbYPosition);
+            if (GameManager.Instance.HardModeWon)
+            {
+                Engine.Draw(goldCrownImage, (int)orbXPosition, (int)orbYPosition);
+            }
+            else
+            {
+                Engine.Draw(crownImage, (int)orbXPosition, (int)orbYPosition);
+            }
             Engine.Show();
         }
     }

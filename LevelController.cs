@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MyGame
 {
@@ -18,8 +19,6 @@ namespace MyGame
         public List<EnemyLightningBolt> LightningList;
         public List<EnemyAnvil> AnvilList;
 
-        private int pauseCounter = 0;
-
         public void Initialize()
         {
             staticImage = new StaticImage();
@@ -35,8 +34,6 @@ namespace MyGame
 
         public void Render()
         {
-            Engine.Clear();
-
             if (player.Health > 0)
             {
                 staticImage.RenderBG();
@@ -73,10 +70,12 @@ namespace MyGame
                     AnvilList[i].Render();
                 }
 
-                UIEnemyHealthBar.RenderEnemyHP(enemy);
-                UIPlayerManager.RenderPlayerUI(player);
+                if (!GameManager.Instance.Paused)
+                {
+                    UIEnemyHealthBar.RenderEnemyHP(enemy);
+                    UIPlayerManager.RenderPlayerUI(player);
+                }
             }
-            Engine.Show();
         }
 
         public void Update()
@@ -84,12 +83,15 @@ namespace MyGame
             if (player.JustHit)
             {
                 player.JustHit = false;
-                pauseCounter = 3;
+                GameManager.Instance.PauseCounter = 3;
             }
 
-            if (pauseCounter > 0)
+            if (GameManager.Instance.PauseCounter > 0)
             {
-                pauseCounter--;
+                if (!GameManager.Instance.Paused)
+                {
+                    GameManager.Instance.PauseCounter--;
+                }
                 return;
             }
 
@@ -153,14 +155,7 @@ namespace MyGame
             // Reset Player
             player.Transform.Position = new Vector2(ScreenWidth / 4 - Character.PlayerWidth / 2, GroundHeight - Character.PlayerHeight);
             player.ResetMomentum();
-            if (GameManager.Instance.HardMode)
-            {
-                player.Health = player.MaxHealthHard;
-            }
-            else
-            {
-                player.Health = player.MaxHealthNormal;
-            }
+            player.Health = GameManager.Instance.HardMode ? player.MaxHealthHard : player.MaxHealthNormal;
             player.IsDead = false;
             player.Vulnerable = true;
             player.CurrentInvulnerabilityFrame = 0;
