@@ -13,7 +13,7 @@ namespace MyGame
 
         static void Main(string[] args)
         {
-            if (SdlMixer.Mix_OpenAudio(44100, (short)Sdl.AUDIO_S16SYS, 2, 4096) == -1)
+            if (SdlMixer.Mix_OpenAudio(48000, (short)Sdl.AUDIO_S16SYS, 2, 4096) == -1)
             {
                 Console.WriteLine("No se puede reproducir el audio.");
             }

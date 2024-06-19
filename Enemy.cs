@@ -34,6 +34,8 @@ public class Enemy : GameObject, IDamageable
     private float teleportTimer = 0f;
     private float teleportDelay = 0.15f;
 
+    private int damageCount = 0;
+
     Random random = new Random();
 
     private Transform transform;
@@ -48,6 +50,8 @@ public class Enemy : GameObject, IDamageable
     private Animation right;
     private Animation left;
 
+    private Sound hitEnemySound1;
+    private Sound hitEnemySound2;
     public Transform Transform { get { return transform; } }
     public bool IsShaking { set { isShaking = value; } get { return isShaking; } }
     public bool Vulnerable { set { vulnerable = value; } get { return vulnerable; } }
@@ -55,13 +59,16 @@ public class Enemy : GameObject, IDamageable
     public int MaxHealth { set { maxHealth = value; } get { return maxHealth; } }
     public float ShakeOffsetX { set { shakeOffsetX = value; } get { return shakeOffsetX; } }
 
-    public Enemy(Vector2 position) : base(position, EnemyWidth, EnemyHeight)
+    public Enemy(Vector2 position) : base(position, EnemyWidth, EnemyHeight) 
     {
         transform = new Transform(position);
         enemyMovement = new EnemyMovement(Transform);
         enemyAttack = new EnemyAttack(enemyMovement);
         CreateAnimations();
         currentAnimation = Idle;
+
+        hitEnemySound1 = new Sound("hitEnemy1.wav");
+        hitEnemySound2 = new Sound("hitEnemy2.wav");
     }
     public void Update()
     {
@@ -89,7 +96,7 @@ public class Enemy : GameObject, IDamageable
         }
     }
 
-    public void Render()
+    public void Render() //override
     {
         if (isShaking)
         {
@@ -118,6 +125,17 @@ public class Enemy : GameObject, IDamageable
     {
         if (vulnerable)
         {
+            damageCount = random.Next(-1, 1);
+
+            if (damageCount == 0)
+            {
+                hitEnemySound2.PlayOnce(GameManager.Instance.audioMixer.HitEnemyChannel);
+            }
+            else
+            {
+                hitEnemySound1.PlayOnce(GameManager.Instance.audioMixer.HitEnemyChannel);
+            }
+
             health -= amount;
             isShaking = true;
             shakeTimer = shakeDuration;

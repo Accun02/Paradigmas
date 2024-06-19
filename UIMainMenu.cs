@@ -41,6 +41,8 @@ namespace MyGame
         public event MenuAction OnTutorial;
         public event MenuAction OnExit;
 
+        private Sound moveSound;
+
         public UIMainMenu()
         {
             buttonFactory = new ButtonFactory();
@@ -57,6 +59,8 @@ namespace MyGame
             cursorTargetXPosition = cursorBaseXPosition;
 
             difficultySelector = new UIDifficultySelector();
+
+            moveSound = new Sound("moveUI.wav");
         }
 
         public void Update()
@@ -72,6 +76,8 @@ namespace MyGame
                 cursorTargetYPosition = cursorYPositions[selectedItem];
                 cursorTargetXPosition = cursorXPositions[selectedItem];
                 cursorTime = 0f;
+
+                moveSound.PlayOnce(GameManager.Instance.audioMixer.UIChannel);
             }
             if (Engine.KeyPress(Engine.KEY_DOWN) && arrowKeyReleased)
             {
@@ -80,6 +86,8 @@ namespace MyGame
                 cursorTargetYPosition = cursorYPositions[selectedItem];
                 cursorTargetXPosition = cursorXPositions[selectedItem];
                 cursorTime = 0f;
+
+                moveSound.PlayOnce(GameManager.Instance.audioMixer.UIChannel);
             }
             if (Engine.KeyPress(Engine.KEY_Z) && GameManager.Instance.ZKeyReleased)
             {

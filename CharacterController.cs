@@ -28,6 +28,8 @@ public class CharacterController
     private bool isLookingLeft = false;
     private bool isLookingRight = true;
 
+    private float footCounter = 0;
+
     // Salto doble
     private bool isJumping = false;
     private bool landed = false;
@@ -49,6 +51,8 @@ public class CharacterController
 
     private Sound shootSound;
     private Sound walkSound;
+    private Sound walkSound2;
+    private Sound emptyWalkSound;
     private Sound jumpSound;
     private Sound landSound;
 
@@ -68,6 +72,8 @@ public class CharacterController
 
         shootSound = new Sound("shoot.wav");
         walkSound = new Sound("walk.wav");
+        walkSound2 = new Sound("walk2.wav");
+        emptyWalkSound = new Sound("emptyWalk.wav");
         jumpSound = new Sound("jump.wav");
         landSound = new Sound("walk.wav");
     }
@@ -112,7 +118,25 @@ public class CharacterController
 
             if (!walkSound.IsPlaying() && !isJumping)
             {
-                walkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                footCounter++;
+
+                if (footCounter == 1)
+                {
+                    walkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                }
+                if (footCounter == 2)
+                {
+                    emptyWalkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                }
+                if (footCounter == 3)
+                {
+                    walkSound2.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                }
+                if (footCounter == 4)
+                {
+                    emptyWalkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    footCounter = 0;
+                }
             }
         }
         else if (pressingRight && !pressingLeft)
@@ -123,7 +147,25 @@ public class CharacterController
 
             if (!walkSound.IsPlaying() && !isJumping)
             {
-                walkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                footCounter++;
+
+                if (footCounter == 1)
+                {
+                    walkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                }
+                if (footCounter == 2)
+                {
+                    emptyWalkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                }
+                if (footCounter == 3)
+                {
+                    walkSound2.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                }
+                if (footCounter == 4)
+                {
+                    emptyWalkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    footCounter = 0;
+                }
             }
         }
         else
@@ -232,7 +274,7 @@ public class CharacterController
 
             if (isJumping && !landed)
             {
-                landSound.PlayOnce(GameManager.Instance.audioMixer.LandChannel);
+                landSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
                 isJumping = false;
                 landed = true;
             }

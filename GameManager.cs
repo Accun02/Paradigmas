@@ -42,6 +42,9 @@ namespace MyGame
         public event GameLose OnGameLose;
         public event GameOver OnGameOver;
 
+        private Sound music;
+        private Sound click;
+
         public AudioMixer audioMixer;
 
         public LevelController LevelController
@@ -111,12 +114,18 @@ namespace MyGame
             OnGameWin += GameWinManager;
             OnGameLose += GameLoseManager;
             OnGameOver += GameOverManager;
+
+            music = new Sound("music.wav");
+            click = new Sound("clickUI.wav");
         }
 
         private void GameStartManager()
         {
             Console.WriteLine("Inicio");
+            click.PlayOnce(audioMixer.UIClickChannel);
             gameStatus = GameStatus.Game;
+
+            music.PlayOnce(audioMixer.MusicChannel);
         }
 
         private void GameOverManager()
@@ -145,6 +154,7 @@ namespace MyGame
         private void TutorialManager()
         {
             Console.WriteLine("Tutorial");
+            click.PlayOnce(audioMixer.UIClickChannel);
             gameStatus = GameStatus.Tutorial;
         }
 
@@ -244,6 +254,7 @@ namespace MyGame
             }
             if (gameOverDelayStarted)
             {
+                music.Stop();
                 currentDeath += Time.DeltaTime;
                 if (currentDeath >= waitForDeath) // Entrar a Derrota
                 {
@@ -256,6 +267,8 @@ namespace MyGame
         {
             if (Engine.KeyPress(Engine.KEY_Z) && zKeyReleased)
             {
+                music.Stop();
+                click.PlayOnce(audioMixer.UIClickChannel);
                 zKeyReleased = false;
                 if (gameStatus == GameStatus.Lose)
                     gameOverDelayStarted = false;

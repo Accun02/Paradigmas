@@ -20,6 +20,9 @@ namespace MyGame
 
         private float jumpSpeed = 150f;
 
+
+        private Random random = new Random();
+
         public AudienceBounce(int leftX, int rightX, float groundHeight)
         {
             this.leftX = leftX;
@@ -51,7 +54,7 @@ namespace MyGame
                     velocityY = 0;
                 }
 
-                if (CameraShake.Instance.value > 3.5 && !CameraShake.Instance.ThunderShake && GameManager.Instance.LevelController.player.Health > 1
+                if (CameraShake.Instance.value > 3.5 && !CameraShake.Instance.ThunderShake && GameManager.Instance.LevelController.player.Health >= 1
                     || GameManager.Instance.LevelController.enemy.Health <= 25 && GameManager.Instance.LevelController.player.Health == GameManager.Instance.LevelController.player.MaxHealthNormal && !GameManager.Instance.HardMode
                     || GameManager.Instance.LevelController.enemy.Health <= 25 && GameManager.Instance.LevelController.player.Health == GameManager.Instance.LevelController.player.MaxHealthHard && GameManager.Instance.HardMode
                     || !GameManager.Instance.LevelController.player.Vulnerable)
@@ -68,8 +71,8 @@ namespace MyGame
 
         public void Render()
         {
-            Engine.Draw(leftAudience, leftX + CameraShake.Instance.value, (int)spriteY);
-            Engine.Draw(rightAudience, rightX + CameraShake.Instance.value, (int)spriteY - 20);
+            Engine.Draw(leftAudience, leftX + CameraShake.Instance.value, spriteY);
+            Engine.Draw(rightAudience, rightX + CameraShake.Instance.value, spriteY - 20);
         }
     }
 }

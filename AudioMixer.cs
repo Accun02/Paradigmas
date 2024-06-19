@@ -15,6 +15,12 @@ namespace MyGame
         private int landChannel = 7;
         private int teleportChannel = 8;
 
+        public int HitEnemyChannel = 9;
+        public int UIChannel = 10;
+        public int MusicChannel = 11;
+        public int UIClickChannel = 12;
+        public int UIDifficulty = 13;
+
         public int LightingHitChannel
         {
             get { return lightingHitChannel; }

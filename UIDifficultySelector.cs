@@ -7,11 +7,13 @@ namespace MyGame
         private bool xKeyReleased = true;
         private IntPtr normalImage;
         private IntPtr hardImage;
+        private Sound difficulty;
 
         public UIDifficultySelector()
         {
             normalImage = Engine.LoadImage("assets/mainMenu/normal.png");
             hardImage = Engine.LoadImage("assets/mainMenu/hard.png");
+            difficulty = new Sound("difficulty.wav");
         }
 
         public void Update()
@@ -30,6 +32,7 @@ namespace MyGame
         private void CycleDifficulty()
         {
             GameManager.Instance.HardMode = !GameManager.Instance.HardMode;
+            difficulty.PlayOnce(GameManager.Instance.audioMixer.UIDifficulty);
         }
 
         public void Render()

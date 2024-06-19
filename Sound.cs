@@ -4,7 +4,7 @@ using Tao.Sdl;
 public class Sound
 {
     IntPtr pointer;
-    int channel; // Canal asignado a este sonido
+    int channel;
 
     public Sound(string fileName)
     {
