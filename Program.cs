@@ -13,6 +13,16 @@ namespace MyGame
 
         static void Main(string[] args)
         {
+            if (SdlMixer.Mix_OpenAudio(44100, (short)Sdl.AUDIO_S16SYS, 2, 4096) == -1)
+            {
+                Console.WriteLine("No se puede reproducir el audio.");
+            }
+            if (SdlMixer.Mix_AllocateChannels(16) < 16)
+            {
+                Console.WriteLine("No se puede reproducir el audio, no hay suficientes canales.");
+                return;
+            }
+
             Engine.Initialize(1280, 720);
             GameManager.Instance.Initialize();
             Time.Initialize();

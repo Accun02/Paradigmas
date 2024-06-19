@@ -37,6 +37,8 @@ public class EnemyAttack
 
     private Dictionary<int, string> attackMethods;
 
+    private Sound teleportSound;
+
     public bool DashAttacking
     {
         set { dashAttack = value; }
@@ -80,6 +82,8 @@ public class EnemyAttack
             { 4, "Shooting" },
             { 5, "Lightning" }
         };
+
+        teleportSound = new Sound("teleport.wav");
     }
 
     // Lógica de selector de ataques
@@ -252,6 +256,8 @@ public class EnemyAttack
     {
         if (canTeleport && !isTeleportOnCooldown)
         {
+            teleportSound.PlayOnce(GameManager.Instance.audioMixer.TeleportChannel);
+
             enemyMovement.Teleport();
             timeBetweenAttacks = GameManager.Instance.HardMode ? 1.0f : 1.5f;
             canAttack = false;

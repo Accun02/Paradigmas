@@ -6,12 +6,16 @@ namespace MyGame
     public class EnemyLightningBolt : Projectile, ICheckForCollision
     {
         private readonly int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
+
         private string idlePath = "assets/enemyBullet/thunderBolt/0.png";
+
         private bool shootThunder;
         public const float BulletHeight = 100;
         public const float BulletWidth = 48;
-        private Animation spawn;
         private float destroyCoolDown = 0.1f;
+
+        private Sound lightningHit;
+        private Animation spawn;
 
         public EnemyLightningBolt(Vector2 position, Vector2 offset) : base(new Vector2(position.x + offset.x, position.y + offset.y), new Vector2(0, 1))
         {
@@ -28,6 +32,8 @@ namespace MyGame
             }
 
             CreateAnimations();
+
+            lightningHit = new Sound("lightningHit.wav");
         }
 
         public override void Update()
@@ -63,7 +69,13 @@ namespace MyGame
             {
                 currentAnimation = destroy;
                 currentAnimation.Update();
-                destroyed = true;
+
+                if (!destroyed)
+                {
+                    lightningHit.PlayOnce(GameManager.Instance.audioMixer.LightingHitChannel);
+                    destroyed = true;
+                }
+
                 bulletVel = 0;
                 acceleration = 0;
                 destroyCoolDown -= Time.DeltaTime;

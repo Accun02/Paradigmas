@@ -11,6 +11,7 @@ namespace MyGame
         public Character player;
         public Enemy enemy;
         public StaticImage staticImage;
+        public AudienceBounce audienceBounce;
 
         public List<Bullet> BulletList;
         public List<EnemyTeleport> TeleportList;
@@ -21,6 +22,7 @@ namespace MyGame
 
         public void Initialize()
         {
+            audienceBounce = new AudienceBounce(8,882,165);
             staticImage = new StaticImage();
             player = new Character(new Vector2(0, 0));
             enemy = new Enemy(new Vector2(0, 0));
@@ -36,6 +38,7 @@ namespace MyGame
         {
             if (player.Health > 0)
             {
+                audienceBounce.Render();
                 staticImage.RenderBG();
                 enemy.Render();
 
@@ -137,6 +140,8 @@ namespace MyGame
                     AnvilList[i].Update();
                     AnvilList[i].CheckPositions(player);
                 }
+
+                audienceBounce.Update();
             }
         }
 
@@ -159,6 +164,7 @@ namespace MyGame
             player.IsDead = false;
             player.Vulnerable = true;
             player.CurrentInvulnerabilityFrame = 0;
+            player.Exploded = false;
 
             // Reset Enemy
             enemy.ResetTransform(new Vector2((ScreenWidth / 4) * 3 - Enemy.EnemyWidth / 2, 250));

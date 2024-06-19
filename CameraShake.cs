@@ -6,6 +6,7 @@ public class CameraShake
     private static CameraShake instance;
 
     private bool isShaking = false;
+    private bool thunderShake = false;
     private float shakeOffset = 0;
     private float shakeTimer = 0;
     private float shakeDuration = 0.15f;
@@ -25,6 +26,7 @@ public class CameraShake
     }
 
     public float value { set { shakeOffset = value; } get { return shakeOffset; } }
+    public bool ThunderShake { set { thunderShake = value; } get { return thunderShake; } }
 
     public void Shake(float duration, float magnitude, float frequency)
     {
@@ -48,6 +50,7 @@ public class CameraShake
     public void EnemySmallShake()
     {
         Shake(0.3f, -10f, -3f);
+        thunderShake = true;
     }
 
     public void Update()
@@ -64,6 +67,7 @@ public class CameraShake
             }
             else
             {
+                thunderShake = false;
                 isShaking = false;
                 shakeTimer = 0;
                 shakeOffset = 0;

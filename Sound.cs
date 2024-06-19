@@ -3,33 +3,44 @@ using Tao.Sdl;
 
 public class Sound
 {
-    // Atributos
     IntPtr pointer;
+    int channel; // Canal asignado a este sonido
 
-    // Operaciones
-
-    // Constructor a partir de un nombre de fichero
-    public Sound(string nombreFichero)
+    public Sound(string fileName)
     {
-        pointer = SdlMixer.Mix_LoadMUS(nombreFichero);
+        string fullPath = $"assets/audio/{fileName}";
+        pointer = SdlMixer.Mix_LoadWAV(fullPath);
+        if (pointer == IntPtr.Zero)
+        {
+            Console.WriteLine("No se puede cargar el archivo de sonido: " + fullPath);
+        }
     }
 
-    // Reproducir una vez
-    public void PlayOnce()
+    public void PlayOnce(int channel = -1)
     {
-        SdlMixer.Mix_PlayMusic(pointer, 1);
+        if (channel != -1)
+        {
+            this.channel = channel;
+        }
+        SdlMixer.Mix_PlayChannel(this.channel, pointer, 0);
     }
 
-    // Reproducir continuo (musica de fondo)
-    public void Play()
+    public void Play(int channel = -1)
     {
-        SdlMixer.Mix_PlayMusic(pointer, -1);
+        if (channel != -1)
+        {
+            this.channel = channel;
+        }
+        SdlMixer.Mix_PlayChannel(this.channel, pointer, -1);
     }
 
-    // Interrumpir toda la reproducción de sonido
     public void Stop()
     {
-        SdlMixer.Mix_HaltMusic();
+        SdlMixer.Mix_HaltChannel(channel);
     }
 
+    public bool IsPlaying()
+    {
+        return SdlMixer.Mix_Playing(channel) == 1;
+    }
 }

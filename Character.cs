@@ -12,6 +12,7 @@ namespace MyGame
         private bool isDead = false;
         private bool vulnerable = true;
         private bool justHit = false;
+        private bool exploded = false;
 
         private int invulnerabilityFrames = 95;
         private int currentInvulnerabilityFrame = 0;
@@ -22,6 +23,7 @@ namespace MyGame
         private const float deathWait = 0.75f;
         private float currentDeath;
 
+        public bool Exploded { set { exploded = value; } get { return exploded; } }
         public bool JustHit { set { justHit = value; } get { return justHit; } }
         public bool IsDead { set { isDead = value; } get { return isDead; } }
         public int Health { set { health = value; } get { return health; } }
@@ -46,6 +48,10 @@ namespace MyGame
 
         private Animation currentAnimation;
 
+        private Sound hitSound;
+        private Sound laughSound;
+        private Sound explotion;
+
         public Transform Transform
         {
             get;
@@ -61,6 +67,10 @@ namespace MyGame
 
             CreateAnimations();
             currentAnimation = idleRight;
+
+            hitSound = new Sound("hitSound.wav");
+            laughSound = new Sound("hitSoundLaugh.wav");
+            explotion = new Sound("explotion.wav");
         }
 
         public void ResetMomentum()
@@ -70,6 +80,8 @@ namespace MyGame
             controller.JumpBufferCounter = 0f;
             controller.IsLookingLeft = false;
             controller.IsLookingRight = true;
+            controller.Landed = false;
+            controller.IsJumping = false;
         }
 
         public void Update(Character player)
@@ -148,8 +160,13 @@ namespace MyGame
 
                 if (currentDeath >= deathWait)
                 {
-                    isDead = true;
-                    currentAnimation = died;
+                    if (!exploded)
+                    {
+                        exploded = true;
+                        isDead = true;
+                        explotion.PlayOnce(GameManager.Instance.audioMixer.HitChannel);
+                        currentAnimation = died;
+                    }
                     currentAnimation.Update();
                 }
             }
@@ -164,9 +181,15 @@ namespace MyGame
 
                 if (health > 0)
                 {
+                    laughSound.PlayOnce(GameManager.Instance.audioMixer.HitChannel);
                     justHit = true;
                     vulnerable = false;
                     currentInvulnerabilityFrame = invulnerabilityFrames;
+                }
+
+                if (health == 0)
+                {
+                    hitSound.PlayOnce(GameManager.Instance.audioMixer.HitChannel);
                 }
             }
         }

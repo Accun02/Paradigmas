@@ -42,6 +42,8 @@ namespace MyGame
         public event GameLose OnGameLose;
         public event GameOver OnGameOver;
 
+        public AudioMixer audioMixer;
+
         public LevelController LevelController
         {
             get => levelController;
@@ -99,6 +101,7 @@ namespace MyGame
 
         public void Initialize()
         {
+            audioMixer = new AudioMixer();
             levelController = new LevelController();
             levelController.Initialize();
             mainMenu = new UIMainMenu();
