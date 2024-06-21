@@ -20,6 +20,8 @@ namespace MyGame
         private int health;
         private int maxHealthNormal = 3;
         private int maxHealthHard = 1;
+        private int maxJumps = 2;
+
         private const float deathWait = 0.75f;
         private float currentDeath;
 
@@ -27,6 +29,7 @@ namespace MyGame
         public bool JustHit { set { justHit = value; } get { return justHit; } }
         public bool IsDead { set { isDead = value; } get { return isDead; } }
         public int Health { set { health = value; } get { return health; } }
+        public int MaxJumps { set { maxJumps = value; } get { return maxJumps; } }
         public int MaxHealthNormal { set { maxHealthNormal = value; } get { return maxHealthNormal; } }
         public int MaxHealthHard { set { maxHealthHard = value; } get { return maxHealthHard; } }
         public bool Vulnerable { set { vulnerable = value; } get { return vulnerable; } }

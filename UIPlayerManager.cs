@@ -31,9 +31,9 @@ namespace MyGame
                 }
             }
 
-            int jumpsLeft = 2 - player.controller.JumpCounter;
+            int jumpsLeft = player.MaxJumps - player.controller.JumpCounter;
 
-            for (int i = 0; i < Math.Min(jumpsLeft, 2); i++)
+            for (int i = 0; i < Math.Min(jumpsLeft, player.MaxJumps); i++)
             {
                 Engine.Draw(jump, positionX + i * 62, positionY + 45);
             }

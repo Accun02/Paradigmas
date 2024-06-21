@@ -11,6 +11,7 @@ namespace MyGame
         private GameStatus gameStatus = GameStatus.Menu;
 
         private IntPtr winScreen = Engine.LoadImage("assets/screens/win.png");
+        private IntPtr winHardScreen = Engine.LoadImage("assets/screens/winHard.png");
         private IntPtr loseScreen = Engine.LoadImage("assets/screens/dead.png");
         private IntPtr tutorialScreen = Engine.LoadImage("assets/screens/tutorial.png");
         private IntPtr pauseScreen = Engine.LoadImage("assets/screens/pause.png");
@@ -334,7 +335,10 @@ namespace MyGame
                     break;
                 case GameStatus.Win:    // Victoria
                     Engine.Clear();
-                    Engine.Draw(winScreen, 0, 0);
+                    if (HardMode)
+                        Engine.Draw(winHardScreen, 0, 0);
+                    else
+                        Engine.Draw(winScreen, 0, 0);
                     BlinkingImage.ShowBlinkingText(288, 593);
                     Engine.Show();
                     break;

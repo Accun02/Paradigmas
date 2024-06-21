@@ -60,8 +60,6 @@ namespace MyGame
                     Sdl.SDL_Delay(delayMilliseconds);
                 }
             }
-
-            Engine.Shutdown();
         }
 
         private static void AdjustDelayFrame(int frameCount)

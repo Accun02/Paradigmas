@@ -8,20 +8,20 @@ public class CharacterController
     private const float PlayerHeight = Character.PlayerHeight;
 
     // Escenario
-    private int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
-    private int ScreenWidth = GameManager.Instance.LevelController.ScreenWidth;
+    private int groundHeight = GameManager.Instance.LevelController.GroundHeight;
+    private int screenWidth = GameManager.Instance.LevelController.ScreenWidth;
 
     // Movimiento
-    private float Acceleration = 3000;
-    private float Deceleration = 2000;
+    private float acceleration = 3000;
+    private float deceleration = 2000;
 
     private float velocityX = 0;
     private float velocityY = 0;
 
     private float MaxSpeed = 450;
 
-    private const float JumpSpeed = 700;
-    private const float Gravity = 1600f;
+    private const float jumpSpeed = 700;
+    private const float gravity = 1600f;
 
     private bool canMoveLeft = true;
     private bool canMoveRight = true;
@@ -110,14 +110,14 @@ public class CharacterController
         bool pressingLeft = Engine.KeyPress(Engine.KEY_LEFT) && canMoveLeft;
         bool pressingRight = Engine.KeyPress(Engine.KEY_RIGHT) && canMoveRight;
 
-        float relativePositionX = transform.Position.x / ScreenWidth;
+        float relativePositionX = transform.Position.x / screenWidth;
 
         byte leftVolume = (byte)(255 * (1 - relativePositionX));
         byte rightVolume = (byte)(255 * relativePositionX);
 
         if (pressingLeft && !pressingRight)
         {
-            velocityX = Math.Max(velocityX - Acceleration * Time.DeltaTime, -MaxSpeed);
+            velocityX = Math.Max(velocityX - acceleration * Time.DeltaTime, -MaxSpeed);
             isLookingLeft = true;
             isLookingRight = false;
 
@@ -150,7 +150,7 @@ public class CharacterController
         }
         else if (pressingRight && !pressingLeft)
         {
-            velocityX = Math.Min(velocityX + Acceleration * Time.DeltaTime, MaxSpeed);
+            velocityX = Math.Min(velocityX + acceleration * Time.DeltaTime, MaxSpeed);
             isLookingLeft = false;
             isLookingRight = true;
 
@@ -185,11 +185,11 @@ public class CharacterController
         {
             if (velocityX > 0)
             {
-                velocityX = Math.Max(velocityX - Deceleration * Time.DeltaTime, 0);
+                velocityX = Math.Max(velocityX - deceleration * Time.DeltaTime, 0);
             }
             else if (velocityX < 0)
             {
-                velocityX = Math.Min(velocityX + Deceleration * Time.DeltaTime, 0);
+                velocityX = Math.Min(velocityX + deceleration * Time.DeltaTime, 0);
             }
 
             walkSound.Stop();
@@ -207,7 +207,7 @@ public class CharacterController
             GameManager.Instance.ZKeyReleased = false;
         }
 
-        if (jumpBufferCounter > 0 && actualCoolDown <= 0 && jumpCounter < 2)
+        if (jumpBufferCounter > 0 && actualCoolDown <= 0 && jumpCounter < GameManager.Instance.LevelController.player.MaxJumps)
         {
             Jump();
             jumpCounter++;
@@ -245,24 +245,24 @@ public class CharacterController
 
     private void Jump()
     {
-        velocityY = -JumpSpeed;
+        velocityY = -jumpSpeed;
         isJumping = true;
         landed = false;
     }
 
     private void ConstraintArea()
     {
-        velocityY += Gravity * Time.DeltaTime;
+        velocityY += gravity * Time.DeltaTime;
         float playerY = transform.Position.y + velocityY * Time.DeltaTime;
 
-        float relativePositionX = transform.Position.x / ScreenWidth;
+        float relativePositionX = transform.Position.x / screenWidth;
 
         byte leftVolume = (byte)(255 * (1 - relativePositionX));
         byte rightVolume = (byte)(255 * relativePositionX);
 
-        if (playerY > (GroundHeight - PlayerHeight))
+        if (playerY > (groundHeight - PlayerHeight))
         {
-            transform.Translate(new Vector2(0, (GroundHeight - PlayerHeight) - transform.Position.y));
+            transform.Translate(new Vector2(0, (groundHeight - PlayerHeight) - transform.Position.y));
             jumpCounter = 0;
             velocityY = 0;
             actualCoolDown = 0;
@@ -276,18 +276,18 @@ public class CharacterController
         {
             transform.Translate(new Vector2(-transform.Position.x, 0));
         }
-        else if (transform.Position.x > ScreenWidth - PlayerWidth)
+        else if (transform.Position.x > screenWidth - PlayerWidth)
         {
-            transform.Translate(new Vector2(ScreenWidth - PlayerWidth - transform.Position.x, 0));
+            transform.Translate(new Vector2(screenWidth - PlayerWidth - transform.Position.x, 0));
         }
 
         if (transform.Position.y < 0)
         {
             transform.Translate(new Vector2(0, -transform.Position.y));
         }
-        else if (playerY > (GroundHeight - PlayerHeight))
+        else if (playerY > (groundHeight - PlayerHeight))
         {
-            transform.Translate(new Vector2(0, (GroundHeight - PlayerHeight) - transform.Position.y));
+            transform.Translate(new Vector2(0, (groundHeight - PlayerHeight) - transform.Position.y));
 
             jumpCounter = 0;
             velocityY = 0;
@@ -308,9 +308,9 @@ public class CharacterController
             velocityX = 0;
             canMoveLeft = false;
         }
-        else if (transform.Position.x >= ScreenWidth - PlayerWidth)
+        else if (transform.Position.x >= screenWidth - PlayerWidth)
         {
-            transform.Position = new Vector2((ScreenWidth - PlayerWidth), transform.Position.y);
+            transform.Position = new Vector2((screenWidth - PlayerWidth), transform.Position.y);
             velocityX = 0;
             canMoveRight = false;
         }
