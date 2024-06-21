@@ -3,7 +3,7 @@ namespace MyGame
 {
     public class StaticImage
     {
-        static IntPtr image = Engine.LoadImage("assets/background.png");
+        static IntPtr image = Engine.LoadImage("assets/screens/background.png");
 
         public void RenderBG()
         {

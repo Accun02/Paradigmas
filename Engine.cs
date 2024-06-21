@@ -5,6 +5,7 @@ class Engine
 {
     static IntPtr screen;
     static int width, height;
+    public static bool running = true;
 
     public static void Initialize()
     {
@@ -14,14 +15,9 @@ class Engine
 
         int flags = (Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT);
         Sdl.SDL_Init(Sdl.SDL_INIT_EVERYTHING);
-        screen = Sdl.SDL_SetVideoMode(
-            width,
-            height,
-            colores,
-            flags);
+        screen = Sdl.SDL_SetVideoMode(width, height, colores, flags);
 
-        Sdl.SDL_Rect rect2 =
-            new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
+        Sdl.SDL_Rect rect2 = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
         Sdl.SDL_SetClipRect(screen, ref rect2);
 
         SdlTtf.TTF_Init();
@@ -35,23 +31,33 @@ class Engine
 
         int flags = (Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT);
         Sdl.SDL_Init(Sdl.SDL_INIT_EVERYTHING);
-        screen = Sdl.SDL_SetVideoMode(
-            width,
-            height,
-            colores,
-            flags);
+        screen = Sdl.SDL_SetVideoMode(width, height, colores, flags);
 
         IntPtr icon = LoadImage("assets/icon.png");
-
         Sdl.SDL_WM_SetIcon(icon, null);
-
         Sdl.SDL_WM_SetCaption("COLISEUM CONQUEST", null);
 
-        Sdl.SDL_Rect rect2 =
-            new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
+        Sdl.SDL_Rect rect2 = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
         Sdl.SDL_SetClipRect(screen, ref rect2);
 
         SdlTtf.TTF_Init();
+    }
+
+    public static void HandleEvents()
+    {
+        Sdl.SDL_Event sdlEvent;
+        while (Sdl.SDL_PollEvent(out sdlEvent) != 0)
+        {
+            if (sdlEvent.type == Sdl.SDL_QUIT)
+            {
+                running = false;
+            }
+        }
+    }
+
+    public static void Shutdown()
+    {
+        Sdl.SDL_Quit();
     }
 
     public static void Debug(string text)

@@ -15,12 +15,11 @@ namespace MyGame
         {
             if (SdlMixer.Mix_OpenAudio(48000, (short)Sdl.AUDIO_S16SYS, 2, 4096) == -1)
             {
-                Console.WriteLine("No se puede reproducir el audio.");
+                //Engine.Debug("No se puede reproducir el audio.");
             }
             if (SdlMixer.Mix_AllocateChannels(20) < 20)
             {
-                Console.WriteLine("No se puede reproducir el audio, no hay suficientes canales.");
-                return;
+                //Engine.Debug("No se puede reproducir el audio, no hay suficientes canales.");
             }
 
             Engine.Initialize(1280, 720);
@@ -31,8 +30,10 @@ namespace MyGame
             int frameCount = 0;
             float elapsedTime = 0f;
 
-            while (true)
+            while (Engine.running)
             {
+                Engine.HandleEvents();
+
                 float startTime = (float)stopwatch.Elapsed.TotalSeconds;
                 float targetFrameTime = 1f / delayFrame;
 
@@ -59,6 +60,8 @@ namespace MyGame
                     Sdl.SDL_Delay(delayMilliseconds);
                 }
             }
+
+            Engine.Shutdown();
         }
 
         private static void AdjustDelayFrame(int frameCount)

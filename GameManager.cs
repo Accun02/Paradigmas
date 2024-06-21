@@ -342,7 +342,7 @@ namespace MyGame
                     Engine.Clear();
                     if (!loseMusic.IsPlaying())
                     {
-                        loseMusic.Play(audioMixer.MusicChannel);
+                        loseMusic.PlayOnce(audioMixer.MusicChannel);
                     }
                     Engine.Draw(loseScreen, 0, 0);
                     BlinkingImage.ShowBlinkingText(288, 593);
@@ -351,6 +351,7 @@ namespace MyGame
                 case GameStatus.Tutorial:   // Tutorial
                     Engine.Clear();
                     Engine.Draw(tutorialScreen, 0, 0);
+                    BlinkingImage.ShowBlinkingText(288, 593);
                     Engine.Show();
                     break;
             }

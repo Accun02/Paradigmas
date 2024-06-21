@@ -4,8 +4,8 @@ namespace MyGame
 {
     public class AudienceBounce
     {
-        private IntPtr leftAudience = Engine.LoadImage("assets/leftAudience.png");
-        private IntPtr rightAudience = Engine.LoadImage("assets/rightAudience.png");
+        private IntPtr leftAudience = Engine.LoadImage("assets/screens/leftAudience.png");
+        private IntPtr rightAudience = Engine.LoadImage("assets/screens/rightAudience.png");
 
         private int leftX;
         private int rightX;
