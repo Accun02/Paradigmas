@@ -43,7 +43,7 @@ namespace MyGame
 
         public override void Update()
         {
-            if (bulletVel == 0 && !bounced)
+            if (bulletVel == 0 && !bounced && !GameManager.Instance.HardMode)
             {
                 anvilFall.PlayOnce(GameManager.Instance.audioMixer.AnvilFallChannel);
             }

@@ -42,6 +42,9 @@ namespace MyGame
         public event GameLose OnGameLose;
         public event GameOver OnGameOver;
 
+        private Sound menuMusic;
+        private Sound winMusic;
+        private Sound loseMusic;
         private Sound music;
         private Sound click;
 
@@ -116,27 +119,31 @@ namespace MyGame
             OnGameOver += GameOverManager;
 
             music = new Sound("music.wav");
+            menuMusic = new Sound("menuMusic.wav");
+            winMusic = new Sound("winMusic.wav");
+            loseMusic = new Sound("loseMusic.wav");
             click = new Sound("clickUI.wav");
         }
 
         private void GameStartManager()
         {
-            Console.WriteLine("Inicio");
+            //Console.WriteLine("Inicio");
             click.PlayOnce(audioMixer.UIClickChannel);
             gameStatus = GameStatus.Game;
 
-            music.PlayOnce(audioMixer.MusicChannel);
+            music.Play(audioMixer.MusicChannel);
         }
 
         private void GameOverManager()
         {
-            Console.WriteLine("Game Over");
+            //Console.WriteLine("Game Over");
             gameStatus = GameStatus.Lose;
         }
 
         private void GameWinManager()
         {
-            Console.WriteLine("Victoria");
+            //Console.WriteLine("Victoria");
+            winMusic.PlayOnce(audioMixer.MusicChannel);
             if (hardMode)
             {
                 hardModeWon = true;
@@ -146,14 +153,14 @@ namespace MyGame
 
         private void GameLoseManager()
         {
-            Console.WriteLine("Muerto");
+            //Console.WriteLine("Muerto");
             gameOverDelayStarted = true;
             currentDeath = 0f;
         }
 
         private void TutorialManager()
         {
-            Console.WriteLine("Tutorial");
+            //Console.WriteLine("Tutorial");
             click.PlayOnce(audioMixer.UIClickChannel);
             gameStatus = GameStatus.Tutorial;
         }
@@ -175,30 +182,22 @@ namespace MyGame
                 {
                     quitHold = true;
                 }
+
                 if (escHoldTimer >= escHoldTime)
                 {
                     Environment.Exit(0);
                 }
-            }
-
-            if (Engine.KeyPress(Engine.KEY_ESC) && escKeyReleased && gameStatus == GameStatus.Game && LevelController.player.Health > 0)
-            {
-                escKeyReleased = false;
-                paused = !paused;
-
-                if (paused)
+                else if (escKeyReleased && gameStatus == GameStatus.Game && LevelController.player.Health > 0 && LevelController.player.Vulnerable)
                 {
-                    Program.targetFrame = true;
-                    pauseCounter++;
-                }
-                else
-                {
-                    Program.targetFrame = false;
-                    pauseCounter = 0;
+                    click.PlayOnce(audioMixer.UIClickChannel);
+                    escKeyReleased = false;
+                    paused = !paused;
+
+                    Program.targetFrame = paused;
+                    pauseCounter = paused ? pauseCounter + 1 : 0;
                 }
             }
-
-            if (!Engine.KeyPress(Engine.KEY_ESC))
+            else
             {
                 quitHold = false;
                 escKeyReleased = true;
@@ -225,6 +224,10 @@ namespace MyGame
             switch (gameStatus)
             {
                 case GameStatus.Menu:   // Menú
+                    if (!menuMusic.IsPlaying())
+                    {
+                        menuMusic.Play(audioMixer.MusicChannel);
+                    }
                     mainMenu.Update();
                     break;
                 case GameStatus.Game:   // Juego
@@ -267,12 +270,26 @@ namespace MyGame
         {
             if (Engine.KeyPress(Engine.KEY_Z) && zKeyReleased)
             {
-                music.Stop();
                 click.PlayOnce(audioMixer.UIClickChannel);
                 zKeyReleased = false;
+
+                winMusic.Stop();
+
+                loseMusic.Stop();
+
+                if (paused)
+                    music.Stop();
+
                 if (gameStatus == GameStatus.Lose)
                     gameOverDelayStarted = false;
+
                 gameStatus = GameStatus.Menu;
+
+                if (!menuMusic.IsPlaying())
+                {
+                    menuMusic.Play(audioMixer.MusicChannel);
+                }
+
                 Program.targetFrame = false;
                 StartGame();
             }
@@ -302,7 +319,12 @@ namespace MyGame
                     if (paused)
                     {
                         Engine.Draw(pauseScreen, 0, 0);
+                        music.SetPanning(60, 60);
                         BlinkingImage.ShowBlinkingText(288, 593);
+                    }
+                    else
+                    {
+                        music.SetPanning(255, 255);
                     }
                     if (quitHold)
                     {
@@ -318,6 +340,10 @@ namespace MyGame
                     break;
                 case GameStatus.Lose:   // Derrota
                     Engine.Clear();
+                    if (!loseMusic.IsPlaying())
+                    {
+                        loseMusic.Play(audioMixer.MusicChannel);
+                    }
                     Engine.Draw(loseScreen, 0, 0);
                     BlinkingImage.ShowBlinkingText(288, 593);
                     Engine.Show();

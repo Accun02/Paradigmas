@@ -43,4 +43,12 @@ public class Sound
     {
         return SdlMixer.Mix_Playing(channel) == 1;
     }
+
+    public void SetPanning(byte left, byte right)
+    {
+        if (SdlMixer.Mix_SetPanning(this.channel, left, right) == 0)
+        {
+            Console.WriteLine("No se pudo establecer el panning para el canal: " + this.channel);
+        }
+    }
 }

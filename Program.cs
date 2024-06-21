@@ -17,7 +17,7 @@ namespace MyGame
             {
                 Console.WriteLine("No se puede reproducir el audio.");
             }
-            if (SdlMixer.Mix_AllocateChannels(16) < 16)
+            if (SdlMixer.Mix_AllocateChannels(20) < 20)
             {
                 Console.WriteLine("No se puede reproducir el audio, no hay suficientes canales.");
                 return;

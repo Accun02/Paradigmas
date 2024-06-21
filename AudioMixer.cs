@@ -5,7 +5,7 @@ namespace MyGame
 {
     public class AudioMixer
     {
-        private int lightingHitChannel = 0;
+        private int lightningHitChannel = 0;
         private int shootChannel = 1;
         private int walkChannel = 2;
         private int jumpChannel = 3;
@@ -14,65 +14,122 @@ namespace MyGame
         private int anvilHitChannel = 6;
         private int landChannel = 7;
         private int teleportChannel = 8;
+        private int hitEnemyChannel = 9;
+        private int uiChannel = 10;
+        private int musicChannel = 11;
+        private int uiClickChannel = 12;
+        private int uiDifficulty = 13;
+        private int lightningShootChannel = 14;
+        private int bubblePopChannel = 15;
+        private int bubbleShootChannel = 16;
+        private int lightningCastChannel = 17;
 
-        public int HitEnemyChannel = 9;
-        public int UIChannel = 10;
-        public int MusicChannel = 11;
-        public int UIClickChannel = 12;
-        public int UIDifficulty = 13;
-
-        public int LightingHitChannel
+        public int LightningHitChannel
         {
-            get { return lightingHitChannel; }
-            set { lightingHitChannel = value; }
+            get { return lightningHitChannel; }
+            private set { lightningHitChannel = value; }
         }
 
         public int ShootChannel
         {
             get { return shootChannel; }
-            set { shootChannel = value; }
+            private set { shootChannel = value; }
         }
 
         public int WalkChannel
         {
             get { return walkChannel; }
-            set { walkChannel = value; }
+            private set { walkChannel = value; }
         }
 
         public int JumpChannel
         {
             get { return jumpChannel; }
-            set { jumpChannel = value; }
+            private set { jumpChannel = value; }
         }
 
         public int HitChannel
         {
             get { return hitChannel; }
-            set { hitChannel = value; }
+            private set { hitChannel = value; }
         }
 
         public int AnvilFallChannel
         {
             get { return anvilFallChannel; }
-            set { anvilFallChannel = value; }
+            private set { anvilFallChannel = value; }
         }
 
         public int AnvilHitChannel
         {
             get { return anvilHitChannel; }
-            set { anvilHitChannel = value; }
+            private set { anvilHitChannel = value; }
         }
 
         public int LandChannel
         {
             get { return landChannel; }
-            set { landChannel = value; }
+            private set { landChannel = value; }
         }
 
         public int TeleportChannel
         {
             get { return teleportChannel; }
-            set { teleportChannel = value; }
+            private set { teleportChannel = value; }
+        }
+
+        public int HitEnemyChannel
+        {
+            get { return hitEnemyChannel; }
+            set { hitEnemyChannel = value; }
+        }
+
+        public int UIChannel
+        {
+            get { return uiChannel; }
+            set { uiChannel = value; }
+        }
+
+        public int MusicChannel
+        {
+            get { return musicChannel; }
+            set { musicChannel = value; }
+        }
+
+        public int UIClickChannel
+        {
+            get { return uiClickChannel; }
+            set { uiClickChannel = value; }
+        }
+
+        public int UIDifficulty
+        {
+            get { return uiDifficulty; }
+            set { uiDifficulty = value; }
+        }
+
+        public int LightningShootChannel
+        {
+            get { return lightningShootChannel; }
+            set { lightningShootChannel = value; }
+        }
+
+        public int BubblePopChannel
+        {
+            get { return bubblePopChannel; }
+            set { bubblePopChannel = value; }
+        }
+
+        public int BubbleShootChannel
+        {
+            get { return bubbleShootChannel; }
+            set { bubbleShootChannel = value; }
+        }
+
+        public int LightningCastChannel
+        {
+            get { return lightningCastChannel; }
+            set { lightningCastChannel = value; }
         }
     }
 }

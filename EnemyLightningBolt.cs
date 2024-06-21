@@ -33,7 +33,7 @@ namespace MyGame
 
             CreateAnimations();
 
-            lightningHit = new Sound("lightningHit.wav");
+            lightningHit = new Sound("thunderHit.wav");
         }
 
         public override void Update()
@@ -72,7 +72,7 @@ namespace MyGame
 
                 if (!destroyed)
                 {
-                    lightningHit.PlayOnce(GameManager.Instance.audioMixer.LightingHitChannel);
+                    lightningHit.PlayOnce(GameManager.Instance.audioMixer.LightningHitChannel);
                     destroyed = true;
                 }
 

@@ -18,10 +18,7 @@ namespace MyGame
 
         private bool isRising;
 
-        private float jumpSpeed = 150f;
-
-
-        private Random random = new Random();
+        private float jumpSpeed = 210f;
 
         public AudienceBounce(int leftX, int rightX, float groundHeight)
         {
@@ -55,8 +52,6 @@ namespace MyGame
                 }
 
                 if (CameraShake.Instance.value > 3.5 && !CameraShake.Instance.ThunderShake && GameManager.Instance.LevelController.player.Health >= 1
-                    || GameManager.Instance.LevelController.enemy.Health <= 25 && GameManager.Instance.LevelController.player.Health == GameManager.Instance.LevelController.player.MaxHealthNormal && !GameManager.Instance.HardMode
-                    || GameManager.Instance.LevelController.enemy.Health <= 25 && GameManager.Instance.LevelController.player.Health == GameManager.Instance.LevelController.player.MaxHealthHard && GameManager.Instance.HardMode
                     || !GameManager.Instance.LevelController.player.Vulnerable)
                 {
                     velocityY = -jumpSpeed;

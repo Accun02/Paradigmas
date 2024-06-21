@@ -70,12 +70,12 @@ public class CharacterController
         this.transform = transform;
         weapon = new CharacterWeapon();
 
-        shootSound = new Sound("shoot.wav");
+        shootSound = new Sound("hitEnemy.wav");
         walkSound = new Sound("walk.wav");
         walkSound2 = new Sound("walk2.wav");
         emptyWalkSound = new Sound("emptyWalk.wav");
         jumpSound = new Sound("jump.wav");
-        landSound = new Sound("walk.wav");
+        landSound = new Sound("land.wav");
     }
 
     public void Update()
@@ -110,6 +110,11 @@ public class CharacterController
         bool pressingLeft = Engine.KeyPress(Engine.KEY_LEFT) && canMoveLeft;
         bool pressingRight = Engine.KeyPress(Engine.KEY_RIGHT) && canMoveRight;
 
+        float relativePositionX = transform.Position.x / ScreenWidth;
+
+        byte leftVolume = (byte)(255 * (1 - relativePositionX));
+        byte rightVolume = (byte)(255 * relativePositionX);
+
         if (pressingLeft && !pressingRight)
         {
             velocityX = Math.Max(velocityX - Acceleration * Time.DeltaTime, -MaxSpeed);
@@ -120,21 +125,25 @@ public class CharacterController
             {
                 footCounter++;
 
-                if (footCounter == 1)
+                if (footCounter == 0)
                 {
-                    walkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    emptyWalkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    emptyWalkSound.SetPanning(leftVolume, rightVolume);
                 }
                 if (footCounter == 2)
                 {
-                    emptyWalkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    walkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    walkSound.SetPanning(leftVolume, rightVolume);
                 }
                 if (footCounter == 3)
                 {
-                    walkSound2.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    emptyWalkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    emptyWalkSound.SetPanning(leftVolume, rightVolume);
                 }
                 if (footCounter == 4)
                 {
-                    emptyWalkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    walkSound2.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    walkSound2.SetPanning(leftVolume, rightVolume);
                     footCounter = 0;
                 }
             }
@@ -152,18 +161,22 @@ public class CharacterController
                 if (footCounter == 1)
                 {
                     walkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    walkSound.SetPanning(leftVolume, rightVolume);
                 }
                 if (footCounter == 2)
                 {
                     emptyWalkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    emptyWalkSound.SetPanning(leftVolume, rightVolume);
                 }
                 if (footCounter == 3)
                 {
                     walkSound2.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    walkSound2.SetPanning(leftVolume, rightVolume);
                 }
                 if (footCounter == 4)
                 {
                     emptyWalkSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                    emptyWalkSound.SetPanning(leftVolume, rightVolume);
                     footCounter = 0;
                 }
             }
@@ -202,6 +215,7 @@ public class CharacterController
             jumpBufferCounter = 0;
 
             jumpSound.PlayOnce(GameManager.Instance.audioMixer.JumpChannel);
+            jumpSound.SetPanning(leftVolume, rightVolume);
         }
 
         // Disparar
@@ -211,6 +225,7 @@ public class CharacterController
             shootTime = shootCooldown;
 
             shootSound.PlayOnce(GameManager.Instance.audioMixer.ShootChannel);
+            shootSound.SetPanning(leftVolume, rightVolume);
         }
 
         if (Engine.KeyPress(Engine.KEY_X) && !Engine.KeyPress(Engine.KEY_UP) && shootTime <= 0)
@@ -219,6 +234,7 @@ public class CharacterController
             shootTime = shootCooldown;
 
             shootSound.PlayOnce(GameManager.Instance.audioMixer.ShootChannel);
+            shootSound.SetPanning(leftVolume, rightVolume);
         }
     }
 
@@ -238,6 +254,11 @@ public class CharacterController
     {
         velocityY += Gravity * Time.DeltaTime;
         float playerY = transform.Position.y + velocityY * Time.DeltaTime;
+
+        float relativePositionX = transform.Position.x / ScreenWidth;
+
+        byte leftVolume = (byte)(255 * (1 - relativePositionX));
+        byte rightVolume = (byte)(255 * relativePositionX);
 
         if (playerY > (GroundHeight - PlayerHeight))
         {
@@ -274,7 +295,8 @@ public class CharacterController
 
             if (isJumping && !landed)
             {
-                landSound.PlayOnce(GameManager.Instance.audioMixer.WalkChannel);
+                landSound.PlayOnce(GameManager.Instance.audioMixer.LandChannel);
+                landSound.SetPanning(leftVolume, rightVolume);
                 isJumping = false;
                 landed = true;
             }

@@ -26,6 +26,8 @@ namespace MyGame
 
         private Animation spawn;
         private Animation wait;
+        
+        private Sound lightningShootSound;
 
         public EnemyThunderBubble(Vector2 position, Vector2 playerPosition, Vector2 offset)
         {
@@ -50,6 +52,7 @@ namespace MyGame
             }
 
             CreateAnimations();
+            lightningShootSound = new Sound("thunderShoot.wav");
         }
         public override void Update()
         {
@@ -106,6 +109,7 @@ namespace MyGame
                 acceleration = 0;
                 if (!shootThunder)
                 {
+                    lightningShootSound.PlayOnce(GameManager.Instance.audioMixer.LightningShootChannel);
                     shootThunder = true;
 
                     Vector2 lightningOffset = new Vector2(0, -20);

@@ -1,6 +1,7 @@
 ﻿using MyGame;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 
 public class Enemy : GameObject, IDamageable
 {
@@ -8,7 +9,7 @@ public class Enemy : GameObject, IDamageable
     public const float EnemyHeight = 80;
 
     private bool vulnerable = true;
-    private int health = 100;
+    private int health;
     private int maxHealth = 100;
     private float levitationAmplitude = 90;
     private float levitationSpeed = 2;
@@ -50,8 +51,9 @@ public class Enemy : GameObject, IDamageable
     private Animation right;
     private Animation left;
 
+    private Sound hitEnemySound;
     private Sound hitEnemySound1;
-    private Sound hitEnemySound2;
+    private Sound whistle;
     public Transform Transform { get { return transform; } }
     public bool IsShaking { set { isShaking = value; } get { return isShaking; } }
     public bool Vulnerable { set { vulnerable = value; } get { return vulnerable; } }
@@ -67,8 +69,9 @@ public class Enemy : GameObject, IDamageable
         CreateAnimations();
         currentAnimation = Idle;
 
+        hitEnemySound = new Sound("shoot.wav");
         hitEnemySound1 = new Sound("hitEnemy1.wav");
-        hitEnemySound2 = new Sound("hitEnemy2.wav");
+        whistle = new Sound("whistle.wav");
     }
     public void Update()
     {
@@ -129,7 +132,7 @@ public class Enemy : GameObject, IDamageable
 
             if (damageCount == 0)
             {
-                hitEnemySound2.PlayOnce(GameManager.Instance.audioMixer.HitEnemyChannel);
+                hitEnemySound.PlayOnce(GameManager.Instance.audioMixer.HitEnemyChannel);
             }
             else
             {
@@ -195,6 +198,20 @@ public class Enemy : GameObject, IDamageable
             if (!dashing)
             {
                 moveDirectionX = random.Next(0, 2) == 0 ? -1 : 1;
+                
+                if (!GameManager.Instance.HardMode)
+                {
+                    whistle.PlayOnce(GameManager.Instance.audioMixer.HitEnemyChannel);
+
+                    if (moveDirectionX == -1)
+                    {
+                        whistle.SetPanning(0, 255);
+                    }
+                    else if (moveDirectionX == 1)
+                    {
+                        whistle.SetPanning(255, 0);
+                    }
+                }
 
                 float newX = moveDirectionX == 1 ? 0 - (EnemyWidth * 5) : GameManager.Instance.LevelController.ScreenWidth + (EnemyWidth * 5);
                 float newY = GameManager.Instance.LevelController.GroundHeight - EnemyHeight - 10;

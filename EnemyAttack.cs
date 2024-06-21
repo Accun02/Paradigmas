@@ -38,6 +38,8 @@ public class EnemyAttack
     private Dictionary<int, string> attackMethods;
 
     private Sound teleportSound;
+    private Sound thunderSound;
+    private Sound bubbleSound;
 
     public bool DashAttacking
     {
@@ -84,6 +86,8 @@ public class EnemyAttack
         };
 
         teleportSound = new Sound("teleport.wav");
+        bubbleSound = new Sound("bubbleShoot.wav");
+        thunderSound = new Sound("bubbleCast.wav");
     }
 
     // Lógica de selector de ataques
@@ -155,17 +159,17 @@ public class EnemyAttack
             if (nearAttacking && !playerIsDown)
             {
                 enemyAttack = rnd.Next(2, 4 + 1);
-                Engine.Debug($"CERCA - {attackMethods[enemyAttack]} ({enemyAttack})");
+                //Engine.Debug($"CERCA - {attackMethods[enemyAttack]} ({enemyAttack})");
             }
             else if (!nearAttacking && !playerIsDown)
             {
                 enemyAttack = rnd.Next(3, 5 + 1);
-                Engine.Debug($"LEJOS - {attackMethods[enemyAttack]} ({enemyAttack})");
+                //Engine.Debug($"LEJOS - {attackMethods[enemyAttack]} ({enemyAttack})");
             }
             else
             {
                 enemyAttack = rnd.Next(1, 2 + 1);
-                Engine.Debug($"ABAJO - {attackMethods[enemyAttack]} ({enemyAttack})");
+                //Engine.Debug($"ABAJO - {attackMethods[enemyAttack]} ({enemyAttack})");
             }
             isAttacking = true;
             repetitionCount = 0;
@@ -223,6 +227,7 @@ public class EnemyAttack
 
         if (repetitionCount < maxRepetitions && currentRepeat <= 0)
         {
+            bubbleSound.PlayOnce(GameManager.Instance.audioMixer.BubbleShootChannel);
             GameManager.Instance.LevelController.EnemyBulletList.Add(new EnemyBullet(position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
             GameManager.Instance.LevelController.EnemyBulletList.Add(new EnemyBullet(position, new Vector2(EnemyWidth + EnemyBullet.BulletWidth - 20, EnemyHeight / 2 - BulletHeight / 2)));
             timeBetweenAttacks = 0.45f;
@@ -286,6 +291,7 @@ public class EnemyAttack
 
         if (repetitionCount <= (GameManager.Instance.HardMode ? 3 : 2) && currentRepeat <= 0)
         {
+            thunderSound.PlayOnce(GameManager.Instance.audioMixer.LightningCastChannel);
             GameManager.Instance.LevelController.ThunderList.Add(new EnemyThunderBubble(position, GameManager.Instance.LevelController.player.Transform.Position, new Vector2(BulletWidth / 2, EnemyHeight / 2 - BulletHeight / 2)));
             timeBetweenAttacks = GameManager.Instance.HardMode ? 0.3f : 0.45f;
             canAttack = false;

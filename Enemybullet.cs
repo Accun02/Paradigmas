@@ -18,6 +18,8 @@ namespace MyGame
         private Animation spawn;
         private bool directionSet = false;
 
+        private Sound bubblePop;
+
         public EnemyBullet(Vector2 position, Vector2 offset) : base(new Vector2(position.x + offset.x, position.y + offset.y), new Vector2(0, 0))
         {
             if (GameManager.Instance.HardMode)
@@ -35,6 +37,8 @@ namespace MyGame
 
             timeSinceSpawn = 0f;
             CreateAnimations();
+
+            bubblePop = new Sound("bubblePop.wav");
         }
 
         private static Vector2 CalculateDirection(Vector2 position, Vector2 playerPosition, Vector2 offset)
@@ -84,22 +88,37 @@ namespace MyGame
             float playerTop = player.Transform.Position.y;
             float playerBottom = player.Transform.Position.y + Character.PlayerHeight;
 
-            if (bulletRight >= playerLeft && bulletLeft <= playerRight && bulletBottom >= playerTop && bulletTop <= playerBottom && !destroyed && player.Vulnerable)
+            if (bulletRight >= playerLeft && bulletLeft <= playerRight && bulletBottom >= playerTop && bulletTop <= playerBottom && !destroyed)
             {
-                player.TakeDamage(1);
+                if (!destroyed)
+                {
+                    bubblePop.PlayOnce(GameManager.Instance.audioMixer.BubblePopChannel);
+                    destroyed = true;
+                }
+
+                if (player.Vulnerable)
+                    player.TakeDamage(1);
 
                 currentAnimation = destroy;
                 currentAnimation.Update();
-                destroyed = true;
                 bulletVel = 0;
                 acceleration = 0;
             }
 
             if (transform.Position.y >= GroundHeight - BulletHeight || transform.Position.x >= ScreenWidth || transform.Position.x <= 0 - BulletWidth)
             {
+                if (!destroyed && transform.Position.x <= ScreenWidth && transform.Position.x >= 0 - BulletWidth)
+                {
+                    bubblePop.PlayOnce(GameManager.Instance.audioMixer.BubblePopChannel);
+                    destroyed = true;
+                }
+                else
+                {
+                    destroyed = true;
+                }
+
                 currentAnimation = destroy;
                 currentAnimation.Update();
-                destroyed = true;
                 bulletVel = 0;
                 acceleration = 0;
 
