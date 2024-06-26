@@ -24,8 +24,8 @@ public class EnemyAttack
 
     private float EnemyWidth = Enemy.EnemyWidth;
     private float EnemyHeight = Enemy.EnemyHeight;
-    private float BulletWidth = EnemyBullet.BulletWidth;
-    private float BulletHeight = EnemyBullet.BulletHeight;
+    private float BulletWidth = EnemyBullet.bulletWidth;
+    private float BulletHeight = EnemyBullet.bulletHeight;
 
     private float repeatCooldown = 0.75f;
     private float currentRepeat = 0.0f;
@@ -222,14 +222,14 @@ public class EnemyAttack
         }
 
         repeatCooldown = 1f;
-        int maxRepetitions = !GameManager.Instance.HardMode && GameManager.Instance.LevelController.enemy.Health <= 50 
+        int maxRepetitions = !GameManager.Instance.HardMode && GameManager.Instance.LevelController.enemy.Health <= 50
             || GameManager.Instance.HardMode && GameManager.Instance.LevelController.enemy.Health <= 75 ? 3 : 1;
 
         if (repetitionCount < maxRepetitions && currentRepeat <= 0)
         {
             bubbleSound.PlayOnce(GameManager.Instance.audioMixer.BubbleShootChannel);
             GameManager.Instance.LevelController.EnemyBulletList.Add(new EnemyBullet(position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
-            GameManager.Instance.LevelController.EnemyBulletList.Add(new EnemyBullet(position, new Vector2(EnemyWidth + EnemyBullet.BulletWidth - 20, EnemyHeight / 2 - BulletHeight / 2)));
+            GameManager.Instance.LevelController.EnemyBulletList.Add(new EnemyBullet(position, new Vector2(EnemyWidth + EnemyBullet.bulletWidth - 20, EnemyHeight / 2 - BulletHeight / 2)));
             timeBetweenAttacks = 0.45f;
             canAttack = false;
             attackTimer = 0;

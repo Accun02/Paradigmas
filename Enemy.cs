@@ -1,7 +1,6 @@
 ﻿using MyGame;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 
 public class Enemy : GameObject, IDamageable
 {
@@ -61,7 +60,7 @@ public class Enemy : GameObject, IDamageable
     public int MaxHealth { set { maxHealth = value; } get { return maxHealth; } }
     public float ShakeOffsetX { set { shakeOffsetX = value; } get { return shakeOffsetX; } }
 
-    public Enemy(Vector2 position) : base(position, EnemyWidth, EnemyHeight) 
+    public Enemy(Vector2 position) : base(position, EnemyWidth, EnemyHeight)
     {
         transform = new Transform(position);
         enemyMovement = new EnemyMovement(Transform);
@@ -198,7 +197,7 @@ public class Enemy : GameObject, IDamageable
             if (!dashing)
             {
                 moveDirectionX = random.Next(0, 2) == 0 ? -1 : 1;
-                
+
                 if (!GameManager.Instance.HardMode)
                 {
                     whistle.PlayOnce(GameManager.Instance.audioMixer.HitEnemyChannel);

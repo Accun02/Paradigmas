@@ -1,5 +1,5 @@
-﻿using System;
-using MyGame;
+﻿using MyGame;
+using System;
 
 public class CharacterController
 {

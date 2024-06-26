@@ -13,11 +13,11 @@ class Engine
         height = 1080;
         int colores = 24;
 
-        int flags = (Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT);
+        int flags = Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT;
         Sdl.SDL_Init(Sdl.SDL_INIT_EVERYTHING);
         screen = Sdl.SDL_SetVideoMode(width, height, colores, flags);
 
-        Sdl.SDL_Rect rect2 = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
+        Sdl.SDL_Rect rect2 = new Sdl.SDL_Rect { x = 0, y = 0, w = (short)width, h = (short)height };
         Sdl.SDL_SetClipRect(screen, ref rect2);
 
         SdlTtf.TTF_Init();
@@ -29,7 +29,7 @@ class Engine
         height = he;
         int colores = 24;
 
-        int flags = (Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT);
+        int flags = Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT;
         Sdl.SDL_Init(Sdl.SDL_INIT_EVERYTHING);
         screen = Sdl.SDL_SetVideoMode(width, height, colores, flags);
 
@@ -37,10 +37,29 @@ class Engine
         Sdl.SDL_WM_SetIcon(icon, null);
         Sdl.SDL_WM_SetCaption("COLISEUM CONQUEST", null);
 
-        Sdl.SDL_Rect rect2 = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
+        Sdl.SDL_Rect rect2 = new Sdl.SDL_Rect { x = 0, y = 0, w = (short)width, h = (short)height };
         Sdl.SDL_SetClipRect(screen, ref rect2);
 
         SdlTtf.TTF_Init();
+    }
+
+    public static void ToggleFullScreen(bool fullScreenToggle)
+    {
+        Sdl.SDL_FreeSurface(screen);
+
+        int flags = Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF;
+        if (fullScreenToggle)
+        {
+            flags |= Sdl.SDL_FULLSCREEN | Sdl.SDL_NOFRAME;
+            Sdl.SDL_ShowCursor(Sdl.SDL_DISABLE);
+        }
+        else
+        {
+            flags |= Sdl.SDL_ANYFORMAT;
+            Sdl.SDL_ShowCursor(Sdl.SDL_ENABLE);
+        }
+
+        screen = Sdl.SDL_SetVideoMode(width, height, 24, flags);
     }
 
     public static void HandleEvents()
@@ -55,26 +74,21 @@ class Engine
         }
     }
 
-    public static void Shutdown()
-    {
-        Sdl.SDL_Quit();
-    }
-
     public static void Debug(string text)
     {
-        System.Console.Write(text + "\n");
+        Console.WriteLine(text);
     }
 
     public static void Clear()
     {
-        Sdl.SDL_Rect origin = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
+        Sdl.SDL_Rect origin = new Sdl.SDL_Rect { x = 0, y = 0, w = (short)width, h = (short)height };
         Sdl.SDL_FillRect(screen, ref origin, 0);
     }
 
     public static void Draw(IntPtr imagen, float x, float y)
     {
-        Sdl.SDL_Rect origen = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
-        Sdl.SDL_Rect dest = new Sdl.SDL_Rect((short)x, (short)y, (short)width, (short)height);
+        Sdl.SDL_Rect origen = new Sdl.SDL_Rect { x = 0, y = 0, w = (short)width, h = (short)height };
+        Sdl.SDL_Rect dest = new Sdl.SDL_Rect { x = (short)x, y = (short)y, w = (short)width, h = (short)height };
         Sdl.SDL_BlitSurface(imagen, ref origen, screen, ref dest);
     }
 
@@ -82,14 +96,15 @@ class Engine
     {
         IntPtr image = LoadImage(tempimage);
 
-        Sdl.SDL_Rect origin = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
-        Sdl.SDL_Rect dest = new Sdl.SDL_Rect((short)x, (short)y, (short)width, (short)height);
+        Sdl.SDL_Rect origin = new Sdl.SDL_Rect { x = 0, y = 0, w = (short)width, h = (short)height };
+        Sdl.SDL_Rect dest = new Sdl.SDL_Rect { x = (short)x, y = (short)y, w = (short)width, h = (short)height };
         Sdl.SDL_BlitSurface(image, ref origin, screen, ref dest);
     }
+
     public static void Draw(IntPtr image, float x, float y, float width, float height)
     {
-        Sdl.SDL_Rect origin = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
-        Sdl.SDL_Rect dest = new Sdl.SDL_Rect((short)x, (short)y, (short)width, (short)height);
+        Sdl.SDL_Rect origin = new Sdl.SDL_Rect { x = 0, y = 0, w = (short)width, h = (short)height };
+        Sdl.SDL_Rect dest = new Sdl.SDL_Rect { x = (short)x, y = (short)y, w = (short)width, h = (short)height };
         Sdl.SDL_BlitSurface(image, ref origin, screen, ref dest);
     }
 
@@ -98,39 +113,33 @@ class Engine
         Sdl.SDL_Flip(screen);
     }
 
-
     public static IntPtr LoadImage(string image)
     {
-        IntPtr imagen;
-        imagen = SdlImage.IMG_Load(image);
+        IntPtr imagen = SdlImage.IMG_Load(image);
         if (imagen == IntPtr.Zero)
         {
-            System.Console.WriteLine("Imagen inexistente: {0}", image);
+            Console.WriteLine("Imagen inexistente: {0}", image);
             Environment.Exit(4);
         }
         return imagen;
     }
 
-    public static void DrawText(string text,
-        int x, int y, byte r, byte g, byte b, Font f)
+    public static void DrawText(string text, int x, int y, byte r, byte g, byte b, Font f)
     {
         DrawText(text, x, y, r, g, b, f.ReadPointer());
     }
 
-    public static void DrawText(string texto,
-        int x, int y, byte r, byte g, byte b, IntPtr fuente)
+    public static void DrawText(string texto, int x, int y, byte r, byte g, byte b, IntPtr fuente)
     {
-        Sdl.SDL_Color color = new Sdl.SDL_Color(r, g, b);
-        IntPtr textAsImage = SdlTtf.TTF_RenderText_Solid(
-            fuente, texto, color);
+        Sdl.SDL_Color color = new Sdl.SDL_Color { r = r, g = g, b = b };
+        IntPtr textAsImage = SdlTtf.TTF_RenderText_Solid(fuente, texto, color);
         if (textAsImage == IntPtr.Zero)
             Environment.Exit(5);
 
-        Sdl.SDL_Rect origen = new Sdl.SDL_Rect(0, 0, (short)width, (short)height);
-        Sdl.SDL_Rect dest = new Sdl.SDL_Rect((short)x, (short)y, (short)width, (short)height);
+        Sdl.SDL_Rect origen = new Sdl.SDL_Rect { x = 0, y = 0, w = (short)width, h = (short)height };
+        Sdl.SDL_Rect dest = new Sdl.SDL_Rect { x = (short)x, y = (short)y, w = (short)width, h = (short)height };
 
-        Sdl.SDL_BlitSurface(textAsImage, ref origen,
-            screen, ref dest);
+        Sdl.SDL_BlitSurface(textAsImage, ref origen, screen, ref dest);
         Sdl.SDL_FreeSurface(textAsImage);
     }
 
@@ -139,7 +148,7 @@ class Engine
         IntPtr font = SdlTtf.TTF_OpenFont(file, size);
         if (font == IntPtr.Zero)
         {
-            System.Console.WriteLine("Fuente inexistente: {0}", file);
+            Console.WriteLine("Fuente inexistente: {0}", file);
             Environment.Exit(6);
         }
         return font;
@@ -147,41 +156,16 @@ class Engine
 
     public static bool KeyPress(int c)
     {
-        bool press = false;
         Sdl.SDL_PumpEvents();
-        Sdl.SDL_Event pressed;
-        Sdl.SDL_PollEvent(out pressed);
         int numkeys;
-        byte[] keys = Tao.Sdl.Sdl.SDL_GetKeyState(out numkeys);
-        if (keys[c] == 1)
-            press = true;
-        return press;
+        byte[] keys = Sdl.SDL_GetKeyState(out numkeys);
+        return keys[c] == 1;
     }
 
     public static void ErrorFatal(string texto)
     {
-        System.Console.WriteLine(texto);
+        Console.WriteLine(texto);
         Environment.Exit(1);
-    }
-
-    public static void ToggleFullScreen(bool fullScreenToggle)
-    {
-        if (!fullScreenToggle)
-        {
-            Sdl.SDL_FreeSurface(screen);
-            int flags = (Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT);
-            screen = Sdl.SDL_SetVideoMode(width, height, 24, flags);
-
-            Sdl.SDL_ShowCursor(Sdl.SDL_ENABLE);
-        }
-        else
-        {
-            Sdl.SDL_FreeSurface(screen);
-            int flags = (Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_FULLSCREEN | Sdl.SDL_NOFRAME);
-            screen = Sdl.SDL_SetVideoMode(width, height, 24, flags);
-
-            Sdl.SDL_ShowCursor(Sdl.SDL_DISABLE);
-        }
     }
 
     // Definiciones de teclas

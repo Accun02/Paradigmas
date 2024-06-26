@@ -5,43 +5,35 @@ namespace MyGame
 {
     public class EnemyBullet : Projectile, ICheckForCollision
     {
-        private int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
-        private int ScreenWidth = GameManager.Instance.LevelController.ScreenWidth;
+        private readonly int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
+        private readonly int ScreenWidth = GameManager.Instance.LevelController.ScreenWidth;
 
-        public const float BulletHeight = 24;
-        public const float BulletWidth = 24;
+        public const float bulletHeight = 24;
+        public const float bulletWidth = 24;
 
-        private string idlePath = "assets/enemyBullet/bullet.png";
-        private new float coolDown;
+        private readonly string idlePath = "assets/enemyBullet/bullet.png";
         private float timeSinceSpawn;
 
         private Animation spawn;
         private bool directionSet = false;
 
-        private Sound bubblePop;
+        private bool soundPlayed;
+
+        private readonly Sound bubblePop;
 
         public EnemyBullet(Vector2 position, Vector2 offset) : base(new Vector2(position.x + offset.x, position.y + offset.y), new Vector2(0, 0))
         {
-            if (GameManager.Instance.HardMode)
-            {
-                bulletVel = 30;
-                acceleration = 2500;
-                coolDown = 0.3f;
-            }
-            else
-            {
-                bulletVel = 10;
-                acceleration = 2000;
-                coolDown = 0.4f;
-            }
-
+            bulletVel = GameManager.Instance.HardMode ? 30 : 10;
+            acceleration = GameManager.Instance.HardMode ? 2500 : 2000;
+            coolDown = GameManager.Instance.HardMode ? 0.3f : 0.4f;
             timeSinceSpawn = 0f;
-            CreateAnimations();
-
+            currentAnimation = spawn;
             bubblePop = new Sound("bubblePop.wav");
+
+            CreateAnimations();
         }
 
-        private static Vector2 CalculateDirection(Vector2 position, Vector2 playerPosition, Vector2 offset)
+        private Vector2 CalculateDirection(Vector2 position, Vector2 playerPosition, Vector2 offset)
         {
             Vector2 adjustedPosition = new Vector2(position.x + offset.x, position.y + offset.y);
             Vector2 direction = new Vector2(playerPosition.x + (Character.PlayerWidth / 2) - adjustedPosition.x, playerPosition.y + (Character.PlayerHeight / 2) - adjustedPosition.y);
@@ -70,79 +62,89 @@ namespace MyGame
             }
             else
             {
-                currentAnimation = spawn;
                 currentAnimation.Update();
             }
+
             base.Update();
         }
 
         public void CheckPositions(Character player)
         {
-            float bulletLeft = transform.Position.x;
-            float bulletRight = transform.Position.x + BulletWidth;
-            float bulletTop = transform.Position.y;
-            float bulletBottom = transform.Position.y + BulletHeight;
+            float bulletRight = transform.Position.x + bulletWidth;
+            float bulletBottom = transform.Position.y + bulletHeight;
 
             float playerLeft = player.Transform.Position.x;
             float playerRight = player.Transform.Position.x + Character.PlayerWidth;
             float playerTop = player.Transform.Position.y;
             float playerBottom = player.Transform.Position.y + Character.PlayerHeight;
 
-            if (bulletRight >= playerLeft && bulletLeft <= playerRight && bulletBottom >= playerTop && bulletTop <= playerBottom && !destroyed)
+            if (bulletRight >= playerLeft && transform.Position.x <= playerRight && bulletBottom >= playerTop && transform.Position.y <= playerBottom && !destroyed)
             {
-                if (!destroyed)
-                {
-                    bubblePop.PlayOnce(GameManager.Instance.audioMixer.BubblePopChannel);
-                    destroyed = true;
-                }
-
-                if (player.Vulnerable)
-                    player.TakeDamage(1);
-
-                currentAnimation = destroy;
-                currentAnimation.Update();
-                bulletVel = 0;
-                acceleration = 0;
+                HandleCollision(player);
             }
 
-            if (transform.Position.y >= GroundHeight - BulletHeight || transform.Position.x >= ScreenWidth || transform.Position.x <= 0 - BulletWidth)
+            if (transform.Position.y >= GroundHeight - bulletHeight || transform.Position.x >= ScreenWidth || transform.Position.x <= 0 - bulletWidth)
             {
-                if (!destroyed && transform.Position.x <= ScreenWidth && transform.Position.x >= 0 - BulletWidth)
+                HandleOutOfBounds();
+            }
+        }
+
+        private void HandleCollision(Character player)
+        {
+            if (!soundPlayed)
+            {
+                bubblePop.PlayOnce(GameManager.Instance.audioMixer.BubblePopChannel);
+                soundPlayed = true;
+            }
+
+            if (player.Vulnerable)
+                player.TakeDamage(1);
+
+            DestroyBullet();
+        }
+
+        private void HandleOutOfBounds()
+        {
+            if (transform.Position.x <= ScreenWidth && transform.Position.x >= 0 - bulletWidth)
+            {
+                if (!soundPlayed)
                 {
                     bubblePop.PlayOnce(GameManager.Instance.audioMixer.BubblePopChannel);
-                    destroyed = true;
+                    soundPlayed = true;
                 }
-                else
-                {
-                    destroyed = true;
-                }
-
-                currentAnimation = destroy;
-                currentAnimation.Update();
-                bulletVel = 0;
-                acceleration = 0;
-
-                coolDown -= Time.DeltaTime;
-                if (coolDown <= 0)
-                    GameManager.Instance.LevelController.EnemyBulletList.Remove(this);
             }
+
+            DestroyBullet();
+        }
+
+        private void DestroyBullet()
+        {
+            destroyed = true;
+            currentAnimation = destroy;
+            currentAnimation?.Update();
+            bulletVel = 0;
+            acceleration = 0;
+
+            coolDown -= Time.DeltaTime;
+            if (coolDown <= 0)
+                GameManager.Instance.LevelController.EnemyBulletList.Remove(this);
         }
 
         private void CreateAnimations()
         {
+            List<IntPtr> spawnFrames = new List<IntPtr>();
+            for (int i = 0; i < 4; i++)
+            {
+                IntPtr frame = Engine.LoadImage($"assets/enemyBullet/spawn/{i}.png");
+                spawnFrames.Add(frame);
+            }
+            spawn = new Animation("Spawn", spawnFrames, 0.1f, false);
+
             List<string> destroyPaths = new List<string>();
             for (int i = 0; i < 3; i++)
             {
                 destroyPaths.Add($"assets/enemyBullet/destroy/{i}.png");
             }
-            List<IntPtr> spawn = new List<IntPtr>();
-            for (int i = 0; i < 4; i++)
-            {
-                IntPtr frame = Engine.LoadImage($"assets/enemyBullet/spawn/{i}.png");
-                spawn.Add(frame);
-            }
-            this.spawn = new Animation("Spawn", spawn, 0.1f, false);
-
             CreateAnimations(idlePath, destroyPaths, 0.1f);
         }
     }

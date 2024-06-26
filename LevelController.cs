@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MyGame
 {
@@ -22,7 +21,7 @@ namespace MyGame
 
         public void Initialize()
         {
-            audienceBounce = new AudienceBounce(8,882,165);
+            audienceBounce = new AudienceBounce(8, 882, 165);
             staticImage = new StaticImage();
             player = new Character(new Vector2(0, 0));
             enemy = new Enemy(new Vector2(0, 0));
@@ -99,6 +98,7 @@ namespace MyGame
             }
 
             CameraShake.Instance.Update();
+            audienceBounce.Update();
             player.Update(player);
 
             if (player.Health > 0)
@@ -140,8 +140,6 @@ namespace MyGame
                     AnvilList[i].Update();
                     AnvilList[i].CheckPositions(player);
                 }
-
-                audienceBounce.Update();
             }
         }
 
@@ -154,6 +152,7 @@ namespace MyGame
             ThunderList.Clear();
             LightningList.Clear();
             AnvilList.Clear();
+            audienceBounce.Reset();
             CameraShake.Instance.value = 0;
             FontManager.ResetText();
 

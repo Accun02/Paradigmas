@@ -175,7 +175,7 @@ namespace MyGame
             }
         }
 
-        public void TakeDamage(int damage) 
+        public void TakeDamage(int damage)
         {
             if (vulnerable)
             {
@@ -218,7 +218,7 @@ namespace MyGame
                 Engine.Draw(currentAnimation.CurrentFrame, Transform.Position.x - 30, Transform.Position.y - 50);
             }
         }
-        private void CreateAnimations() 
+        private void CreateAnimations()
         {
 
             // Movimiento

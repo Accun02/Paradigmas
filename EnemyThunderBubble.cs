@@ -26,7 +26,7 @@ namespace MyGame
 
         private Animation spawn;
         private Animation wait;
-        
+
         private Sound lightningShootSound;
 
         public EnemyThunderBubble(Vector2 position, Vector2 playerPosition, Vector2 offset)

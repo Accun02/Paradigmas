@@ -65,7 +65,6 @@
     <Compile Include="BlinkingImage.cs" />
     <Compile Include="CameraShake.cs" />
     <Compile Include="CharacterWeapon.cs" />
-    <Compile Include="EnemyAttackManager.cs" />
     <Compile Include="UIDifficultySelector.cs" />
     <Compile Include="UIEnemyHealthBar.cs" />
     <Compile Include="UIPlayerManager.cs" />

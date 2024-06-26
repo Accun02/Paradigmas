@@ -10,6 +10,7 @@ namespace MyGame
         private int leftX;
         private int rightX;
 
+        private float initialY;
         private float spriteY;
         private float velocityY;
 
@@ -24,7 +25,8 @@ namespace MyGame
         {
             this.leftX = leftX;
             this.rightX = rightX;
-            spriteY = groundHeight + 15;
+            this.initialY = 145;
+            spriteY = initialY;
             velocityY = 0f;
             gravity = 1200f;
             this.groundHeight = groundHeight - 20;
@@ -66,8 +68,16 @@ namespace MyGame
 
         public void Render()
         {
+            Engine.Debug("" + spriteY);
             Engine.Draw(leftAudience, leftX + CameraShake.Instance.value, spriteY);
             Engine.Draw(rightAudience, rightX + CameraShake.Instance.value, spriteY - 20);
+        }
+
+        public void Reset()
+        {
+            spriteY = initialY;
+            velocityY = 0f;
+            isRising = false;
         }
     }
 }

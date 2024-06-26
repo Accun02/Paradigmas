@@ -128,22 +128,18 @@ namespace MyGame
 
         private void GameStartManager()
         {
-            //Console.WriteLine("Inicio");
             click.PlayOnce(audioMixer.UIClickChannel);
             gameStatus = GameStatus.Game;
-
             music.Play(audioMixer.MusicChannel);
         }
 
         private void GameOverManager()
         {
-            //Console.WriteLine("Game Over");
             gameStatus = GameStatus.Lose;
         }
 
         private void GameWinManager()
         {
-            //Console.WriteLine("Victoria");
             winMusic.PlayOnce(audioMixer.MusicChannel);
             if (hardMode)
             {
@@ -154,14 +150,12 @@ namespace MyGame
 
         private void GameLoseManager()
         {
-            //Console.WriteLine("Muerto");
             gameOverDelayStarted = true;
             currentDeath = 0f;
         }
 
         private void TutorialManager()
         {
-            //Console.WriteLine("Tutorial");
             click.PlayOnce(audioMixer.UIClickChannel);
             gameStatus = GameStatus.Tutorial;
         }
