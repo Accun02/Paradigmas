@@ -39,6 +39,7 @@ namespace MyGame
 
             anvilHit = new Sound("anvilHit.wav");
             anvilFall = new Sound("anvilFall.wav");
+            currentAnimation = idle;
         }
 
         public override void Update()
@@ -82,7 +83,8 @@ namespace MyGame
             if (bulletPosition.x + anvilWidth > playerPosition.x && bulletPosition.x + 4 < playerPosition.x + Character.PlayerWidth &&
                 bulletPosition.y + anvilHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && player.Vulnerable)
             {
-                player.TakeDamage(1);
+                if (player is IDamageable)
+                    player.TakeDamage(1);
                 return;
             }
 
@@ -92,7 +94,8 @@ namespace MyGame
             if (smallHitboxX + smallAnvilWidth > playerPosition.x && smallHitboxX < playerPosition.x + Character.PlayerWidth &&
                 smallHitboxY + smallAnvilHeight > playerPosition.y && smallHitboxY < playerPosition.y + Character.PlayerHeight && player.Vulnerable)
             {
-                player.TakeDamage(1);
+                if (player is IDamageable)
+                    player.TakeDamage(1);
                 return;
             }
 

@@ -61,7 +61,8 @@ namespace MyGame
             if (bulletPosition.x + BulletWidth > playerPosition.x && bulletPosition.x < playerPosition.x + Character.PlayerWidth &&
                 bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && !shootThunder && player.Vulnerable)
             {
-                player.TakeDamage(1);
+                if (player is IDamageable)
+                    player.TakeDamage(1);
                 return;
             }
 

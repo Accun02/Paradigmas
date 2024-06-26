@@ -68,7 +68,6 @@ namespace MyGame
 
         public void Render()
         {
-            Engine.Debug("" + spriteY);
             Engine.Draw(leftAudience, leftX + CameraShake.Instance.value, spriteY);
             Engine.Draw(rightAudience, rightX + CameraShake.Instance.value, spriteY - 20);
         }

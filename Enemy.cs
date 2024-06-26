@@ -98,7 +98,7 @@ public class Enemy : GameObject, IDamageable
         }
     }
 
-    public void Render() //override
+    public void Render()
     {
         if (isShaking)
         {
@@ -118,8 +118,9 @@ public class Enemy : GameObject, IDamageable
         float playerTop = player.Transform.Position.y;
         float playerBottom = player.Transform.Position.y + Character.PlayerHeight;
 
-        if (vulnerable && enemyRight >= playerLeft && enemyLeft <= playerRight && enemyBottom >= playerTop && enemyTop <= playerBottom && player.Vulnerable)
+        if (vulnerable && enemyRight >= playerLeft && enemyLeft <= playerRight && enemyBottom >= playerTop && enemyTop <= playerBottom && player.Vulnerable && GameManager.Instance.LevelController.player is IDamageable)
         {
+            if (player is IDamageable)
             player.TakeDamage(1);
         }
     }

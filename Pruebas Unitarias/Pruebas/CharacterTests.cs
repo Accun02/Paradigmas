@@ -5,7 +5,7 @@ using System;
 namespace UnitTests
 {
     [TestClass]
-    public class CharacterTests
+    public class VulnerableTests
     {
         [TestMethod]
         public void TakeDamageIfVulnerable()

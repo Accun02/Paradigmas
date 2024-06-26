@@ -51,7 +51,6 @@ namespace MyGame
                 destroyTextures.Add(frame);
             }
             destroy = new Animation("Destroy", destroyTextures, destroyFrameDuration, false);
-            currentAnimation = idle;
         }
     }
 }

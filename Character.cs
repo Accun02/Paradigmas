@@ -197,7 +197,7 @@ namespace MyGame
             }
         }
 
-        public void Render() //override 
+        public void Render()
         {
             if (!isDead)
             {

@@ -85,9 +85,12 @@ namespace MyGame
                 bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight &&
                 !shootThunder && timeSinceSpawn > initialDetection && player.Vulnerable)
             {
-                player.TakeDamage(1);
-                playerDetected = true;
-                timeSinceDetection = 0;
+                if (player is IDamageable)
+                {
+                    player.TakeDamage(1);
+                    playerDetected = true;
+                    timeSinceDetection = 0;
+                }
                 return;
             }
             else if (Math.Abs(playerPosition.x - bulletPosition.x) <= Character.PlayerWidth / 2 && !playerDetected && timeSinceSpawn > initialDetection)

@@ -27,10 +27,10 @@ namespace MyGame
             acceleration = GameManager.Instance.HardMode ? 2500 : 2000;
             coolDown = GameManager.Instance.HardMode ? 0.3f : 0.4f;
             timeSinceSpawn = 0f;
-            currentAnimation = spawn;
             bubblePop = new Sound("bubblePop.wav");
 
             CreateAnimations();
+            currentAnimation = spawn;
         }
 
         private Vector2 CalculateDirection(Vector2 position, Vector2 playerPosition, Vector2 offset)
@@ -97,7 +97,7 @@ namespace MyGame
                 soundPlayed = true;
             }
 
-            if (player.Vulnerable)
+            if (player.Vulnerable && player is IDamageable)
                 player.TakeDamage(1);
 
             DestroyBullet();

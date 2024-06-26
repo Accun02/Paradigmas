@@ -35,6 +35,7 @@ namespace MyGame
             idlePath = imagePath;
             this.isVertical = !isHorizontal;
             CreateAnimations();
+            currentAnimation = idle;
         }
 
         public override void Update()
@@ -67,9 +68,9 @@ namespace MyGame
             float enemyTop = enemy.Transform.Position.y;
             float enemyBottom = enemy.Transform.Position.y + Enemy.EnemyHeight;
 
-            if (enemy.Vulnerable && bulletRight >= enemyLeft && bulletLeft <= enemyRight && bulletBottom >= enemyTop && bulletTop <= enemyBottom || destroyed)
+            if (enemy.Vulnerable && bulletRight >= enemyLeft && bulletLeft <= enemyRight && bulletBottom >= enemyTop && bulletTop <= enemyBottom|| destroyed)
             {
-                if (!destroyed)
+                if (!destroyed && enemy is IDamageable)
                 {
                     enemy.TakeDamage(1);
                     ParticleOffset();
