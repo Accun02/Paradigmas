@@ -5,8 +5,8 @@ namespace MyGame
 {
     public class EnemyBullet : Projectile, ICheckForCollision
     {
-        private readonly int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
-        private readonly int ScreenWidth = GameManager.Instance.LevelController.ScreenWidth;
+        private readonly int groundHeight = GameManager.Instance.LevelController.groundHeight;
+        private readonly int screenWidth = GameManager.Instance.LevelController.screenWidth;
 
         public const float bulletHeight = 24;
         public const float bulletWidth = 24;
@@ -83,7 +83,7 @@ namespace MyGame
                 HandleCollision(player);
             }
 
-            if (transform.Position.y >= GroundHeight - bulletHeight || transform.Position.x >= ScreenWidth || transform.Position.x <= 0 - bulletWidth)
+            if (transform.Position.y >= groundHeight - bulletHeight || transform.Position.x >= screenWidth || transform.Position.x <= 0 - bulletWidth)
             {
                 HandleOutOfBounds();
             }
@@ -105,7 +105,7 @@ namespace MyGame
 
         private void HandleOutOfBounds()
         {
-            if (transform.Position.x <= ScreenWidth && transform.Position.x >= 0 - bulletWidth)
+            if (transform.Position.x <= screenWidth && transform.Position.x >= 0 - bulletWidth)
             {
                 if (!soundPlayed)
                 {

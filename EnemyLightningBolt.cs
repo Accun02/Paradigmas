@@ -5,13 +5,13 @@ namespace MyGame
 {
     public class EnemyLightningBolt : Projectile, ICheckForCollision
     {
-        private readonly int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
+        private readonly int groundHeight = GameManager.Instance.LevelController.groundHeight;
 
         private string idlePath = "assets/enemyBullet/thunderBolt/0.png";
 
         private bool shootThunder;
-        public const float BulletHeight = 100;
-        public const float BulletWidth = 48;
+        public const float bulletHeight = 100;
+        public const float bulletWidth = 48;
         private float destroyCoolDown = 0.1f;
 
         private Sound lightningHit;
@@ -43,11 +43,11 @@ namespace MyGame
                 bulletVel += acceleration * Time.DeltaTime;
                 transform.Translate(direction, bulletVel * Time.DeltaTime);
 
-                if (transform.Position.y >= GroundHeight - BulletHeight)
+                if (transform.Position.y >= groundHeight - bulletHeight)
                 {
                     CameraShake.Instance.EnemySmallShake();
                     shootThunder = true;
-                    transform.Position = new Vector2(transform.Position.x - 15, GroundHeight - BulletHeight);
+                    transform.Position = new Vector2(transform.Position.x - 15, groundHeight - bulletHeight);
                     bulletVel = 0;
                     acceleration = 0;
                 }
@@ -58,15 +58,15 @@ namespace MyGame
         {
             Vector2 playerPosition = player.Transform.Position;
             Vector2 bulletPosition = transform.Position;
-            if (bulletPosition.x + BulletWidth > playerPosition.x && bulletPosition.x < playerPosition.x + Character.PlayerWidth &&
-                bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && !shootThunder && player.Vulnerable)
+            if (bulletPosition.x + bulletWidth > playerPosition.x && bulletPosition.x < playerPosition.x + Character.PlayerWidth &&
+                bulletPosition.y + bulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight && !shootThunder && player.Vulnerable)
             {
                 if (player is IDamageable)
                     player.TakeDamage(1);
                 return;
             }
 
-            if (transform.Position.y >= GroundHeight - BulletHeight)
+            if (transform.Position.y >= groundHeight - bulletHeight)
             {
                 currentAnimation = destroy;
                 currentAnimation.Update();

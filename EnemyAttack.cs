@@ -22,10 +22,10 @@ public class EnemyAttack
     private bool playerIsDown = false;
     private bool isTeleportOnCooldown = false;
 
-    private float EnemyWidth = Enemy.EnemyWidth;
-    private float EnemyHeight = Enemy.EnemyHeight;
-    private float BulletWidth = EnemyBullet.bulletWidth;
-    private float BulletHeight = EnemyBullet.bulletHeight;
+    private float enemyWidth = Enemy.enemyWidth;
+    private float enemyHeight = Enemy.enemyHeight;
+    private float bulletWidth = EnemyBullet.bulletWidth;
+    private float bulletHeight = EnemyBullet.bulletHeight;
 
     private float repeatCooldown = 0.75f;
     private float currentRepeat = 0.0f;
@@ -228,8 +228,8 @@ public class EnemyAttack
         if (repetitionCount < maxRepetitions && currentRepeat <= 0)
         {
             bubbleSound.PlayOnce(GameManager.Instance.audioMixer.BubbleShootChannel);
-            GameManager.Instance.LevelController.EnemyBulletList.Add(new EnemyBullet(position, new Vector2(-BulletWidth, EnemyHeight / 2 - BulletHeight / 2)));
-            GameManager.Instance.LevelController.EnemyBulletList.Add(new EnemyBullet(position, new Vector2(EnemyWidth + EnemyBullet.bulletWidth - 20, EnemyHeight / 2 - BulletHeight / 2)));
+            GameManager.Instance.LevelController.EnemyBulletList.Add(new EnemyBullet(position, new Vector2(-bulletWidth, enemyHeight / 2 - bulletHeight / 2)));
+            GameManager.Instance.LevelController.EnemyBulletList.Add(new EnemyBullet(position, new Vector2(enemyWidth + EnemyBullet.bulletWidth - 20, enemyHeight / 2 - bulletHeight / 2)));
             timeBetweenAttacks = 0.45f;
             canAttack = false;
             attackTimer = 0;
@@ -292,7 +292,7 @@ public class EnemyAttack
         if (repetitionCount <= (GameManager.Instance.HardMode ? 3 : 2) && currentRepeat <= 0)
         {
             thunderSound.PlayOnce(GameManager.Instance.audioMixer.LightningCastChannel);
-            GameManager.Instance.LevelController.ThunderList.Add(new EnemyThunderBubble(position, GameManager.Instance.LevelController.player.Transform.Position, new Vector2(BulletWidth / 2, EnemyHeight / 2 - BulletHeight / 2)));
+            GameManager.Instance.LevelController.ThunderList.Add(new EnemyThunderBubble(position, GameManager.Instance.LevelController.player.Transform.Position, new Vector2(bulletWidth / 2, enemyHeight / 2 - bulletHeight / 2)));
             timeBetweenAttacks = GameManager.Instance.HardMode ? 0.3f : 0.45f;
             canAttack = false;
             attackTimer = 0;
@@ -312,8 +312,8 @@ public class EnemyAttack
 
     private void FallingAnvil(Vector2 position)
     {
-        float anvilX = position.x - EnemyWidth / 2 - BulletWidth / 2;
-        float anvilY = -BulletHeight - 70;
+        float anvilX = position.x - enemyWidth / 2 - bulletWidth / 2;
+        float anvilY = -bulletHeight - 70;
         GameManager.Instance.LevelController.AnvilList.Add(new EnemyAnvil(new Vector2(anvilX, anvilY), new Vector2(0, 0)));
         timeBetweenAttacks = GameManager.Instance.HardMode ? 0.2f : 0.3f;
         canAttack = false;
@@ -325,8 +325,8 @@ public class EnemyAttack
     // Otro
     private void TeleportEffect(Vector2 position)
     {
-        GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)position.x + (int)Enemy.EnemyWidth, (int)position.y, new Vector2(-1, 0), "assets/enemy/teleport/0.png"));
-        GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)position.x - (int)Enemy.EnemyWidth, (int)position.y, new Vector2(1, 0), "assets/enemy/teleport/1.png"));
+        GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)position.x + (int)Enemy.enemyWidth, (int)position.y, new Vector2(-1, 0), "assets/enemy/teleport/0.png"));
+        GameManager.Instance.LevelController.TeleportList.Add(new EnemyTeleport((int)position.x - (int)Enemy.enemyWidth, (int)position.y, new Vector2(1, 0), "assets/enemy/teleport/1.png"));
     }
 
     public void ResetCurrent()

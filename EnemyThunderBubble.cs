@@ -4,11 +4,11 @@ namespace MyGame
 {
     public class EnemyThunderBubble : Projectile, ICheckForCollision
     {
-        public const float BulletHeight = 48;
-        public const float BulletWidth = 48;
+        public const float bulletHeight = 48;
+        public const float bulletWidth = 48;
 
-        private readonly int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
-        private readonly int ScreenWidth = GameManager.Instance.LevelController.ScreenWidth;
+        private readonly int groundHeight = GameManager.Instance.LevelController.groundHeight;
+        private readonly int screenWidth = GameManager.Instance.LevelController.screenWidth;
 
         private string idlePath = "assets/enemyBullet/thunder.png";
 
@@ -81,8 +81,8 @@ namespace MyGame
         {
             Vector2 playerPosition = player.Transform.Position;
             Vector2 bulletPosition = transform.Position;
-            if (bulletPosition.x + BulletWidth > playerPosition.x && bulletPosition.x < playerPosition.x + Character.PlayerWidth &&
-                bulletPosition.y + BulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight &&
+            if (bulletPosition.x + bulletWidth > playerPosition.x && bulletPosition.x < playerPosition.x + Character.PlayerWidth &&
+                bulletPosition.y + bulletHeight > playerPosition.y && bulletPosition.y < playerPosition.y + Character.PlayerHeight &&
                 !shootThunder && timeSinceSpawn > initialDetection && player.Vulnerable)
             {
                 if (player is IDamageable)
@@ -98,7 +98,7 @@ namespace MyGame
                 playerDetected = true;
                 timeSinceDetection = 0;
             }
-            else if (transform.Position.y >= GroundHeight - BulletHeight || transform.Position.x >= ScreenWidth || transform.Position.x <= 0 - BulletWidth) // Fuera de escena
+            else if (transform.Position.y >= groundHeight - bulletHeight || transform.Position.x >= screenWidth || transform.Position.x <= 0 - bulletWidth) // Fuera de escena
             {
                 destroyed = true;
                 bulletVel = 0;

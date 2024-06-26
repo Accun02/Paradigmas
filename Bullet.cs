@@ -7,8 +7,8 @@ namespace MyGame
     {
         public event Action<Bullet> OnDestroy;
 
-        private int BulletHeight;
-        private int BulletWidth;
+        private int bulletHeight;
+        private int bulletWidth;
 
         int offsetX;
         int offsetY;
@@ -42,13 +42,13 @@ namespace MyGame
         {
             if (isVertical)
             {
-                BulletHeight = 60;
-                BulletWidth = 10;
+                bulletHeight = 60;
+                bulletWidth = 10;
             }
             else
             {
-                BulletHeight = 10;
-                BulletWidth = 60;
+                bulletHeight = 10;
+                bulletWidth = 60;
             }
 
             bulletVel += acceleration * Time.DeltaTime;
@@ -59,16 +59,16 @@ namespace MyGame
         public void CheckCollisions(Enemy enemy)
         {
             float bulletLeft = transform.Position.x;
-            float bulletRight = transform.Position.x + BulletWidth;
+            float bulletRight = transform.Position.x + bulletWidth;
             float bulletTop = transform.Position.y;
-            float bulletBottom = transform.Position.y + BulletHeight;
+            float bulletBottom = transform.Position.y + bulletHeight;
 
             float enemyLeft = enemy.Transform.Position.x;
-            float enemyRight = enemy.Transform.Position.x + Enemy.EnemyWidth;
+            float enemyRight = enemy.Transform.Position.x + Enemy.enemyWidth;
             float enemyTop = enemy.Transform.Position.y;
-            float enemyBottom = enemy.Transform.Position.y + Enemy.EnemyHeight;
+            float enemyBottom = enemy.Transform.Position.y + Enemy.enemyHeight;
 
-            if (enemy.Vulnerable && bulletRight >= enemyLeft && bulletLeft <= enemyRight && bulletBottom >= enemyTop && bulletTop <= enemyBottom|| destroyed)
+            if (enemy.Vulnerable && bulletRight >= enemyLeft && bulletLeft <= enemyRight && bulletBottom >= enemyTop && bulletTop <= enemyBottom || destroyed)
             {
                 if (!destroyed && enemy is IDamageable)
                 {
@@ -87,9 +87,9 @@ namespace MyGame
                     DestroyBullet();
             }
 
-            if (transform.Position.y <= 0 - BulletHeight ||
-                transform.Position.x >= GameManager.Instance.LevelController.ScreenWidth ||
-                transform.Position.x <= 0 - BulletWidth)
+            if (transform.Position.y <= 0 - bulletHeight ||
+                transform.Position.x >= GameManager.Instance.LevelController.screenWidth ||
+                transform.Position.x <= 0 - bulletWidth)
             {
                 DestroyBullet();
             }

@@ -12,7 +12,7 @@ namespace MyGame
 
         public static void Render(Enemy enemy, Vector2 position)
         {
-            Engine.DrawText(displayedText, GameManager.Instance.LevelController.ScreenWidth / 2 - (int)position.x + (int)enemy.ShakeOffsetX, (int)position.y, 255, 255, 255, gameFont);
+            Engine.DrawText(displayedText, GameManager.Instance.LevelController.screenWidth / 2 - (int)position.x + (int)enemy.ShakeOffsetX, (int)position.y, 255, 255, 255, gameFont);
 
             if (displayedText.Length < fullText.Length && !GameManager.Instance.Paused)
             {

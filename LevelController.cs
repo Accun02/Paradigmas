@@ -4,8 +4,8 @@ namespace MyGame
 {
     public class LevelController
     {
-        public int GroundHeight = 574;        // De arriba a abajo
-        public int ScreenWidth = 1280;       // De izquierda a derecha
+        public int groundHeight = 574;        // De arriba a abajo
+        public int screenWidth = 1280;       // De izquierda a derecha
 
         public Character player;
         public Enemy enemy;
@@ -157,7 +157,7 @@ namespace MyGame
             FontManager.ResetText();
 
             // Reset Player
-            player.Transform.Position = new Vector2(ScreenWidth / 4 - Character.PlayerWidth / 2, GroundHeight - Character.PlayerHeight);
+            player.Transform.Position = new Vector2(screenWidth / 4 - Character.PlayerWidth / 2, groundHeight - Character.PlayerHeight);
             player.ResetMomentum();
             player.Health = GameManager.Instance.HardMode ? player.MaxHealthHard : player.MaxHealthNormal;
             player.IsDead = false;
@@ -166,7 +166,7 @@ namespace MyGame
             player.Exploded = false;
 
             // Reset Enemy
-            enemy.ResetTransform(new Vector2((ScreenWidth / 4) * 3 - Enemy.EnemyWidth / 2, 250));
+            enemy.ResetTransform(new Vector2((screenWidth / 4) * 3 - Enemy.enemyWidth / 2, 250));
             enemy.ResetEnemy();
             enemy.Health = enemy.MaxHealth;
         }

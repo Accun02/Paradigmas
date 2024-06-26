@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class Enemy : GameObject, IDamageable
 {
-    public const float EnemyWidth = 80;
-    public const float EnemyHeight = 80;
+    public const float enemyWidth = 80;
+    public const float enemyHeight = 80;
 
     private bool vulnerable = true;
     private int health;
@@ -60,7 +60,7 @@ public class Enemy : GameObject, IDamageable
     public int MaxHealth { set { maxHealth = value; } get { return maxHealth; } }
     public float ShakeOffsetX { set { shakeOffsetX = value; } get { return shakeOffsetX; } }
 
-    public Enemy(Vector2 position) : base(position, EnemyWidth, EnemyHeight)
+    public Enemy(Vector2 position) : base(position, enemyWidth, enemyHeight)
     {
         transform = new Transform(position);
         enemyMovement = new EnemyMovement(Transform);
@@ -110,18 +110,19 @@ public class Enemy : GameObject, IDamageable
     public void CheckCollision(Character player)
     {
         float enemyLeft = transform.Position.x;
-        float enemyRight = transform.Position.x + EnemyWidth;
+        float enemyRight = transform.Position.x + enemyWidth;
         float enemyTop = transform.Position.y;
-        float enemyBottom = transform.Position.y + EnemyHeight;
+        float enemyBottom = transform.Position.y + enemyHeight;
         float playerLeft = player.Transform.Position.x;
         float playerRight = player.Transform.Position.x + Character.PlayerWidth;
         float playerTop = player.Transform.Position.y;
         float playerBottom = player.Transform.Position.y + Character.PlayerHeight;
 
-        if (vulnerable && enemyRight >= playerLeft && enemyLeft <= playerRight && enemyBottom >= playerTop && enemyTop <= playerBottom && player.Vulnerable && GameManager.Instance.LevelController.player is IDamageable)
+        if (vulnerable && enemyRight >= playerLeft && enemyLeft <= playerRight && enemyBottom >= playerTop &&
+            enemyTop <= playerBottom && player.Vulnerable && GameManager.Instance.LevelController.player is IDamageable)
         {
             if (player is IDamageable)
-            player.TakeDamage(1);
+                player.TakeDamage(1);
         }
     }
     public void TakeDamage(int amount)
@@ -186,7 +187,7 @@ public class Enemy : GameObject, IDamageable
             speedY += acceleration * Time.DeltaTime;
             transform.Translate(new Vector2(0, -1), speedY * Time.DeltaTime);
 
-            if (transform.Position.y < -EnemyHeight * 2)
+            if (transform.Position.y < -enemyHeight * 2)
             {
                 offScreen = true;
 
@@ -213,8 +214,8 @@ public class Enemy : GameObject, IDamageable
                     }
                 }
 
-                float newX = moveDirectionX == 1 ? 0 - (EnemyWidth * 5) : GameManager.Instance.LevelController.ScreenWidth + (EnemyWidth * 5);
-                float newY = GameManager.Instance.LevelController.GroundHeight - EnemyHeight - 10;
+                float newX = moveDirectionX == 1 ? 0 - (enemyWidth * 5) : GameManager.Instance.LevelController.screenWidth + (enemyWidth * 5);
+                float newY = GameManager.Instance.LevelController.groundHeight - enemyHeight - 10;
 
                 ResetTransform(new Vector2(newX, newY));
 
@@ -249,7 +250,7 @@ public class Enemy : GameObject, IDamageable
                             goingLeft = false;
                             goingRight = false;
                             float newX = random.Next(200, 1000);
-                            ResetTransform(new Vector2(newX, -EnemyHeight));
+                            ResetTransform(new Vector2(newX, -enemyHeight));
                             finishedDash = true;
                         }
                         else

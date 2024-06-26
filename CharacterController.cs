@@ -8,8 +8,8 @@ public class CharacterController
     private const float PlayerHeight = Character.PlayerHeight;
 
     // Escenario
-    private int groundHeight = GameManager.Instance.LevelController.GroundHeight;
-    private int screenWidth = GameManager.Instance.LevelController.ScreenWidth;
+    private int groundHeight = GameManager.Instance.LevelController.groundHeight;
+    private int screenWidth = GameManager.Instance.LevelController.screenWidth;
 
     // Movimiento
     private float acceleration = 3000;

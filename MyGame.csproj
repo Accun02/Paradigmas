@@ -86,7 +86,6 @@
     <Compile Include="Enemy.cs" />
     <Compile Include="EnemyAttack.cs" />
     <Compile Include="EnemyBullet.cs" />
-    <Compile Include="EnemyController.cs" />
     <Compile Include="EnemyMovement.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="Engine.cs" />

@@ -5,7 +5,7 @@ namespace MyGame
 {
     public class EnemyAnvil : Projectile, ICheckForCollision
     {
-        private readonly int GroundHeight = GameManager.Instance.LevelController.GroundHeight;
+        private readonly int groundHeight = GameManager.Instance.LevelController.groundHeight;
         private string idlePath = "assets/enemyBullet/anvil.png";
 
         private bool bounced;
@@ -52,7 +52,7 @@ namespace MyGame
             bulletVel += acceleration * Time.DeltaTime;
             transform.Translate(direction, bulletVel * Time.DeltaTime);
 
-            if (transform.Position.y >= GroundHeight - 92 && !bounced)
+            if (transform.Position.y >= groundHeight - 92 && !bounced)
             {
                 anvilHit.PlayOnce(GameManager.Instance.audioMixer.AnvilHitChannel - 1);
 
